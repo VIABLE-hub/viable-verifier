@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- TailwindCSS Production Build - No more CDN warnings! -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+    <!-- Alpine.js für interaktive UI-Komponenten -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
+    
+    <!-- Alpine.js Tooltip Component -->
+    <script>
+      document.addEventListener('alpine:init', () => {
+        // Create tooltip portal when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+          if (!document.getElementById('tooltip-portal')) {
+            const portal = document.createElement('div');
+            portal.setAttribute('id', 'tooltip-portal');
+            document.body.appendChild(portal);
+          }
+        });
+        
+        // Create tooltip component
+        Alpine.data('tooltip', (content) => ({
+          show: false,
+          content: content,
+          tooltipId: null,
+          
+          init() {
+            this.tooltipId = 'tooltip-' + Math.random().toString(36).substring(2, 9);
+          },
+          
+          showTooltip() {
+            this.show = true;
+            this.$nextTick(() => {
+              const button = this.$el;
+              const rect = button.getBoundingClientRect();
+              
+              // Create tooltip in portal
+              const portal = document.getElementById('tooltip-portal');
+              if (!portal) return;
+              
+              // Check if tooltip already exists (prevent duplicates)
+              let tooltip = document.getElementById(this.tooltipId);
+              if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.setAttribute('id', this.tooltipId);
+                tooltip.classList.add('tooltip', 'bg-white', 'dark:bg-gray-800', 'shadow-lg', 'rounded-md', 'p-2', 'text-xs', 'text-gray-700', 'dark:text-gray-300', 'border', 'border-gray-200', 'dark:border-gray-700');
+                tooltip.innerHTML = this.content;
+                portal.appendChild(tooltip);
+              }
+              
+              // Position the tooltip above the button
+              tooltip.style.left = rect.left + 'px';
+              tooltip.style.top = (rect.top - 10 - tooltip.offsetHeight) + 'px';
+              
+              // If tooltip would be off-screen to the left, adjust position
+              if (parseFloat(tooltip.style.left) < 5) {
+                tooltip.style.left = '5px';
+              }
+              
+              // If tooltip would be off-screen at the top, show it below the button
+              if (parseFloat(tooltip.style.top) < 5) {
+                tooltip.style.top = (rect.bottom + 10) + 'px';
+              }
+            });
+          },
+          
+          hideTooltip() {
+            this.show = false;
+            const tooltip = document.getElementById(this.tooltipId);
+            if (tooltip && tooltip.parentNode) {
+              tooltip.parentNode.removeChild(tooltip);
+            }
+          }
+        }));
+      });
+    </script>
+    
+    <!-- FontAwesome (neuere Version) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+    <!-- Inter Font für moderne Typografie -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>{% block title %}StudentVC{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static',filename='studentVC-logo-sora-cropped.png') }}" />
+    
+    <!-- Cache busting for SVG fixes -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- CSRF Token for API requests -->
+    <meta name="csrf-token" content="{{ session.get('csrf_token', '') }}" />
+    
+    <!-- Dark Mode Script - Light mode als Standard -->
+    <script>
+      // Dark mode initialization - per default Light Mode
+      if (localStorage.theme === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
+  </head>
+  <body class="h-full flex flex-col bg-white dark:bg-gray-900 transition-colors duration-200">
+    <!-- Modern Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-14">
+          <!-- Logo und Branding -->
+          <div class="flex items-center space-x-3">
+            <a href="/" class="flex items-center space-x-2 group">
+              <!-- University Logo (if present and different from main logo) -->
+              {% if university_logo and university_logo != main_logo %}
+                <div class="p-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-200" 
+                     style="border-left: 3px solid {{ '#' + primary_color if primary_color else '#003f7f' }};">
+                  <img src="{{ url_for('static',filename=university_logo) }}" 
+                       alt="{{ university_name }} Logo" 
+                       class="h-8 w-auto object-contain" 
+                       title="{{ university_name }}" />
+                </div>
+              {% endif %}
+              
+              <!-- StudentVC Logo -->
+              <div class="p-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-200">
+                <img src="{{ url_for('static',filename=main_logo) }}" alt="StudentVC Logo" class="h-8 w-auto object-contain" />
+              </div>
+              
+              <!-- Branding Text -->
+              <div class="flex flex-col">
+                <span class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">StudentVC</span>
+                {% if university_name %}
+                  <span class="text-xs text-gray-600 dark:text-gray-400 -mt-1" style="color: {{ '#' + primary_color if primary_color else '#003f7f' }};">{{ university_name }}</span>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-1">
+            <a href="/" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-berlin-blue dark:hover:text-berlin-light px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i class="fas fa-home mr-2 text-berlin-blue dark:text-berlin-light text-xs"></i>Home
+            </a>
+            
+            <a href="/issuer" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i class="fas fa-certificate mr-2 text-emerald-600 dark:text-emerald-400 text-xs"></i>Ausstellen
+            </a>
+            
+            <a href="/verifier" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i class="fas fa-shield-alt mr-2 text-indigo-600 dark:text-indigo-400 text-xs"></i>Verifizieren
+            </a>
+            
+            <a href="/vcstatus" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i class="fas fa-clipboard-list mr-2 text-green-600 dark:text-green-400 text-xs"></i>VC Status
+            </a>
+            
+            </a>
+            
+            <a href="/settings" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i class="fas fa-cog mr-2 text-gray-600 dark:text-gray-400 text-xs"></i>Einstellungen
+            </a>
+            
+            <a href="/about" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i class="fas fa-info-circle mr-2 text-blue-600 dark:text-blue-400 text-xs"></i>Über uns
+            </a>
+          </div>
+
+          <!-- Auth Links -->
+          <div class="hidden md:flex items-center space-x-2">
+            
+            {% if current_user.is_authenticated %}
+              <a href="/logout" class="bg-berlin-blue dark:bg-berlin-light text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue transition-all duration-150 shadow-sm hover:shadow-md">
+                <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i>Logout
+              </a>
+            {% else %}
+              <a href="/login" class="text-berlin-blue dark:text-berlin-light border border-berlin-blue dark:border-berlin-light px-3 py-1.5 rounded-md text-sm font-medium hover:bg-berlin-blue dark:hover:bg-berlin-light hover:text-white dark:hover:text-gray-900 transition-all duration-150">
+                Login
+              </a>
+              <a href="/register" class="bg-berlin-blue dark:bg-berlin-light text-white dark:text-gray-900 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue hover:text-white transition-all duration-150 shadow-sm hover:shadow-md">
+                Register
+              </a>
+            {% endif %}
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden flex items-center space-x-2">
+            
+            <button id="mobile-menu-button" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-150">
+              <i class="fas fa-bars text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden pb-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+          <div class="space-y-1">
+            <a href="/" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-berlin-blue dark:hover:text-berlin-light px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
+              <i class="fas fa-home mr-3 text-berlin-blue dark:text-berlin-light text-xs w-4"></i>Home
+            </a>
+            
+            <a href="/issuer" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
+              <i class="fas fa-certificate mr-3 text-emerald-600 dark:text-emerald-400 text-xs w-4"></i>Ausstellen
+            </a>
+            
+            <a href="/verifier" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
+              <i class="fas fa-shield-alt mr-3 text-indigo-600 dark:text-indigo-400 text-xs w-4"></i>Verifizieren
+            </a>
+            
+            <a href="/vcstatus" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
+              <i class="fas fa-clipboard-list mr-3 text-green-600 dark:text-green-400 text-xs w-4"></i>VC Status
+            </a>
+            
+            </a>
+            
+            <a href="/settings" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
+              <i class="fas fa-cog mr-3 text-gray-600 dark:text-gray-400 text-xs w-4"></i>Einstellungen
+            </a>
+            
+            <a href="/about" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
+              <i class="fas fa-info-circle mr-3 text-blue-600 dark:text-blue-400 text-xs w-4"></i>Über uns
+            </a>
+            
+            <!-- Mobile Auth Links -->
+            <div class="pt-3 space-y-2 border-t border-gray-200 dark:border-gray-700">
+              {% if current_user.is_authenticated %}
+                <a href="/logout" class="flex items-center bg-berlin-blue dark:bg-berlin-light text-white dark:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue hover:text-white transition-all duration-150">
+                  <i class="fas fa-sign-out-alt mr-3 text-xs w-4"></i>Logout
+                </a>
+              {% else %}
+                <a href="/login" class="flex items-center text-berlin-blue dark:text-berlin-light border border-berlin-blue dark:border-berlin-light px-3 py-2 rounded-md text-sm font-medium hover:bg-berlin-blue dark:hover:bg-berlin-light hover:text-white dark:hover:text-gray-900 transition-all duration-150">
+                  <i class="fas fa-sign-in-alt mr-3 text-xs w-4"></i>Login
+                </a>
+                <a href="/register" class="flex items-center bg-berlin-blue dark:bg-berlin-light text-white dark:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue hover:text-white transition-all duration-150">
+                  <i class="fas fa-user-plus mr-3 text-xs w-4"></i>Register
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          {% for category, message in messages %}
+            {% if category == 'error' %}
+              <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 px-4 py-3 rounded-lg mb-3 flex justify-between items-center">
+                <span><i class="fas fa-exclamation-circle mr-2"></i>{{ message }}</span>
+                <button onclick="this.parentElement.style.display='none'" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            {% elif category == 'warning' %}
+              <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-200 px-4 py-3 rounded-lg mb-3 flex justify-between items-center">
+                <span><i class="fas fa-exclamation-triangle mr-2"></i>{{ message }}</span>
+                <button onclick="this.parentElement.style.display='none'" class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-200">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            {% else %}
+              <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 px-4 py-3 rounded-lg mb-3 flex justify-between items-center">
+                <span><i class="fas fa-check-circle mr-2"></i>{{ message }}</span>
+                <button onclick="this.parentElement.style.display='none'" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="flex-1 bg-gray-50 dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Logo & About -->
+          <div class="col-span-1">
+            <div class="flex items-center space-x-2 mb-4">
+              <div class="p-0.5 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                <img src="{{ url_for('static',filename='studentVC-logo-sora-cropped.png') }}" alt="StudentVC Logo" class="h-8 w-auto object-contain" />
+              </div>
+              <span class="text-lg font-semibold text-gray-900 dark:text-white">StudentVC</span>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+              Digitale Nachweise für die Bildungswelt – sicher, standardbasiert und datensouverän.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-span-1">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
+            <ul class="space-y-2">
+              <li><a href="/" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Home</a></li>
+              <li><a href="/issuer" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Ausstellen</a></li>
+              <li><a href="/verifier" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Verifizieren</a></li>
+              <li><a href="/vcstatus" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">VC Status</a></li>
+            </ul>
+          </div>
+
+          <!-- Support -->
+          <div class="col-span-1">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Support</h3>
+            <ul class="space-y-2">
+              <li><a href="/settings" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Einstellungen</a></li>
+              <li><a href="/about" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Über uns</a></li>
+            </ul>
+          </div>
+
+          <!-- Legal -->
+          <div class="col-span-1">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Rechtliches</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Datenschutz</a></li>
+              <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-berlin-blue dark:hover:text-berlin-light text-sm transition-colors duration-150">Impressum</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-center text-gray-500 dark:text-gray-400 text-sm">
+            © 2025 StudentVC. Alle Rechte vorbehalten.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Kein Modal mehr für Use Cases - stattdessen reguläre Seiten -->
+    
+    <!-- jQuery für SocketIO Kompatibilität -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <!-- SocketIO Client Script -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    
+    <!-- Enhanced JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+          mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            
+            // Update button icon
+            const icon = mobileMenuButton.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+              icon.className = 'fas fa-bars text-sm';
+            } else {
+              icon.className = 'fas fa-times text-sm';
+            }
+          });
+        }
+
+
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+            mobileMenu.classList.add('hidden');
+            const icon = mobileMenuButton.querySelector('i');
+            icon.className = 'fas fa-bars text-sm';
+          }
+        });
+
+        // Close mobile menu on window resize
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 768 && mobileMenu) {
+            mobileMenu.classList.add('hidden');
+            const icon = mobileMenuButton.querySelector('i');
+            icon.className = 'fas fa-bars text-sm';
+          }
+        });
+
+        // Use Cases werden nun als normale Seiten geladen, kein Modal-Code mehr erforderlich
+      });
+    </script>
+
+    <!-- jQuery und SocketIO für Verifier-Funktionalität -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+    
+    <!-- 🩺 HERZCHIRURG: Image Safety Module -->
+    <script src="{{ url_for('static', filename='js/herzchirurg_image_fix.js') }}"></script>
+
+    <!-- 🚀 PERFECT SYSTEM INTEGRATION -->
+
+    {% block javascript %} {% endblock %}
+  </body>
+</html>

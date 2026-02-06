@@ -1,0 +1,482 @@
+<!-- 🔐 HERZCHIRURG V3 KEY MANAGEMENT MASTER MODULE -->
+<!-- Enterprise-Grade Cryptographic Key Management for StudentVC University Infrastructure -->
+
+<div class="space-y-6">
+    <!-- Key Management Header -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <svg class="w-5 h-5 text-berlin-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 21H5v-6l2.257-2.257A6 6 0 1119 9z"></path>
+                </svg>
+                Cryptographic Key Management
+            </h3>
+            <button @click="loadKeyInventory()" 
+                    :disabled="keyInventoryLoading"
+                    class="flex items-center gap-2 px-4 py-2 bg-berlin-blue text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
+                <svg class="w-4 h-4" :class="{'animate-spin': keyInventoryLoading}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                <span x-text="keyInventoryLoading ? 'Refreshing...' : 'Refresh Keys'"></span>
+            </button>
+        </div>
+        
+        <!-- Compact One-Line Status Bar -->
+        <div class="flex items-center justify-center gap-4 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm font-medium">
+            <span class="flex items-center gap-1">
+                🔁 <span class="text-berlin-blue cursor-pointer hover:underline" @click="loadKeyInventory()">Refresh Keys</span>
+            </span>
+            <span class="text-gray-300">|</span>
+            <span class="flex items-center gap-1">
+                🔑 <span class="text-gray-700 dark:text-gray-300">Total Keys:</span> 
+                <span class="font-semibold text-gray-900 dark:text-white" x-text="keyStatistics?.total || 0"></span>
+            </span>
+            <span class="text-gray-300">|</span>
+            <span class="flex items-center gap-1">
+                ✅ <span class="text-green-600">Active:</span> 
+                <span class="font-semibold text-green-700" x-text="keyStatistics?.active || 0"></span>
+            </span>
+            <span class="text-gray-300">|</span>
+            <span class="flex items-center gap-1">
+                ⚠️ <span class="text-yellow-600">Expiring Soon:</span> 
+                <span class="font-semibold text-yellow-700" x-text="keyStatistics?.expiring_soon || 0"></span>
+            </span>
+            <span class="text-gray-300">|</span>
+            <span class="flex items-center gap-1">
+                ❌ <span class="text-red-600">Expired:</span> 
+                <span class="font-semibold text-red-700" x-text="keyStatistics?.expired || 0"></span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Key Inventory Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-4 h-4 text-berlin-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Key Inventory
+                </h3>
+                <button @click="showGenerateKeyModal = true" 
+                        class="flex items-center gap-1 px-2 py-1 text-sm bg-berlin-blue text-white rounded hover:bg-blue-700 transition-colors">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span>Generate</span>
+                </button>
+            </div>
+        </div>
+
+                <!-- Loading indicator -->
+        <template x-if="keyInventoryLoading === true">
+            <div class="flex items-center justify-center h-16 p-3">
+                <svg class="animate-spin h-5 w-5 text-berlin-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Loading keys...</span>
+            </div>
+        </template>
+
+        <!-- No keys message -->
+        <template x-if="keyInventoryLoading === false && (!keyInventoryData || keyInventoryData.length === 0)">
+            <div class="text-center py-8 p-3">
+                <svg class="mx-auto h-8 w-8 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 21H5v-6l2.257-2.257A6 6 0 1119 9z"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No keys found</h3>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Generate your first cryptographic key to get started.</p>
+                <div class="mt-4">
+                    <button @click="showGenerateKeyModal = true" class="inline-flex items-center px-3 py-1 border border-transparent shadow-sm text-sm font-medium rounded text-white bg-berlin-blue hover:bg-blue-700">
+                        <svg class="-ml-1 mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Generate Key
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <!-- Key inventory table -->
+        <template x-if="keyInventoryLoading === false && keyInventoryData && keyInventoryData.length > 0">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Key Info & DID</th>
+                            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Type</th>
+                            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Key Pair</th>
+                            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Status</th>
+                            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Created/Expires</th>
+                            <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                        <template x-for="key in keyInventoryData" :key="key.id">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-3 py-2">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white" x-text="key.id"></div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400" x-text="key.purpose"></div>
+                                    
+                                    <!-- Enhanced usage information based on key type -->
+                                    <template x-if="key.id && key.id.includes('bbs')">
+                                        <div class="mt-1 text-xs bg-purple-50 dark:bg-purple-900/20 rounded px-2 py-1">
+                                            <div class="text-purple-700 dark:text-purple-300">
+                                                <strong>Verwendet für:</strong> Credential-Signierung mit Selective Disclosure
+                                            </div>
+                                            <div class="text-purple-600 dark:text-purple-400">
+                                                • Signiert 30+ Felder • Zero-Knowledge Proofs • Unlinkable
+                                            </div>
+                                        </div>
+                                    </template>
+                                    
+                                    <template x-if="key.id && key.id.includes('jwt')">
+                                        <div class="mt-1 text-xs bg-blue-50 dark:bg-blue-900/20 rounded px-2 py-1">
+                                            <div class="text-blue-700 dark:text-blue-300">
+                                                <strong>Verwendet für:</strong> JWT-Envelope & Issuer-Authentifizierung
+                                            </div>
+                                            <div class="text-blue-600 dark:text-blue-400">
+                                                • Transport-Sicherheit • DID-Resolution • OpenID4VC
+                                            </div>
+                                        </div>
+                                    </template>
+                                    
+                                    <template x-if="key.did || key.issuer_id">
+                                        <div class="flex items-center gap-1 text-xs text-berlin-blue dark:text-blue-400 font-mono truncate max-w-xs mt-1">
+                                            <span>DID:</span>
+                                            <span class="truncate" :title="key.did || key.issuer_id" x-text="(key.did || key.issuer_id || '').substring(0, 30) + '...'"></span>
+                                            <button @click="copyToClipboard(key.did || key.issuer_id)" 
+                                                    class="ml-1 p-0.5 text-gray-400 hover:text-berlin-blue transition-colors" 
+                                                    title="Copy DID">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </template>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                                          :class="{
+                                              'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200': key.type === 'BBS+',
+                                              'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200': key.type === 'Ed25519',
+                                              'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200': key.type === 'X.509',
+                                              'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200': !['BBS+', 'Ed25519', 'X.509'].includes(key.type)
+                                          }"
+                                          x-text="key.type"></span>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500 mt-1" x-text="key.algorithm + ' (' + key.key_size + ')'"></div>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
+                                        <template x-if="key.has_private_key">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                                🔒 Private
+                                            </span>
+                                        </template>
+                                        <template x-if="key.has_public_key">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                🔓 Public
+                                            </span>
+                                        </template>
+                                    </div>
+                                    <template x-if="key.public_key_preview">
+                                        <div class="text-xs text-gray-400 dark:text-gray-500 font-mono truncate max-w-xs mt-1" 
+                                             :title="key.public_key_preview">
+                                            <span x-text="key.public_key_preview"></span>
+                                        </div>
+                                    </template>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                                          :class="{
+                                              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200': key.status === 'active',
+                                              'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200': key.status === 'expired',
+                                              'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200': key.status === 'archived'
+                                          }"
+                                          x-text="key.status"></span>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <div class="text-xs text-gray-900 dark:text-white">
+                                        <div>Created: <span x-text="formatDate(key.created)"></span></div>
+                                        <div>Expires: <span x-text="formatDate(key.expires)"></span></div>
+                                        
+                                        <!-- Usage statistics -->
+                                        <template x-if="key.usage_count !== undefined">
+                                            <div class="mt-1 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                                </svg>
+                                                <span class="text-gray-600 dark:text-gray-400">
+                                                    <span x-text="key.usage_count || 0"></span> Verwendungen
+                                                </span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex justify-end gap-1">
+                                        <button @click="exportKey(key.id)" class="p-1 text-berlin-blue hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" title="Export Public Key">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </button>
+                                        <button @click="rotateKey(key.id)" class="p-1 text-berlin-blue hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" title="Rotate Key">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                            </svg>
+                                        </button>
+                                        <button @click="archiveKey(key.id)" class="p-1 text-berlin-blue hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" title="Archive Key">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                                            </svg>
+                                        </button>
+                                        <button @click="deleteKey(key.id)" class="p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Delete Key">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+    </div>
+
+    <!-- Detailed Key Usage Information -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+        <h3 class="text-base font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-berlin-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Detaillierte Schlüsselverwendung
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- BBS+ Key Usage -->
+            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-2xl">🔐</span>
+                    <h4 class="font-semibold text-purple-800 dark:text-purple-200">BBS+ Schlüssel</h4>
+                </div>
+                <div class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <div class="flex items-start gap-2">
+                        <span class="text-purple-600 dark:text-purple-400">•</span>
+                        <div>
+                            <strong>Verwendung:</strong> Signiert alle 30+ Felder der Studenten-Credentials
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-purple-600 dark:text-purple-400">•</span>
+                        <div>
+                            <strong>Prozess:</strong> Issuer → BBS+ Signatur → Wallet → ZK-Beweis → Verifier
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-purple-600 dark:text-purple-400">•</span>
+                        <div>
+                            <strong>Features:</strong> Selective Disclosure, Unlinkability, Zero-Knowledge
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-purple-600 dark:text-purple-400">•</span>
+                        <div>
+                            <strong>Beispiel:</strong> Student zeigt nur firstName, verbirgt lastName & studentId
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- JWT Key Usage -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-2xl">🔏</span>
+                    <h4 class="font-semibold text-blue-800 dark:text-blue-200">JWT/Ed25519 Schlüssel</h4>
+                </div>
+                <div class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <div class="flex items-start gap-2">
+                        <span class="text-blue-600 dark:text-blue-400">•</span>
+                        <div>
+                            <strong>Verwendung:</strong> Signiert JWT-Envelope um gesamte VC
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-blue-600 dark:text-blue-400">•</span>
+                        <div>
+                            <strong>DID:</strong> <span class="font-mono text-xs">did:key:zXwpQjZao...</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-blue-600 dark:text-blue-400">•</span>
+                        <div>
+                            <strong>Features:</strong> Issuer-Authentifizierung, Integrität, OpenID4VC
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-blue-600 dark:text-blue-400">•</span>
+                        <div>
+                            <strong>Verifikation:</strong> DID auflösen → Public Key extrahieren → JWT prüfen
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Usage Flow -->
+        <div class="mt-4 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+            <h4 class="font-semibold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+                <span class="text-xl">🔄</span>
+                Vollständiger Credential-Flow
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
+                <div class="bg-white dark:bg-gray-800 rounded p-3 shadow-sm">
+                    <div class="font-semibold text-green-700 dark:text-green-400 mb-1">1️⃣ Ausstellung</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">
+                        • Studentendaten erfassen<br>
+                        • Mit BBS+ signieren<br>
+                        • In JWT verpacken<br>
+                        • Mit Ed25519 signieren
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded p-3 shadow-sm">
+                    <div class="font-semibold text-blue-700 dark:text-blue-400 mb-1">2️⃣ Speicherung</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">
+                        • Wallet empfängt VC<br>
+                        • JWT validieren<br>
+                        • BBS+ Keys extrahieren<br>
+                        • Sicher speichern
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded p-3 shadow-sm">
+                    <div class="font-semibold text-purple-700 dark:text-purple-400 mb-1">3️⃣ Präsentation</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">
+                        • Felder auswählen<br>
+                        • ZK-Beweis erstellen<br>
+                        • Nur gewählte Daten<br>
+                        • An Verifier senden
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded p-3 shadow-sm">
+                    <div class="font-semibold text-orange-700 dark:text-orange-400 mb-1">4️⃣ Verifikation</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">
+                        • DID → JWT prüfen<br>
+                        • BBS+ Beweis prüfen<br>
+                        • Felder validieren<br>
+                        • ✅ Gültig/❌ Ungültig
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technical Details -->
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded p-3 border border-yellow-200 dark:border-yellow-800">
+                <strong class="text-yellow-800 dark:text-yellow-200">🔑 Schlüsselrotation:</strong>
+                <div class="text-gray-700 dark:text-gray-300 mt-1">
+                    Alte Credentials bleiben mit alten Keys verifizierbar. Neue Credentials nutzen neue Keys.
+                </div>
+            </div>
+            <div class="bg-green-50 dark:bg-green-900/20 rounded p-3 border border-green-200 dark:border-green-800">
+                <strong class="text-green-800 dark:text-green-200">🛡️ Sicherheit:</strong>
+                <div class="text-gray-700 dark:text-gray-300 mt-1">
+                    Private Keys nur auf Issuer-Server. Public Keys in DID für Verifier.
+                </div>
+            </div>
+            <div class="bg-red-50 dark:bg-red-900/20 rounded p-3 border border-red-200 dark:border-red-800">
+                <strong class="text-red-800 dark:text-red-200">⚠️ Wichtig:</strong>
+                <div class="text-gray-700 dark:text-gray-300 mt-1">
+                    Jedes Deployment hat eigene Keys! TUB ≠ FUB ≠ ROOT
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 border border-gray-200 dark:border-gray-700">
+        <h3 class="text-base font-medium text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+            <svg class="w-4 h-4 text-berlin-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Quick Actions
+        </h3>
+        
+        <div class="flex flex-wrap gap-2">
+            <button @click="showGenerateKeyModal = true" 
+                    class="flex items-center gap-2 px-3 py-2 bg-berlin-blue text-white rounded text-sm hover:bg-blue-700 transition-colors">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <span>Generate New Key</span>
+            </button>
+            
+            <button @click="exportAllKeys()" 
+                    class="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span>Export Keys</span>
+            </button>
+            
+            <button @click="securityAudit()" 
+                    class="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 transition-colors">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span>Security Audit</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Generate Key Modal -->
+<div x-show="showGenerateKeyModal" x-cloak 
+     class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-lg bg-white dark:bg-gray-800">
+        <div class="mt-3">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Generate New Key</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Key Type</label>
+                    <select x-model="newKeyConfig.type" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-2">
+                        <option value="Ed25519">Ed25519 (General Purpose Signing)</option>
+                        <option value="BBS+">BBS+ (Selective Disclosure)</option>
+                        <option value="X.509">X.509 (TLS Certificate)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Purpose</label>
+                    <input x-model="newKeyConfig.purpose" type="text" placeholder="e.g., Credential Signing, Authentication" 
+                           class="w-full border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-2">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Validity (days)</label>
+                    <select x-model="newKeyConfig.validity_days" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-2">
+                        <option value="90">90 days</option>
+                        <option value="180">180 days</option>
+                        <option value="365">1 year</option>
+                        <option value="730">2 years</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3 mt-6">
+                <button @click="showGenerateKeyModal = false" 
+                        class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button @click="generateKey()" 
+                        :disabled="keyGenerating"
+                        class="px-4 py-2 text-sm font-medium text-white bg-berlin-blue rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                    <span x-text="keyGenerating ? 'Generating...' : 'Generate Key'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

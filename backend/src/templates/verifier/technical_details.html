@@ -1,0 +1,26 @@
+<!-- HERZCHIRURG: Technical Details Box -->
+<div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center max-w-xl mx-auto mb-4 shadow-sm">
+  <div class="flex items-start justify-center">
+    <svg class="w-5 h-5 text-gray-700 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+    </svg>
+    <div class="text-left">
+      <h3 class="text-sm font-semibold text-gray-900 mb-3">🔐 Technische Hintergründe zur Verifikation</h3>
+      <div class="text-sm text-gray-700 leading-relaxed">
+        Die Verifikation basiert auf dem offenen <strong>OpenID for Verifiable Credentials (OID4VC)</strong>-Protokoll,
+        ergänzt durch eine <strong>datensparsame, kryptografische BBS+</strong>-Signatur. Über sogenannte
+        <strong>Zero-Knowledge Proofs (ZKPs)</strong> kann dabei die Gültigkeit eines Nachweises belegt werden, ohne dass
+        personenbezogene Daten offenbart werden müssen.
+      </div>
+      <div class="text-sm text-gray-700 leading-relaxed mt-2">
+        Für höhere Sicherheit und Skalierbarkeit lässt sich das BBS+-Verfahren auf
+        <strong>Threshold Signaturen</strong> erweitern, wodurch mehrere Instanzen gemeinsam, aber unabhängig einen
+        Nachweis signieren und verifizieren können – etwa in Hochschul- oder Behörden-Konsortien.
+      </div>
+      <div class="text-sm text-gray-600 italic mt-2">
+        Die Herausforderung der Zukunft besteht darin, diese Systeme sowohl sicher als auch interoperabel
+        zu halten – bei gleichzeitiger Wahrung von Datenschutz und Nutzerautonomie.
+      </div>
+    </div>
+  </div>
+</div> 

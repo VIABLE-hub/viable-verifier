@@ -1,0 +1,6 @@
+{
+  "field_first_name": true,
+  "field_last_name": true,
+  "field_student_id": true,
+  "field_student_id_prefix": true
+}

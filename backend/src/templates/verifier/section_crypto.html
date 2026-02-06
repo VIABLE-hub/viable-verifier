@@ -1,0 +1,51 @@
+{% from 'verifier/collapsible_step.html' import verification_step %}
+
+<!-- Group 3: Cryptographic Verification -->
+<div class="verification-group border border-gray-100 rounded-lg shadow-sm">
+  <button class="w-full bg-purple-50 p-3 rounded-t-lg border-b border-gray-100 text-left group-toggle" data-group="crypto">
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-purple-900 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 011 9a6 6 0 0112 0 6 6 0 01-1 3.343z" />
+        </svg>
+        Kryptografische Prüfung
+      </h3>
+      <svg class="w-4 h-4 transform transition-transform duration-300 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </div>
+  </button>
+  <div class="collapsible-content" data-group="crypto">
+    <div class="p-3 space-y-1">
+      {{ verification_step(
+        "M9 12l2 2 4-4m-7.835-1.146A3.5 3.5 0 001 10.5v1.25a3.5 3.5 0 003.5 3.5h.086a1 1 0 00.975-.738 15.139 15.139 0 002.273-4.787c.34-1.29.509-2.6.509-3.95a15.133 15.133 0 00-.454-3.69.75.75 0 00-.71-.563H4.5A3.5 3.5 0 001 5v1.25a3.5 3.5 0 003.086 3.146z",
+        "BBS+ Schlüssel gültig",
+        "Kryptografischer Schlüssel für Selective Disclosure gültig.",
+        "issuer_bbs_key_verification",
+        "code-bbs-key",
+        "🔐 BBS+ Cryptographic Key Validation",
+        '<div><span class="text-blue-600">Algorithm:</span> BLS12-381 Signature Scheme (IETF Draft)</div>
+         <div><span class="text-blue-600">Key Type:</span> G2 element (48 bytes compressed, 96 bytes uncompressed)</div>
+         <div><span class="text-blue-600">Input:</span> Public key from issuer DID document (#bbsKey2021)</div>
+         <div><span class="text-blue-600">Validation:</span> Point-on-curve, subgroup membership, prime order</div>
+         <div><span class="text-blue-600">Security Level:</span> 128-bit security equivalent (NIST Level 1)</div>
+         <div><span class="text-green-600">Status:</span> ✓ Valid BLS12-381 G2 public key verified</div>'
+      ) }}
+      
+      {{ verification_step(
+        "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+        "Signatur korrekt",
+        "BBS+ Signatur stimmt mit übermittelten Nachrichten überein.",
+        "verification_result",
+        "code-signature",
+        "✅ BBS+ Zero-Knowledge Proof Verification",
+        '<div><span class="text-blue-600">Protocol:</span> BBS+ Selective Disclosure (Zero-Knowledge Proof)</div>
+         <div><span class="text-blue-600">Message Vector:</span> 44 fields in canonical order (RFC compliant)</div>
+         <div><span class="text-blue-600">Revealed Indices:</span> [0,1,2,5,8] (firstName, lastName, studentId, etc.)</div>
+         <div><span class="text-blue-600">Signature:</span> G1 element (48 bytes, base64-encoded)</div>
+         <div><span class="text-blue-600">ZK Property:</span> Unrevealed fields remain cryptographically hidden</div>
+         <div><span class="text-green-600">Status:</span> ✓ Signature mathematically valid, privacy preserved</div>'
+      ) }}
+    </div>
+  </div>
+</div> 

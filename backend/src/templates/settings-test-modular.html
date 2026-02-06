@@ -1,0 +1,161 @@
+{% extends "base.html" %} 
+{% block title %}Settings (Modular Test){% endblock %} 
+
+{% block content %}
+<!-- Test Modular Settings JavaScript -->
+<script src="/static/js/settings-modular.js"></script>
+
+<!-- Settings Component - Using Modular System -->
+<div x-data="settingsModular" x-init="init()" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Settings (Modular Test)</h1>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Testing the modular settings system with IIFE pattern.
+        </p>
+        <div class="mt-2 text-xs text-blue-600 dark:text-blue-400">
+            Current approach: IIFE-based modules | Active tab: <span x-text="activeTab"></span>
+        </div>
+    </div>
+    
+    <!-- Tab Navigation -->
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+            <li class="mr-2">
+                <a href="#" 
+                   @click.prevent="switchToTab('dashboard')"
+                   :class="{'inline-block p-4 text-berlin-blue border-b-2 border-berlin-blue rounded-t-lg active': activeTab === 'dashboard', 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300': activeTab !== 'dashboard'}"
+                   aria-current="page">
+                    Dashboard
+                </a>
+            </li>
+            <li class="mr-2">
+                <a href="#" 
+                   @click.prevent="switchToTab('system')"
+                   :class="{'inline-block p-4 text-berlin-blue border-b-2 border-berlin-blue rounded-t-lg active': activeTab === 'system', 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300': activeTab !== 'system'}">
+                    System
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Tab Content -->
+    <div class="py-6 px-4 sm:px-6">
+        <!-- Dashboard Tab -->
+        <div x-show="activeTab === 'dashboard'" x-transition>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold mb-4">Dashboard (Modular)</h2>
+                
+                <!-- Loading State -->
+                <div x-show="dashboardLoading" class="text-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-berlin-blue mx-auto"></div>
+                    <p class="mt-2 text-gray-600">Loading dashboard data...</p>
+                </div>
+                
+                <!-- Dashboard Content -->
+                <div x-show="!dashboardLoading" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- CPU Card -->
+                        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                            <h3 class="font-medium text-blue-900 dark:text-blue-100">CPU Usage</h3>
+                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400" x-text="systemData?.cpu?.usage + '%'"></p>
+                            <p class="text-sm text-blue-700 dark:text-blue-300" x-text="systemData?.cpu?.cores + ' cores'"></p>
+                        </div>
+                        
+                        <!-- Memory Card -->
+                        <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                            <h3 class="font-medium text-green-900 dark:text-green-100">Memory</h3>
+                            <p class="text-2xl font-bold text-green-600 dark:text-green-400" x-text="systemData?.memory?.percentage + '%'"></p>
+                            <p class="text-sm text-green-700 dark:text-green-300" x-text="formatBytes(systemData?.memory?.used_gb * 1024 * 1024 * 1024) + ' / ' + formatBytes(systemData?.memory?.total_gb * 1024 * 1024 * 1024)"></p>
+                        </div>
+                        
+                        <!-- Disk Card -->
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4">
+                            <h3 class="font-medium text-yellow-900 dark:text-yellow-100">Disk</h3>
+                            <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400" x-text="systemData?.disk?.percentage + '%'"></p>
+                            <p class="text-sm text-yellow-700 dark:text-yellow-300" x-text="formatBytes(systemData?.disk?.used_gb * 1024 * 1024 * 1024) + ' used'"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Refresh Button -->
+                    <div class="text-center mt-6">
+                        <button @click="manualRefresh()" 
+                                :disabled="dashboardRefreshing"
+                                class="px-4 py-2 bg-berlin-blue text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
+                            <span x-show="!dashboardRefreshing">🔄 Refresh Dashboard</span>
+                            <span x-show="dashboardRefreshing">⏳ Refreshing...</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Last Updated -->
+                    <div class="text-center text-sm text-gray-500">
+                        Last updated: <span x-text="lastUpdated"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Tab -->
+        <div x-show="activeTab === 'system'" x-transition>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold mb-4">System Information (Modular)</h2>
+                
+                <!-- Loading State -->
+                <div x-show="systemLoading" class="text-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-berlin-blue mx-auto"></div>
+                    <p class="mt-2 text-gray-600">Loading system information...</p>
+                </div>
+                
+                <!-- System Content -->
+                <div x-show="!systemLoading" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <h3 class="font-medium">System Details</h3>
+                            <p class="text-sm"><strong>Platform:</strong> <span x-text="systemHealthData?.platform || 'Unknown'"></span></p>
+                            <p class="text-sm"><strong>Python:</strong> <span x-text="systemHealthData?.python_version || 'Unknown'"></span></p>
+                            <p class="text-sm"><strong>App Version:</strong> <span x-text="systemHealthData?.app_version || 'Unknown'"></span></p>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h3 class="font-medium">Network</h3>
+                            <p class="text-sm"><strong>Local IP:</strong> <span x-text="systemHealthData?.network?.local_ip || 'Unknown'"></span></p>
+                            <p class="text-sm"><strong>Public IP:</strong> <span x-text="systemHealthData?.network?.public_ip || 'Unknown'"></span></p>
+                            <p class="text-sm"><strong>Hostname:</strong> <span x-text="systemHealthData?.network?.hostname || 'Unknown'"></span></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Load System Info Button -->
+                    <div class="text-center mt-6">
+                        <button @click="loadSystemInfo()" 
+                                :disabled="systemLoading"
+                                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50">
+                            <span x-show="!systemLoading">🔄 Reload System Info</span>
+                            <span x-show="systemLoading">⏳ Loading...</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Debugging Info -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="bg-gray-100 dark:bg-gray-900 rounded-lg p-4">
+        <h3 class="font-medium mb-2">Debug Information</h3>
+        <div class="text-xs space-y-1">
+            <p><strong>Modules Loaded:</strong> Core, Dashboard, System, Utils</p>
+            <p><strong>Alpine Component:</strong> settingsModular</p>
+            <p><strong>Active Tab:</strong> <span x-text="activeTab"></span></p>
+            <p><strong>Dashboard Loading:</strong> <span x-text="dashboardLoading"></span></p>
+            <p><strong>System Loading:</strong> <span x-text="systemLoading"></span></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.text-berlin-blue { color: #003f7f; }
+.bg-berlin-blue { background-color: #003f7f; }
+.border-berlin-blue { border-color: #003f7f; }
+</style>
+{% endblock %} 

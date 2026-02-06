@@ -1,0 +1,51 @@
+{% from 'verifier/collapsible_step.html' import verification_step %}
+
+<!-- Group 2: Identity & Trust -->
+<div class="verification-group border border-gray-100 rounded-lg shadow-sm">
+  <button class="w-full bg-blue-50 p-3 rounded-t-lg border-b border-gray-100 text-left group-toggle" data-group="identity">
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-blue-900 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+        Identität & Vertrauen
+      </h3>
+      <svg class="w-4 h-4 transform transition-transform duration-300 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </div>
+  </button>
+  <div class="collapsible-content" data-group="identity">
+    <div class="p-3 space-y-1">
+      {{ verification_step(
+        "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+        "Inhaberbindung verifiziert",
+        "Challenge-Response bestätigt rechtmäßigen Inhaber.",
+        "signature_verification",
+        "code-holder-binding",
+        "👤 Holder Binding Verification",
+        '<div><span class="text-blue-600">Protocol:</span> Challenge-Response Authentication</div>
+         <div><span class="text-blue-600">Challenge:</span> Random nonce (32 bytes, base64-encoded)</div>
+         <div><span class="text-blue-600">Holder DID:</span> Extracted from proof.verificationMethod</div>
+         <div><span class="text-blue-600">Signature Check:</span> BBS+ prove/verify with holder\'s private key</div>
+         <div><span class="text-blue-600">Binding Proof:</span> challenge + credential data + timestamp</div>
+         <div><span class="text-green-600">Status:</span> ✓ Holder identity cryptographically confirmed</div>'
+      ) }}
+      
+      {{ verification_step(
+        "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+        "Aussteller vertrauenswürdig",
+        "Aussteller in Liste vertrauenswürdiger Institutionen.",
+        "issuer_pub_key_verification",
+        "code-issuer-trust",
+        "🛡️ Issuer Trust Registry Check",
+        '<div><span class="text-blue-600">Trust Framework:</span> European Digital Identity (EUDI) compliant</div>
+         <div><span class="text-blue-600">Issuer DID:</span> did:web method with domain validation</div>
+         <div><span class="text-blue-600">Registry Query:</span> HTTPS GET to trusted-issuers.eu/api/status</div>
+         <div><span class="text-blue-600">PKI Validation:</span> X.509 certificate chain verification</div>
+         <div><span class="text-blue-600">Status Check:</span> Active issuer license, not revoked</div>
+         <div><span class="text-green-600">Status:</span> ✓ Issuer verified in EU trust registry</div>'
+      ) }}
+    </div>
+  </div>
+</div> 

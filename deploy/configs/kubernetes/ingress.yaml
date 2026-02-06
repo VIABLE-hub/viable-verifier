@@ -1,0 +1,101 @@
+---
+# Basic Auth Secret for colleague access
+apiVersion: v1
+kind: Secret
+metadata:
+  name: basic-auth
+  namespace: studentvc
+type: Opaque
+data:
+  # Generated with: htpasswd -nb colleague1@university.edu password | base64
+  # Replace these with actual base64-encoded htpasswd entries
+  auth: Y29sbGVhZ3VlMUB1bml2ZXJzaXR5LmVkdTokMnkkMTAkSEFTSEVEX1BBU1NXT1JECg==
+
+---
+# Ingress with NGINX authentication
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: studentvc-ingress
+  namespace: studentvc
+  annotations:
+    # NGINX Ingress annotations
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'StudentVC - Authorized Personnel Only'
+    
+    # SSL/TLS configuration
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    
+    # Security headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-Frame-Options "DENY" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - studentvc.yourdomain.com
+    secretName: studentvc-tls
+  rules:
+  - host: studentvc.yourdomain.com
+    http:
+      paths:
+      # TUB tenant
+      - path: /tub
+        pathType: Prefix
+        backend:
+          service:
+            name: studentvc-tub
+            port:
+              number: 80
+      # FUB tenant  
+      - path: /fub
+        pathType: Prefix
+        backend:
+          service:
+            name: studentvc-fub
+            port:
+              number: 80
+      # Root tenant (default)
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: studentvc-root
+            port:
+              number: 80
+
+---
+# Alternative: Ingress with OAuth2 Proxy for email-based access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: studentvc-oauth-ingress
+  namespace: studentvc
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: "https://auth.yourdomain.com/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.yourdomain.com/oauth2/start?rd=$scheme://$best_http_host$request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User,X-Auth-Request-Email"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - studentvc-oauth.yourdomain.com
+    secretName: studentvc-oauth-tls
+  rules:
+  - host: studentvc-oauth.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: studentvc-root
+            port:
+              number: 80 

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Über StudentVC{% endblock %}
+{% block content %}
+
+<div class="bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white shadow-sm rounded-xl p-6 sm:p-8">
+      <!-- Header -->
+      <div class="border-b border-gray-200 pb-5 mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center">
+          <i class="fas fa-info-circle text-[#18206c] mr-3"></i>
+          Über StudentVC
+        </h1>
+      </div>
+
+      <!-- Hauptinhalt -->
+      <div class="space-y-6 text-gray-700">
+        <!-- Projekt-Übersicht -->
+        <div class="space-y-4">
+          <h2 class="text-xl font-semibold text-[#18206c] flex items-center">
+            <i class="fas fa-vial mr-2 text-blue-600"></i>
+            Forschungsprojekt
+          </h2>
+          <p>
+            StudentVC ist ein innovatives Forschungsprojekt des Fachgebiets Service-centric Networking an der Technischen Universität Berlin. Es erforscht und implementiert Verifiable Credentials für den Hochschulbereich und zeigt neue Wege für die sichere, digitale Verwaltung und Präsentation von Studierendennachweisen.
+          </p>
+          <p>
+            Das Projekt verbindet moderne Web3-Technologien mit den speziellen Anforderungen akademischer Institutionen und schafft ein System, das Datensouveränität und Fälschungssicherheit vereint.
+          </p>
+        </div>
+
+        <!-- Fachgebiet und Leitung -->
+        <div class="space-y-4 pt-4 border-t border-gray-100">
+          <h2 class="text-xl font-semibold text-[#18206c] flex items-center">
+            <i class="fas fa-university mr-2 text-blue-600"></i>
+            Fachgebiet
+          </h2>
+          
+          <table class="w-full">
+            <tr>
+              <td class="w-40 pr-6" style="vertical-align: top;">
+                <div class="w-32 h-32 flex items-start justify-center">
+                  <img src="{{ url_for('static', filename='logo-snet-medium.svg') }}" alt="SNET Logo" class="w-32 h-32 object-contain">
+                </div>
+              </td>
+              <td style="vertical-align: top;">
+                <div class="space-y-4">
+                  <div>
+                    <h3 class="font-medium text-lg">Service-centric Networking</h3>
+                    <p class="text-sm text-gray-600">Technische Universität Berlin</p>
+                  </div>
+                  
+                  <p class="text-gray-700">
+                    Das Fachgebiet Service-centric Networking erforscht innovative Dienste und Technologien im Bereich der vernetzten Systeme, mit besonderem Fokus auf identitätsbasierte Dienste, IoT, Mobile Computing und dezentrale Technologien.
+                  </p>
+                  
+                  <div class="pt-2">
+                    <h3 class="font-medium">Leitung</h3>
+                    <p>Prof. Dr. Axel Küpper</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Technische Grundlagen -->
+        <div class="space-y-4 pt-4 border-t border-gray-100">
+          <h2 class="text-xl font-semibold text-[#18206c] flex items-center">
+            <i class="fas fa-code mr-2 text-blue-600"></i>
+            Technische Grundlagen
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <h3 class="font-medium text-gray-900 mb-2">Verifiable Credentials</h3>
+              <p class="text-sm">W3C-Standard für kryptographisch verifizierbare digitale Nachweise mit Datensouveränität</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <h3 class="font-medium text-gray-900 mb-2">BBS+ Signaturen</h3>
+              <p class="text-sm">Zero-Knowledge-Proofs für selektive Offenlegung von Informationen</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <h3 class="font-medium text-gray-900 mb-2">Decentralized Identifiers</h3>
+              <p class="text-sm">DID:web für sichere, unabhängige digitale Identitäten</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entwicklung und Umsetzung -->
+        <div class="space-y-4 pt-4 border-t border-gray-100">
+          <h2 class="text-xl font-semibold text-[#18206c] flex items-center">
+            <i class="fas fa-laptop-code mr-2 text-blue-600"></i>
+            Entwicklung
+          </h2>
+          <p>
+            Das Projekt wurde am Fachgebiet Service-centric Networking der TU Berlin entwickelt und umgesetzt.
+          </p>
+        </div>
+        
+        <!-- Publikationen -->
+        <div class="space-y-4 pt-4 border-t border-gray-100">
+          <h2 class="text-xl font-semibold text-[#18206c] flex items-center">
+            <i class="fas fa-file-alt mr-2 text-blue-600"></i>
+            Publikationen
+          </h2>
+          <div class="pl-4 border-l-2 border-blue-200">
+            <p class="italic text-sm">Publikationen zu diesem Forschungsprojekt werden in Kürze veröffentlicht.</p>
+          </div>
+        </div>
+        
+        <!-- Kontakt -->
+        <div class="space-y-4 pt-4 border-t border-gray-100">
+          <h2 class="text-xl font-semibold text-[#18206c] flex items-center">
+            <i class="fas fa-envelope mr-2 text-blue-600"></i>
+            Kontakt
+          </h2>
+          <p>
+            Technische Universität Berlin<br>
+            Fachgebiet Service-centric Networking<br>
+            Ernst-Reuter-Platz 1, BH-N 215<br>
+            10587 Berlin
+          </p>
+          
+          <div class="mt-6 pt-4 border-t border-gray-100">
+            <h3 class="font-medium text-gray-900 mb-2">Inhaltlich verantwortlich:</h3>
+            <div class="text-gray-700">
+              <p class="font-medium">Patrick Herbke</p>
+              <p class="text-sm text-gray-600">Research Assistant</p>
+              <div class="mt-2 space-y-1 text-sm">
+                <p><i class="fas fa-phone mr-2 text-gray-400"></i>+49 30 314 77 125</p>
+                <p><i class="fas fa-envelope mr-2 text-gray-400"></i><a href="mailto:p.herbke@tu-berlin.de" class="text-blue-600 hover:text-blue-800">p.herbke@tu-berlin.de</a></p>
+                <p><i class="fas fa-globe mr-2 text-gray-400"></i><a href="https://tu.berlin/snet/patrick-herbke/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800">https://tu.berlin/snet/patrick-herbke/</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- TU Logo -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex justify-end">
+          <div class="opacity-70 hover:opacity-100 transition-opacity">
+            <a href="https://www.tu.berlin/snet" target="_blank" rel="noopener noreferrer" class="block">
+              <img src="{{ url_for('static', filename='logo.png') }}" alt="TU Berlin SNET Logo" class="h-16">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

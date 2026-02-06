@@ -1,0 +1,562 @@
+{% extends "base.html" %} 
+{% block title %}VC Status Management | StudentVC{% endblock %}
+
+{% block head %}
+<!-- Cache-Busting Headers -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+{% endblock %}
+
+{% block content %}
+
+<!-- Light Section Background Container for Grouping -->
+<div class="bg-slate-50/50 rounded-xl border border-slate-100 px-6 max-w-screen-xl mx-auto mt-2 md:mt-4">
+  
+  <!-- Ultra-Compact Header -->
+  <div class="max-w-7xl mx-auto px-1 sm:px-3 lg:px-4 py-1">
+    <div class="text-center mb-1 bg-gradient-to-b from-blue-50/30 to-transparent rounded-2xl py-1 px-3">
+      <h1 class="text-2xl font-bold text-slate-800 mb-1">
+        VC Status Management
+      </h1>
+      <p class="text-sm text-slate-600">
+        Live-Verwaltung und Statuskontrolle ausgestellter Verifiable Credentials
+      </p>
+    </div>
+  </div>
+
+  <!-- Error Message Banner (if present) -->
+  {% if error_message %}
+  <div class="mb-2 bg-red-50 border-l-4 border-red-400 p-1 rounded-md">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-red-800">Fehler beim Laden der Daten</h3>
+        <div class="mt-2 text-sm text-red-700">
+          <p>{{ error_message }}</p>
+          <p class="mt-1">Bitte versuchen Sie die Seite zu aktualisieren oder kontaktieren Sie den Administrator.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Ultra-Compact One-Line Stats Cards -->
+  <div class="grid grid-cols-3 gap-1 mb-2">
+    <!-- Active VCs -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-1 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+      <div class="text-center">
+        <span class="text-lg font-bold text-green-600" id="active-count">{{ valid_credentials }}</span>
+        <span class="text-xs text-slate-600 ml-1">Aktive VCs</span>
+      </div>
+    </div>
+    
+    <!-- Revoked VCs -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-1 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+      <div class="text-center">
+        <span class="text-lg font-bold text-red-600" id="revoked-count">{{ invalid_credentials }}</span>
+        <span class="text-xs text-slate-600 ml-1">Widerrufene VCs</span>
+      </div>
+    </div>
+    
+    <!-- Total VCs -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-1 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-1 h-full bg-blue-700"></div>
+      <div class="text-center">
+        <span class="text-lg font-bold text-blue-700" id="total-count">{{ total_credentials }}</span>
+        <span class="text-xs text-slate-600 ml-1">Gesamt VCs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ultra-Compact Search And Filter Controls -->
+  <div class="bg-white rounded-lg shadow-sm mb-1 p-1 border border-slate-200">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-1 md:space-y-0 md:space-x-2">
+      <!-- Search Box -->
+      <div class="relative flex-grow md:max-w-md w-full">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <input type="text" id="search-input" placeholder="Suche nach ID, Name, Matrikelnr..." 
+               class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:ring-blue-700 focus:border-blue-700 sm:text-sm"
+               onkeyup="filterTable()">
+      </div>
+      
+      <div class="flex flex-wrap gap-1 items-center">
+        <!-- Status Filter Dropdown -->
+        <div class="relative w-full md:w-auto">
+          <select id="status-filter" 
+                  class="block w-full pl-3 pr-10 py-2 text-base border border-slate-300 focus:outline-none focus:ring-blue-700 focus:border-blue-700 sm:text-sm rounded-md"
+                  onchange="filterTable()">
+            <option value="all">Alle Status</option>
+            <option value="active">Aktiv</option>
+            <option value="revoked">Zurückgezogen</option>
+          </select>
+        </div>
+        
+        <!-- Items per page Dropdown -->
+        <div class="relative w-full md:w-auto">
+          <select id="items-per-page" 
+                  class="block w-full pl-3 pr-10 py-2 text-base border border-slate-300 focus:outline-none focus:ring-blue-700 focus:border-blue-700 sm:text-sm rounded-md"
+                  onchange="changeItemsPerPage()">
+            <option value="10">10 pro Seite</option>
+            <option value="50">50 pro Seite</option>
+            <option value="100">100 pro Seite</option>
+          </select>
+        </div>
+
+        <!-- Export CSV Button -->
+        <a href="/vcstatus/export/csv" class="w-full md:w-auto inline-flex justify-center items-center px-3 py-2 border border-slate-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Export CSV
+        </a>
+
+        <!-- Refresh Button -->
+        <a href="/vcstatus" class="w-full md:w-auto inline-flex justify-center items-center px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Aktualisieren
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ultra-Compact Table Container -->
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-slate-200">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200" id="vcTable">
+        <thead class="bg-slate-50">
+          <tr>
+            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-slate-600 uppercase tracking-wider cursor-pointer" onclick="sortTable('id')">
+              <div class="flex items-center">
+                VC ID
+                <svg class="w-4 h-4 ml-1 sort-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"></svg>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-slate-600 uppercase tracking-wider cursor-pointer" onclick="sortTable('matrikelnr')">
+              <div class="flex items-center">
+                Matrikelnummer
+                <svg class="w-4 h-4 ml-1 sort-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"></svg>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-slate-600 uppercase tracking-wider cursor-pointer" onclick="sortTable('firstName')">
+              <div class="flex items-center">
+                Vorname
+                <svg class="w-4 h-4 ml-1 sort-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"></svg>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-slate-600 uppercase tracking-wider cursor-pointer" onclick="sortTable('lastName')">
+              <div class="flex items-center">
+                Nachname
+                <svg class="w-4 h-4 ml-1 sort-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"></svg>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-slate-600 uppercase tracking-wider cursor-pointer" onclick="sortTable('status')">
+              <div class="flex items-center">
+                Status
+                <svg class="w-4 h-4 ml-1 sort-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"></svg>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-slate-600 uppercase tracking-wider cursor-pointer" onclick="sortTable('lastAction')">
+              <div class="flex items-center">
+                Letzte Aktion
+                <svg class="w-4 h-4 ml-1 sort-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"></svg>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-2 text-center text-xs font-medium text-slate-600 uppercase tracking-wider">
+              Aktionen
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-100" id="table-body">
+          {% if credentials %}
+            {% for cred in credentials %}
+            <tr class="hover:bg-slate-50 transition-colors" data-status="{{ 'active' if cred.validity else 'revoked' }}">
+              <td class="px-3 py-2 whitespace-nowrap text-sm">
+                <div class="tooltip relative inline-block" data-tippy-content="{{ cred.id|string }}">
+                  <span class="text-slate-500 font-mono">{{ cred.id|string|truncate(10, true, '...') }}</span>
+                </div>
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-slate-900">
+                {{ cred.studentIdPrefix }}{{ cred.studentId }}
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-800">
+                {{ cred.firstName }}
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-800">
+                {{ cred.lastName }}
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap">
+                {% if cred.validity %}
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  <svg class="-ml-1 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                    <circle cx="4" cy="4" r="3" />
+                  </svg>
+                  Aktiv
+                </span>
+                {% else %}
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                  <svg class="-ml-1 mr-1.5 h-2 w-2 text-red-400" fill="currentColor" viewBox="0 0 8 8">
+                    <circle cx="4" cy="4" r="3" />
+                  </svg>
+                  Widerrufen
+                </span>
+                {% endif %}
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
+                {% if cred.revoked_at %}
+                  {{ cred.revoked_at|default('') }}
+                {% else %}
+                  {{ cred.updated_at|default('') }}
+                {% endif %}
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500 text-right flex justify-center space-x-2">
+                {% if cred.validity %}
+                <button type="button" 
+                        onclick="toggleRevocation('{{ cred.id|string }}', true)"
+                        class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                  </svg>
+                  Revoke
+                </button>
+                {% else %}
+                <button type="button"
+                        onclick="toggleRevocation('{{ cred.id|string }}', false)"
+                        class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Unrevoke
+                </button>
+                <button type="button"
+                        onclick="deleteCredential('{{ cred.id|string }}')"
+                        class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Löschen
+                </button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="7" class="px-4 py-12 text-center text-sm text-slate-500">
+                <svg class="mx-auto h-12 w-12 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-slate-800">Keine Credentials gefunden</h3>
+                <p class="mt-1 text-sm text-slate-500">Noch keine Credentials verfügbar oder sie entsprechen nicht den aktuellen Filterkriterien.</p>
+                <div class="mt-6">
+                  <a href="/issuer" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Credential ausstellen
+                  </a>
+                </div>
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile View Helper -->
+    <div class="sm:hidden">
+      <div class="px-4 py-2 bg-slate-50 border-t border-slate-200 text-xs text-slate-500">
+        Scrollen Sie nach rechts für die vollständige Tabelle →
+      </div>
+    </div>
+  </div>
+
+  <!-- Compact Pagination Controls -->
+  <div class="mt-4 bg-white rounded-xl shadow-sm p-4 border border-slate-200">
+    <div class="flex items-center justify-between">
+      <div class="flex-1 flex justify-between sm:hidden">
+        <button id="prev-page-mobile" class="relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+          Zurück
+        </button>
+        <button id="next-page-mobile" class="ml-3 relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+          Weiter
+        </button>
+      </div>
+      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-slate-600">
+            Anzeige von 
+            <span class="font-medium" id="page-start">1</span>
+            bis
+            <span class="font-medium" id="page-end">10</span>
+            von
+            <span class="font-medium" id="total-items">{{ total_credentials }}</span>
+            Ergebnissen
+          </p>
+        </div>
+        <div>
+          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination" id="pagination">
+            <button id="prev-page" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span class="sr-only">Zurück</span>
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <!-- Page numbers will be inserted here by JavaScript -->
+            <span id="page-numbers"></span>
+            <button id="next-page" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span class="sr-only">Weiter</span>
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script>
+  // Global variables for pagination
+  let currentPage = 1;
+  let itemsPerPage = 10;
+  let sortedColumn = null;
+  let sortDirection = 'asc';
+  let filteredRows = [];
+  
+  // Initialize tooltips
+  tippy('[data-tippy-content]', {
+    theme: 'light-border',
+    placement: 'top',
+    arrow: true
+  });
+
+  // Confirmation dialog for delete
+  function confirmDelete() {
+    return confirm("Sind Sie sicher, dass Sie dieses Credential unwiderruflich löschen möchten?");
+  }
+  
+  // Sort table by column
+  function sortTable(column) {
+    const table = document.getElementById('vcTable');
+    const headers = table.querySelectorAll('th');
+    const header = Array.from(headers).find(h => h.textContent.trim().toLowerCase().includes(column.toLowerCase()));
+    
+    // Remove all sort indicators
+    headers.forEach(h => {
+      const icon = h.querySelector('.sort-icon');
+      if (icon) {
+        icon.classList.add('hidden');
+        icon.innerHTML = '';
+      }
+    });
+    
+    // Toggle sort direction if same column
+    if (sortedColumn === column) {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortedColumn = column;
+      sortDirection = 'asc';
+    }
+    
+    // Set sort indicator
+    const icon = header.querySelector('.sort-icon');
+    if (icon) {
+      icon.classList.remove('hidden');
+      icon.innerHTML = sortDirection === 'asc' 
+        ? '<path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L10 4.414V15a1 1 0 11-2 0V4.414L5.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>'
+        : '<path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 15.586V5a1 1 0 112 0v10.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>';
+    }
+    
+    // Apply filter and sort
+    filterTable();
+  }
+  
+  // Filter table
+  function filterTable() {
+    const searchInput = document.getElementById('search-input').value.toLowerCase();
+    const statusFilter = document.getElementById('status-filter').value;
+    const tableBody = document.getElementById('table-body');
+    const rows = Array.from(tableBody.getElementsByTagName('tr'));
+    
+    // Filter rows
+    filteredRows = rows.filter(row => {
+      if (!row.cells || row.cells.length === 0) return false;
+      
+      // Text search
+      const rowText = row.textContent.toLowerCase();
+      const matchesText = searchInput === '' || rowText.includes(searchInput);
+      
+      // Status filter
+      const status = row.getAttribute('data-status');
+      const matchesStatus = statusFilter === 'all' || status === statusFilter;
+      
+      return matchesText && matchesStatus;
+    });
+    
+    // Sort filtered rows
+    if (sortedColumn && filteredRows.length > 0) {
+      const columnIndex = getColumnIndex(sortedColumn);
+      filteredRows.sort((a, b) => {
+        const aValue = a.cells[columnIndex]?.textContent.trim() || '';
+        const bValue = b.cells[columnIndex]?.textContent.trim() || '';
+        
+        const comparison = aValue.localeCompare(bValue, 'de', { numeric: true });
+        return sortDirection === 'asc' ? comparison : -comparison;
+      });
+    }
+    
+    // Apply pagination
+    updatePagination();
+    displayCurrentPage();
+  }
+  
+  // Get column index by name
+  function getColumnIndex(columnName) {
+    const headers = ['id', 'matrikelnr', 'firstName', 'lastName', 'status', 'lastAction'];
+    return headers.indexOf(columnName);
+  }
+  
+  // Update pagination
+  function updatePagination() {
+    const totalItems = filteredRows.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    document.getElementById('total-items').textContent = totalItems;
+    
+    // Update page buttons
+    const prevButton = document.getElementById('prev-page');
+    const nextButton = document.getElementById('next-page');
+    const prevButtonMobile = document.getElementById('prev-page-mobile');
+    const nextButtonMobile = document.getElementById('next-page-mobile');
+    
+    [prevButton, prevButtonMobile].forEach(btn => {
+      if (btn) {
+        btn.disabled = currentPage <= 1;
+        btn.onclick = () => {
+          if (currentPage > 1) {
+            currentPage--;
+            displayCurrentPage();
+          }
+        };
+      }
+    });
+    
+    [nextButton, nextButtonMobile].forEach(btn => {
+      if (btn) {
+        btn.disabled = currentPage >= totalPages;
+        btn.onclick = () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            displayCurrentPage();
+          }
+        };
+      }
+    });
+    
+    // Update page numbers
+    const pageNumbers = document.getElementById('page-numbers');
+    if (pageNumbers) {
+      pageNumbers.innerHTML = '';
+      
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+          const button = document.createElement('button');
+          button.textContent = i;
+          button.className = i === currentPage 
+            ? 'relative inline-flex items-center px-4 py-2 border text-sm font-medium bg-blue-700 text-white border-blue-700'
+            : 'relative inline-flex items-center px-4 py-2 border text-sm font-medium bg-white text-slate-500 border-slate-300 hover:bg-slate-50';
+          button.onclick = () => {
+            currentPage = i;
+            displayCurrentPage();
+          };
+          pageNumbers.appendChild(button);
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+          const span = document.createElement('span');
+          span.textContent = '...';
+          span.className = 'relative inline-flex items-center px-4 py-2 border text-sm font-medium bg-white text-slate-500 border-slate-300';
+          pageNumbers.appendChild(span);
+        }
+      }
+    }
+  }
+  
+  // Display current page
+  function displayCurrentPage() {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    
+    // Hide all rows first
+    const tableBody = document.getElementById('table-body');
+    const allRows = Array.from(tableBody.getElementsByTagName('tr'));
+    allRows.forEach(row => row.style.display = 'none');
+    
+    // Show filtered rows for current page
+    const pageRows = filteredRows.slice(startIndex, endIndex);
+    pageRows.forEach(row => row.style.display = '');
+    
+    // Update pagination info
+    document.getElementById('page-start').textContent = filteredRows.length > 0 ? startIndex + 1 : 0;
+    document.getElementById('page-end').textContent = Math.min(endIndex, filteredRows.length);
+    
+    updatePagination();
+  }
+  
+  // Change items per page
+  function changeItemsPerPage() {
+    itemsPerPage = parseInt(document.getElementById('items-per-page').value);
+    currentPage = 1;
+    filterTable();
+  }
+  
+  // Toggle revocation status
+  function toggleRevocation(credentialId, currentStatus) {
+    const action = currentStatus ? 'widerrufen' : 'aktivieren';
+    if (confirm(`Möchten Sie dieses Credential wirklich ${action}?`)) {
+      // Create form and submit
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/vcstatus/revoke';
+      
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'vc_id';
+      input.value = credentialId;
+      
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+  
+  // Delete credential
+  function deleteCredential(credentialId) {
+    if (confirmDelete()) {
+      // Implement delete functionality
+      alert('Delete functionality would be implemented here');
+    }
+  }
+  
+  // Initialize page
+  document.addEventListener('DOMContentLoaded', function() {
+    filterTable();
+  });
+</script>
+
+{% endblock %}

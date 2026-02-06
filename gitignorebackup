@@ -1,0 +1,562 @@
+# ============================================================================
+# ULTRA-AGGRESSIVE .gitignore - PRODUCTION CODE ONLY
+# ============================================================================
+
+# ============================================================================
+# EXCLUDE ENTIRE DIRECTORIES WE DON'T WANT
+# ============================================================================
+mobile/
+archives/
+benchmark/
+
+# ============================================================================
+# IDE AND EDITOR FILES - EXCLUDE ALL
+# ============================================================================
+.vscode/
+.cursor/
+.claude/
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================================================================
+# PYTHON CACHE AND ARTIFACTS
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ============================================================================
+# VIRTUAL ENVIRONMENTS - EXCLUDE ALL
+# ============================================================================
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+test_env/
+test_venv/
+benchmark_env/
+
+# ============================================================================
+# BACKUP FILES AND TEMPORARY CONTENT
+# ============================================================================
+
+*.bak
+*.old
+*.orig
+*.tmp
+*~
+.#*
+#*#
+
+# ============================================================================
+# DATABASE AND INSTANCE FILES
+# ============================================================================
+instance/
+*.db
+*.sqlite
+*.sqlite3
+backend/instance/
+backend/src/tenants/instances/*/database.db
+backend/src/tenants/instances/*/backups/
+
+# ============================================================================
+# LOG FILES
+# ============================================================================
+*.log
+*.log.*
+logs/
+log/
+
+# ============================================================================
+# DEVELOPMENT AND TEST FILES
+# ============================================================================
+test_*.py
+*_test.py
+debug_*.py
+fix_*.py
+clean_*.py
+emergency_*.py
+manage_*.py
+run_*.py
+*TEST*.py
+*_DEBUG*
+*_TEMP*
+
+# ============================================================================
+# DOCUMENTATION ARTIFACTS
+# ============================================================================
+*FIX*.md
+*SUMMARY*.md
+*REPORT*.md
+*GUIDE*.md
+*COMPLETE*.md
+*BACKUP*.md
+*DEBUG*.md
+*TEMP*.md
+HERZCHIRURG*.md
+*_COMPLETE.md
+*_SUMMARY.md
+
+# ============================================================================
+# GIT ARTIFACTS
+# ============================================================================
+.git-corrupted-backup-*
+
+# ============================================================================
+# OS ARTIFACTS
+# ============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================================================
+# NODE/NPM (if any)
+# ============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================================
+# ENVIRONMENT FILES (Keep template, ignore actual)
+# ============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================================================
+# DEPLOYMENT ARTIFACTS
+# ============================================================================
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# ============================================================================
+# PRODUCTION-FOCUSED .gitignore - StudentVC Application
+# Only essential application code should be committed
+# ============================================================================
+
+# ============================================================================
+# PYTHON & FLASK APPLICATION
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ============================================================================
+# VIRTUAL ENVIRONMENTS - IGNORE ALL
+# ============================================================================
+venv/
+venv*/
+test_env/
+venv_main/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.env/
+
+# ============================================================================
+# DEVELOPMENT & TESTING FILES - IGNORE ALL
+# ============================================================================
+
+# Test files (all patterns)
+test_*.py
+*_test.py
+debug_*.py
+fix_*.py
+clean_*.py
+analyze_*.py
+simulate_*.py
+emergency_*.py
+manage_*.py
+run_*.py
+
+# Test data and logs
+test_*.txt
+*_test.txt
+clean_*.txt
+debug_*.txt
+*logs*.txt
+server*.txt
+root_test.txt
+clean_3_test.txt
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+
+# ============================================================================
+# DATABASE & INSTANCE FILES
+# ============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Database exports and backups
+*.sql
+*export*.sql
+*backup*.sql
+instance/backups/
+instance/logs/
+instance/temp/
+instance/*.db
+instance/*.sqlite*
+backend/instance/backups/
+backend/instance/*.sql
+backend/instance_backup_*/
+
+# Flask instance cache
+.webassets-cache
+
+# ============================================================================
+# SECURITY & CERTIFICATES
+# ============================================================================
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+.envrc
+config/local.*
+secrets.*
+deployment.env
+
+# Configuration overrides
+local_settings.py
+local_config.json
+development_config.json
+selective_disclosure_settings.json
+settings_default.json
+
+# ============================================================================
+# COMPILED LIBRARIES & BINARIES
+# ============================================================================
+#*.dylib
+#*.dll
+#*.so
+
+# ============================================================================
+# LOG FILES - IGNORE ALL
+# ============================================================================
+*.log
+logs/
+server*.log
+debug*.log
+service.log
+*_logs_*.txt
+*_debug_*.txt
+
+# Log files with timestamps
+*_20[0-9][0-9][0-9][0-9][0-9][0-9]_*.log
+*_20[0-9][0-9][0-9][0-9][0-9][0-9]_*.txt
+
+# ============================================================================
+# TEMPORARY FILES & REPORTS - IGNORE ALL
+# ============================================================================
+
+# HTML/JSON reports
+#*.html
+#*_vcstatus.html
+#*_vcstatus_check.html
+#*_test.html
+#*_report.html
+#tub_*.html
+#fub_*.html
+#root_*.html
+
+# JSON data files
+*.jsonl
+*INTEGRATION_TEST_REPORT.json
+*TEST_RESULTS.json
+*NGROK*.json
+# ============================================================================
+# DOCUMENTATION SPAM - IGNORE TEMPORARY DOCS
+# ============================================================================
+
+# Fix/Report documentation (temporary)
+*FIX*.md
+*SUMMARY*.md
+*REPORT*.md
+*DOCUMENTATION*.md
+*GUIDE*.md
+*STRATEGY*.md
+*ENHANCEMENTS*.md
+*RESTORATION*.md
+*DEPLOYMENT*.md
+*RESULTS*.md
+*STATUS*.md
+*COMPLETE*.md
+
+# Development documentation patterns
+CLAUDE*.md
+HERZCHIRURG*.md
+PERFECT_*.md
+TENANT_*.md
+KEY_MANAGEMENT*.md
+NETWORK_*.md
+SELECTIVE_*.md
+SWAGGER_*.md
+NGROK_*.md
+BBS_*.md
+ALPINE_*.md
+DATABASE_*.md
+SETTINGS_*.md
+
+# Backup documentation
+*backup*.md
+*_backup_*.md
+final_*.md
+herzchirurg_*.md
+
+# ============================================================================
+# BACKUP FILES - IGNORE ALL
+# ============================================================================
+#*.bak
+#*backup*
+#*_backup_*
+#*_bak
+#*.backup
+
+# Timestamped backups
+*_20[0-9][0-9][0-9][0-9][0-9][0-9]_*
+*backup_20[0-9][0-9][0-9][0-9][0-9][0-9]_*
+
+# Template backups
+#*.html.bak
+#*.html.backup
+#*.js.bak
+#*.css.bak
+
+# ============================================================================
+# ARCHIVES & CLEANUP - IGNORE ALL CONTENT
+# ============================================================================
+
+# Archive directories (ignore all content)
+archives/
+archives/**
+
+# Cleanup artifacts
+*cleanup*
+*migration*
+
+# ============================================================================
+# TEMPORARY & CACHE FILES
+# ============================================================================
+tmp/
+temp/
+.tmp/
+*.tmp
+*.temp
+*~
+.cache/
+.DS_Store
+Thumbs.db
+.directory
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+.vimrc.local
+
+# ============================================================================
+# CURSOR AI & VS CODE
+# ============================================================================
+
+.lhignore
+
+# ============================================================================
+# NODE.JS & FRONTEND
+# ============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+package-lock.json
+yarn.lock
+
+# Frontend build artifacts
+dist/
+build/
+.nuxt/
+.next/
+.vuepress/dist/
+.serverless/
+
+# ============================================================================
+# RUST BUILD ARTIFACTS (BBS Core)
+# ============================================================================
+target/
+Cargo.lock
+**/*.rs.bk
+
+# ============================================================================
+# iOS BUILD ARTIFACTS
+# ============================================================================
+*.xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.app
+build/
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# ============================================================================
+# JUPYTER NOTEBOOKS
+# ============================================================================
+.ipynb_checkpoints/
+*.ipynb
+
+# ============================================================================
+# DOCKER & DEPLOYMENT
+# ============================================================================
+.dockerignore.backup
+docker-compose.override.yml
+
+# ============================================================================
+# MISC DEVELOPMENT FILES
+# ============================================================================
+
+# Script files (utilities)
+setup_*.sh
+fix_*.sh
+clean_*.sh
+*.sh.backup
+
+# CSV exports and data files
+exports/
+*.csv
+data_*.json
+
+# Coverage reports
+coverage/
+.nyc_output/
+.coverage
+
+# Documentation generators
+.sphinx/
+docs/_build/
+site/
+
+# OS generated files
+.fseventsd
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# ============================================================================
+# ALLOW ESSENTIAL FILES (Explicit allows for clarity)
+# ============================================================================
+
+# Core documentation (keep these)
+!README.md
+!CONTRIBUTING.md
+!SECURITY.md
+!LICENSE
+!docs/README.md
+!docs/api/README.md
+!docs/development/README.md
+
+# Essential configuration
+!Makefile
+!docker-compose.yml
+!requirements.txt
+!Dockerfile
+!env.example
+
+# Ensure these directories are included (structure only)
+!backend/
+!backend/bbs-core/
+!frontend/
+mobile/
+!docs/
+!scripts/
+!config/
+
+# ============================================================================
+# ESSENTIAL DEPLOYMENT DOCUMENTATION (Explicit Allows)
+# ============================================================================
+# Student deployment guides (essential for running the system)
+!DEPLOYMENT_GUIDE.md
+!QUICK_DEPLOYMENT_SUMMARY.md
+# Note: DEPLOYMENT_ANALYSIS_RESULTS.md stays ignored (temporary analysis doc)

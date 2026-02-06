@@ -1,0 +1,97 @@
+{% extends "base.html" %} 
+{% block title %}Verifier{% endblock %} 
+{% block content %}
+<!-- HERZCHIRURG Modular Template: Split into multiple files for better maintenance -->
+
+<!-- Include modular styles -->
+{% include 'verifier/verifier_styles.html' %}
+
+<!-- Compact Modern Verifier Layout -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Streamlined Header -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+      <div class="text-center">
+        <h1 class="text-2xl font-bold text-gray-900 mb-1">
+          <i class="fas fa-shield-alt berlin-blue mr-2"></i>
+          Credential Verifier
+        </h1>
+        <p class="text-sm text-gray-600">
+          Sichere Verifikation digitaler Nachweise
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compact Main Content -->
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Left: QR Code Scanner and Process Description -->
+      <div>
+        {% include 'verifier/qr_scanner.html' %}
+        {% include 'verifier/verification_process.html' %}
+        {% include 'verifier/technical_details.html' %}
+      </div>
+
+      <!-- Right: Compact Verification Status -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <i class="fas fa-list-check berlin-blue mr-2"></i>
+          Verifikations-Status
+        </h2>
+
+        {% include 'verifier/status_box.html' %}
+
+        <!-- Compact Collapsible Verification Groups -->
+        <div class="space-y-3">
+          {% include 'verifier/section_technical.html' %}
+          {% include 'verifier/section_identity.html' %}
+          {% include 'verifier/section_crypto.html' %}
+          {% include 'verifier/section_status.html' %}
+        </div>
+
+        {% include 'verifier/section_security.html' %}
+        
+        <!-- Presented Fields Information -->
+        {% include 'verifier/presented_fields.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pass server URLs to frontend JavaScript -->
+<script>
+  // 🚀 SOCKET.IO FIX: Use separate URLs for QR code and Socket.IO
+  let externalServerUrl = "{{ server_url }}";    // ngrok URL for QR code display
+  // let socketServerUrl = "{{ socket_url }}";      // localhost for Socket.IO connection
+  let socketServerUrl  = externalServerUrl;
+  // Convert 127.0.0.1 to localhost for SSL certificate compatibility
+  //if (socketServerUrl.includes('127.0.0.1')) {
+  //  socketServerUrl = socketServerUrl.replace('127.0.0.1', 'localhost');
+  //  console.log('🔧 HERZCHIRURG: Converted 127.0.0.1 to localhost for SSL compatibility');
+  //}
+  
+  // Set both URLs for different purposes
+  window.SERVER_URL = socketServerUrl;           // Socket.IO will use this (localhost)
+  window.EXTERNAL_URL = externalServerUrl;       // For display purposes (ngrok)
+  
+  console.log('Socket.IO URL set to:', window.SERVER_URL);
+  console.log('External URL set to:', window.EXTERNAL_URL);
+</script>
+
+<!-- JavaScript Dependencies -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+<!-- Modular JavaScript -->
+<script src="/static/js/verifier/verifier_core.js"></script>
+<script src="/static/js/verifier/socket_handlers.js"></script>
+<script src="/static/js/verifier/ui_handlers.js"></script>
+<script>
+  // Export toggleCodeSnippet to global scope for HTML onclick handlers
+  window.toggleCodeSnippet = toggleCodeSnippet;
+</script>
+
+<!-- End of HERZCHIRURG Modular Template -->
+{% endblock %}

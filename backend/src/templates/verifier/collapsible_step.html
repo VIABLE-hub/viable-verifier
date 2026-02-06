@@ -1,0 +1,34 @@
+{% macro verification_step(icon_path, step_name, tooltip_text, step_id, code_snippet_id, code_title, code_content) %}
+<div class="verification-step flex items-center justify-between">
+  <div class="flex items-center gap-2">
+    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ icon_path }}"></path>
+    </svg>
+    <span class="text-sm">{{ step_name }}</span>
+    <div class="tooltip-container ml-1">
+      <span class="text-xs text-gray-400 hover:text-gray-600 cursor-help">ⓘ</span>
+      <div class="tooltip-content hidden absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black text-white text-xs rounded-lg p-3 z-50 w-48">
+        {{ tooltip_text }}
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <button class="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1 px-2 py-1 rounded hover:bg-gray-100 transition-colors" onclick="toggleCodeSnippet('{{ code_snippet_id }}')" title="Show/Hide Code">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+      </svg>
+    </button>
+    <span id="{{ step_id }}" class="text-sm">
+      <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    </span>
+  </div>
+</div>
+<div id="{{ code_snippet_id }}" class="code-snippet bg-gray-50 text-xs p-3 rounded-lg mt-2 border border-gray-200 shadow-inner leading-snug font-mono max-h-[300px] overflow-auto">
+  <div class="font-semibold text-gray-800 mb-2">{{ code_title }}</div>
+  <div class="space-y-1">
+    {{ code_content|safe }}
+  </div>
+</div>
+{% endmacro %} 

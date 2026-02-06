@@ -1,0 +1,28 @@
+[package]
+name = "bbs-core"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["staticlib", "lib", "cdylib"]
+name = "bbs_core"
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "uniffi-bindgen.rs"
+required-features = ["uniffi/cli"]
+
+[dependencies]
+uniffi = "0.28"
+bbs = "0.4.0"
+
+[build-dependencies]
+uniffi = { version = "0.28", features = ["build"] }
+
+[package.metadata.swiftpackage]
+# Name of your package as seen by Swift (upper camel case is recommended)
+name = "BBSCoreIOS"
+# Target platform identifiers (case-insensitive). Currently supported platforms are: macos, ios
+platforms = ["ios", "macos"]

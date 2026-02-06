@@ -1,0 +1,29 @@
+<!-- Enhanced Progress Bar with Live Status -->
+<div class="mb-4">
+  <div class="flex mb-2 items-center justify-between">
+    <span class="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
+      Verifikation
+    </span>
+    <span id="verification-progress" class="text-xs font-medium text-gray-600">
+      Bereit für Verifikation...
+    </span>
+  </div>
+  <div class="w-full bg-gray-200 rounded-full h-2">
+    <div id="progress-bar" class="progress-bar bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+  </div>
+</div>
+
+<!-- Live Status Feed -->
+<div class="mb-4">
+  <div class="flex items-center justify-between mb-2">
+    <h3 class="text-sm font-semibold text-gray-900">Live Status</h3>
+    <button onclick="clearStatusFeed()" class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 hover:bg-gray-100 rounded">
+      Löschen
+    </button>
+  </div>
+  <div id="status-feed" class="bg-gray-50 border border-gray-200 rounded-lg max-h-32 overflow-y-auto">
+    <div class="status-entry text-xs p-2 text-gray-500 text-center border-b border-gray-100">
+      <span class="font-mono">[Status-Feed]</span> Warten auf Verifikationsanfrage...
+    </div>
+  </div>
+</div> 

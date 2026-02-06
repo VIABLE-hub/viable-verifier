@@ -1,0 +1,487 @@
+:root {
+    /* Globale Farbvariablen - Light Mode */
+    --main-bg-color: #f9fafb;
+    --secondary-bg-color: #ffffff;
+    --default-text-color: #111827;
+    --secondary-text-color: #4b5563;
+    --highlight-blue: #3B82F6;
+    --highlight-yellow: #F59E0B;
+    --input-bg-color: #f3f4f6;
+    --input-border-color: #e5e7eb;
+    --card-bg-color: #ffffff;
+    --card-border-color: #e5e7eb;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --button-primary-bg: #003f7f;
+    --button-primary-hover: #002a56;
+    --button-secondary-bg: #6B7280;
+    --button-secondary-hover: #4B5563;
+}
+
+html.dark {
+    /* Farben für Dark Mode */
+    --main-bg-color: #111827;
+    --secondary-bg-color: #1F2937;
+    --default-text-color: #f9fafb;
+    --secondary-text-color: #d1d5db;
+    --input-bg-color: #374151;
+    --input-border-color: #4B5563;
+    --card-bg-color: #1F2937;
+    --card-border-color: #374151;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+html {
+    /* height: 100%; */
+    font-family: var(--text-font);
+}
+
+body {
+    background-color: var(--main-bg-color);
+    /* height: 100%; */
+    transition: background-color 0.3s ease;
+}
+
+div {
+    display: block;
+    color: var(--default-text-color);
+    font-family: var(--text-font);
+    transition: color 0.3s ease;
+}
+
+p {
+    color: var(--default-text-color);
+    font-family: var(--text-font);
+    transition: color 0.3s ease;
+}
+
+h1 {
+    color: var(--default-text-color);
+    font-family: var(--text-font);
+    margin: var(--standard-padding);
+    font-size: 20px;
+}
+
+label {
+    color: var(--default-text-color);
+    font-family: var(--text-font);
+    font-size: 14px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+
+.alert-danger {
+    background-color: #902925;
+    color: #ffffff;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+html.dark .alert-danger {
+    background-color: #7f1d1d;
+    border: 1px solid #b91c1c;
+}
+
+.alert-success {
+    background-color: #4e9025;
+    color: #ffffff;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-warning {
+    background-color: #cba407;
+    color: var(--default-text-color);
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.center-div-content, .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+    color: var(--disabled-text-color)
+}
+
+.nav-bar {
+    background: var(--nav-bar-color);
+    width: 100%;
+    font-family: var(--text-font);
+    font-weight: normal;
+    font-size: 14px;
+    padding-left: 16px;
+    padding-right: 16px;
+    height: fit-content;
+    overflow: hidden;
+}
+
+.logo-container {
+    float: left;
+}
+
+.supernav-container {
+    float: left;
+    left: 100px;
+    display: flex;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.login-container {
+    float: right;
+    right: 100px;
+    display: flex;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.menuitem {
+    display: block;
+    position: relative;
+    padding-top: 45px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 7px;
+    line-height: 16px;
+    float: left;
+    font-size: 14px;
+    color: #dcdedf;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-family: var(--text-font);
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.login-form-container, .register-form-container, .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 100px;
+    padding: var(--standard-padding);
+    padding-bottom: 20px;
+    background-color: var(--secondary-bg-color);
+    border-radius: var(--standard-border-radius);
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="checkbox"], select{
+    border-radius: 2px;
+    color: var(--default-text-color);
+    padding: 10px;
+    background-color: var(--input-bg-color);
+    outline: none;
+    grid-area: input;
+    border: 1px solid #32353c;
+    accent-color: #5f89b3;
+}
+
+input[type=checkbox] {
+    appearance: none;
+    border: 1px solid #32353c;
+    border-radius: 4px;
+    outline: none;
+    transition-duration: 0.3s;
+    background-color: var(--input-bg-color);
+    color: var(--input-bg-color);
+    height: 10px;
+    width: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+input[type=checkbox]:checked {
+    border: 1px solid #7db1f5;
+    background-color: #379eff;
+}
+
+input[type=checkbox]:focus {
+    border: 1px solid #9cc4f9;
+    color: var(--input-selected-color);
+}
+
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, select:focus {
+    border-width: 3px;
+    color: var(--default-text-color);
+    background-color: var(--input-selected-color);
+}
+
+.balancing-button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.balancing-form{
+    flex: 12%;
+    background-color: var(--secondary-bg-color);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: var(--default-text-color);
+}
+
+.balancing-button {
+    flex: 1 1 150px;
+    max-width: 150px;
+    min-width: fit-content;
+    width: auto;
+    height: 100px;
+    background-color: var(--secondary-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--default-text-color);
+}
+
+input[type="file"] {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+@keyframes pulse-white {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+	}
+	
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.7);
+	}
+	
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+	}
+}
+
+.custom-file-upload {
+    position: relative;
+    width: fit-content;
+    overflow: hidden;
+    color: var(--main-bg-color);
+    background-color: var(--main-bg-color);
+    animation: pulse-white 2s infinite;
+    box-shadow: 0 0 0 0 rgba(3, 116, 255, 0.34);
+    border-radius: 30%;
+    aspect-ratio: 1 / 1;
+}
+
+
+:root {
+    --default-text-color: #333333; /* Dark text for light background */
+    --main-bg-color: #ffffff; /* White background */
+    --main-bg-color-rgba: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+    --secondary-bg-color: #f2f2f2; /* Light gray background */
+    --input-bg-color: #ffffff; /* White input background */
+    --input-selected-color: #e6f7ff; /* Light blue for selected input */
+    --nav-bar-color: #222b37; /* Light nav bar */
+    --highlight-blue: #007bff; /* Bright blue highlight */
+    --text-font: 'Roboto', sans-serif;
+    --disabled-text-color: #b0b0b0; /* Light gray for disabled text */
+    --standard-padding: 10px;
+    --standard-border-radius: 12px;
+    
+    /* Card und UI-Elemente */
+    --card-bg-color: #ffffff;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    --card-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --card-border-color: #e5e7eb;
+    
+    /* Interaktive Elemente */
+    --interactive-hover-bg: #f9fafb;
+    --interactive-active-bg: #f3f4f6;
+    
+    /* Info und Hinweis-Elemente */
+    --info-bg-color: #f0f9ff;
+    --info-border-color: #bae6fd;
+    --info-text-color: #0369a1;
+}
+
+/* Dark mode overrides added globally */
+html.dark {
+    --default-text-color: #e5e7eb; /* Light text for dark background */
+    --main-bg-color: #111827; /* Dark background */
+    --main-bg-color-rgba: rgba(17, 24, 39, 0.95); /* Semi-transparent dark */
+    --secondary-bg-color: #1f2937; /* Darker gray background */
+    --input-bg-color: #374151; /* Dark input background */
+    --input-selected-color: #1e3a5f; /* Dark blue for selected input */
+    --nav-bar-color: #111827; /* Dark nav bar */
+    --highlight-blue: #3b82f6; /* Bright blue highlight for dark mode */
+    --disabled-text-color: #6b7280; /* Dark gray for disabled text */
+}
+
+.balanced-container {
+    display: flex;              /* Use flexbox layout */
+    justify-content: space-between; /* Space items evenly */
+    margin-bottom: 15px;       /* Space between fields */
+    width: 100%;  
+    
+}
+
+.form-control {
+    width: 100%;               /* Allow input to fill available space */
+}
+
+.activeButton {
+    background-color: var(--highlight-blue);
+    color: var(--main-bg-color);
+    border: none;
+    padding: 10px;
+    border-radius: var(--standard-border-radius);
+    font-family: var(--text-font);
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.inactiveButton {
+    background-color: var(--input-bg-color);
+    color: var(--disabled-text-color);
+    border: none;
+    padding: 10px;
+    border-radius: var(--standard-border-radius);
+    font-family: var(--text-font);
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+table, th, td {
+    color: var(--default-text-color);
+}
+
+/* Dark mode aware cards and containers */
+.card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--standard-border-radius);
+    padding: var(--standard-padding);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+}
+
+html.dark .card {
+    background-color: var(--card-bg-color);
+    border-color: var(--card-border-color);
+    box-shadow: var(--card-shadow);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--card-border-color);
+    padding-bottom: var(--standard-padding);
+    margin-bottom: var(--standard-padding);
+    font-weight: bold;
+}
+
+.info-block {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid var(--highlight-blue);
+    padding: var(--standard-padding);
+    margin: var(--standard-padding) 0;
+    border-radius: 4px;
+}
+
+html.dark .info-block {
+    background-color: rgba(59, 130, 246, 0.15);
+    border-left: 4px solid var(--highlight-blue);
+}
+
+/* Enhanced QR container for dark mode */
+.qr-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: var(--standard-border-radius);
+    padding: var(--standard-padding);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+html.dark .qr-container {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid #374151;
+}
+
+/* Form elements in dark mode */
+input, select, textarea {
+    background-color: var(--input-bg-color);
+    border: 1px solid var(--input-border-color);
+    color: var(--default-text-color);
+    transition: all 0.3s ease;
+}
+
+html.dark input, 
+html.dark select, 
+html.dark textarea {
+    background-color: var(--input-bg-color);
+    border-color: var(--input-border-color);
+    color: var(--default-text-color);
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: var(--button-primary-bg);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--button-primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--button-secondary-bg);
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: var(--button-secondary-hover);
+}
+
+
+
+

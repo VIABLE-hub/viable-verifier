@@ -1,0 +1,63 @@
+<!-- Gruppe 1: Identitätsprüfung -->
+<details class="border border-gray-200 rounded-lg shadow-sm bg-white hover:bg-gray-50">
+  <summary class="p-4 cursor-pointer transition-all">
+    <div class="flex items-center justify-between w-full">
+      <div class="flex items-center gap-2">
+        <div class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900">Identitätsprüfung</h3>
+          <p class="text-xs text-gray-600">Validierung der Präsentation und Schlüssel</p>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span id="identity-status-icon" class="text-yellow-600">⏳</span>
+        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-md ml-2 mr-2 font-medium">0/4</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+  </summary>
+
+  <div class="p-4 space-y-4">
+    <!-- Verifikationspunkt: Präsentation empfangen -->
+    <div class="flex items-center justify-between border-b py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Präsentation empfangen</span>
+        <span title="Die Wallet-App hat die angeforderte Präsentation übermittelt." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="presentation_requested" class="text-sm font-mono">⏳</span>
+    </div>
+
+    <!-- Verifikationspunkt: Schlüssel extrahiert -->
+    <div class="flex items-center justify-between border-b py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Schlüssel extrahiert</span>
+        <span title="Die kryptografischen Schlüssel wurden erfolgreich extrahiert." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="key_extraction" class="text-sm font-mono">⏳</span>
+    </div>
+
+    <!-- Verifikationspunkt: Inhaberbindung verifiziert -->
+    <div class="flex items-center justify-between border-b py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Inhaberbindung verifiziert</span>
+        <span title="Der präsentierende Nutzer ist der rechtmäßige Inhaber." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="signature_verification" class="text-sm font-mono">⏳</span>
+    </div>
+
+    <!-- Verifikationspunkt: Aussteller vertrauenswürdig -->
+    <div class="flex items-center justify-between py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Aussteller vertrauenswürdig</span>
+        <span title="Der Aussteller ist in der Liste vertrauenswürdiger Institutionen." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="issuer_pub_key_verification" class="text-sm font-mono">⏳</span>
+    </div>
+  </div>
+</details> 

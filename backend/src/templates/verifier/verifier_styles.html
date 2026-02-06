@@ -1,0 +1,154 @@
+<!-- 🩺 HERZCHIRURG PROFESSIONAL COMPACT DESIGN -->
+<style>
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  .berlin-blue {
+    color: #003f7f;
+  }
+  
+  .bg-berlin-blue {
+    background-color: #003f7f;
+  }
+  
+  .border-berlin-blue {
+    border-color: #003f7f;
+  }
+  
+  /* Smooth animations for collapsible sections - FIXED: Only transition specific properties */
+  .verification-group {
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .verification-group:hover {
+    box-shadow: 0 2px 8px rgba(0, 63, 127, 0.08);
+  }
+  
+  /* Compact step styling */
+  .verification-step {
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin: 0.25rem 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(229, 231, 235, 0.8);
+  }
+  
+  .verification-step:hover {
+    background-color: rgba(249, 250, 251, 1);
+  }
+  
+  /* 🩺 HERZCHIRURG-FIX: Komplett überarbeitete Collapsible-Logik mit garantierter Sichtbarkeit */
+  .collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0.3s, margin-top 0.3s ease-in-out;
+    position: relative;
+    z-index: 10;
+    margin-top: 0;
+    display: block;
+  }
+  
+  .collapsible-content.expanded {
+    max-height: 1000px; /* Ausreichende Höhe für alle Inhalte */
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+    margin-top: 0.5rem;
+    z-index: 20; /* Höherer z-index im expandierten Zustand */
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0s, margin-top 0.3s ease-in-out;
+  }
+  
+  /* Code snippet collapsible - COMPLETELY HIDDEN by default */
+  .code-snippet {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+  
+  .code-snippet.expanded {
+    max-height: 400px;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* 🩺 HERZCHIRURG-FIX: Verbesserte Tooltip-Darstellung mit garantierter Sichtbarkeit */
+  .tooltip-container {
+    position: relative;
+    z-index: 99998;
+    display: inline-block;
+  }
+  
+  .tooltip-content {
+    z-index: 999999 !important;
+    position: absolute !important; /* Absolute statt fixed für bessere Positionierung */
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid #333333 !important;
+    max-width: 250px !important;
+    width: max-content !important;
+    word-wrap: break-word !important;
+    pointer-events: none !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    bottom: 125%; /* Standard-Position oberhalb des Elements */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .tooltip-container:hover .tooltip-content {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Intelligente Positionierung für Tooltips am unteren Rand */
+  .tooltip-container.bottom .tooltip-content {
+    bottom: auto;
+    top: 125%;
+  }
+  
+  /* Tooltip-Pfeil für bessere visuelle Verbindung */
+  .tooltip-content::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+  }
+  
+  /* Pfeil nach unten (Standard) */
+  .tooltip-content::after {
+    top: 100%;
+    border-color: #000000 transparent transparent transparent;
+  }
+  
+  /* Pfeil nach oben (für bottom-Tooltips) */
+  .tooltip-container.bottom .tooltip-content::after {
+    top: -10px;
+    bottom: auto;
+    border-color: transparent transparent #000000 transparent;
+  }
+  
+  /* QR code styling */
+  .qr-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  }
+  
+  /* Progress bar enhancements */
+  .progress-bar {
+    transition: width 0.4s ease-in-out;
+  }
+</style> 

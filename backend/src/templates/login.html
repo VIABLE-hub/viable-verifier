@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign In - {{ university_name or 'StudentVC' }}</title>
+    
+    <!-- TailwindCSS Production Build -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Socket.IO for VC login status updates -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            overflow: hidden;
+            /* GRADIENT BACKGROUND with primary color tint */
+            background: linear-gradient(135deg, 
+                #ffffff 0%, 
+                #f8f9fa 40%, 
+                {{ '#' + primary_color + '15' if primary_color else '#3b82f615' }} 100%
+            );
+        }
+        
+        /* LEFT COLUMN - CENTERED CONTENT, transparent background */
+        .left-column {
+            width: 50%;
+            background: transparent;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow-y: auto;
+        }
+        
+        .left-content {
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        /* RIGHT COLUMN - transparent background */
+        .right-column {
+            width: 50%;
+            background: transparent;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        
+        /* Mobile: Stack vertically */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .left-column, .right-column {
+                width: 100%;
+                min-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- LEFT COLUMN: Logo & Description (CENTERED) -->
+    <div class="left-column">
+        <div class="left-content">
+            
+            <!-- Logo - CENTERED -->
+            {% if university_logo %}
+            <img src="{{ url_for('static', filename=university_logo) }}" 
+                 alt="{{ university_name }}" 
+                 style="height: 120px; max-width: 300px; object-fit: contain; margin: 0 auto 2rem auto; display: block;">
+            {% else %}
+            <img src="{{ url_for('static', filename='studentVC-logo-sora-cropped.png') }}" 
+                 alt="StudentVC" 
+                 style="height: 120px; margin: 0 auto 2rem auto; display: block;">
+            {% endif %}
+            
+            <!-- Title - CENTERED -->
+            <h1 style="font-size: 2.5rem; font-weight: bold; color: #111827; margin-bottom: 1.5rem; letter-spacing: -0.02em;">
+                {% if university_name %}
+                    {{ university_name }} StudentVC
+                {% else %}
+                    StudentVC
+                {% endif %}
+            </h1>
+            
+            <!-- Subtitle - CENTERED -->
+            <p style="font-size: 1.125rem; color: #4b5563; margin-bottom: 2rem; line-height: 1.75rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                {% if university_name %}
+                    Digitale Studierendennachweise der {{ university_name }}
+                {% else %}
+                    Digitale Studierendennachweise - Sicher und Datensouverän
+                {% endif %}
+            </p>
+            
+            <!-- Description Box - CENTERED with left border -->
+            <div style="border-left: 4px solid {{ '#' + primary_color if primary_color else '#3b82f6' }}; padding: 1.5rem; margin: 0 auto 2rem auto; background: rgba(255,255,255,0.8); border-radius: 0.25rem; text-align: left; max-width: 520px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); backdrop-filter: blur(10px);">
+                <p style="color: #374151; line-height: 1.6; font-size: 0.925rem;">
+                    Sichere Verwaltung digitaler Nachweise und Credentials. 
+                    Vollständige Kontrolle über Ihre digitalen Identitätsdaten 
+                    mit modernster Kryptographie und Zero-Knowledge-Technologie.
+                </p>
+            </div>
+            
+            <!-- Features - CENTERED -->
+            <div style="margin-bottom: 2rem; display: inline-block; text-align: left;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.925rem;">
+                    <i class="fas fa-certificate" style="margin-right: 0.75rem; color: {{ '#' + primary_color if primary_color else '#3b82f6' }};"></i>
+                    <span>BBS+ Selective Disclosure</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.925rem;">
+                    <i class="fas fa-mobile-alt" style="margin-right: 0.75rem; color: {{ '#' + primary_color if primary_color else '#3b82f6' }};"></i>
+                    <span>Mobile Wallet Integration</span>
+                </div>
+                <div style="display: flex; align-items: center; color: #4b5563; font-size: 0.925rem;">
+                    <i class="fas fa-university" style="margin-right: 0.75rem; color: {{ '#' + primary_color if primary_color else '#3b82f6' }};"></i>
+                    <span>Multi-System Architecture</span>
+                </div>
+            </div>
+            
+            <!-- Badge - CENTERED at bottom -->
+            <div style="margin-top: 2rem;">
+                <div style="display: inline-block; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-radius: 0.5rem; padding: 0.5rem 1.25rem; font-size: 0.875rem; font-weight: 500; color: #374151; border: 1px solid rgba(0,0,0,0.05);">
+                    <i class="fas fa-building" style="margin-right: 0.5rem;"></i>
+                    System: {% if university_name %}{{ university_name }}{% else %}Root{% endif %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- RIGHT COLUMN: Login Form -->
+    <div class="right-column">
+        <div style="width: 100%; max-width: 28rem;">
+            
+            <!-- Login Card - SMALLER -->
+            <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.8);">
+                
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 1.375rem; font-weight: bold; color: #111827; margin-bottom: 0.5rem;">Sign In</h2>
+                    <p style="color: #6b7280; font-size: 0.875rem;">
+                        Access your {% if university_name %}{{ university_name }}{% else %}StudentVC{% endif %} account
+                    </p>
+                </div>
+                
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div style="margin-bottom: 1.5rem;">
+                            {% for category, message in messages %}
+                                <div style="{% if category == 'error' %}background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;{% elif category == 'success' %}background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534;{% else %}background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af;{% endif %} padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- Username/Password Form Section -->
+                <div id="username-password-section" style="transition: opacity 0.3s ease, transform 0.3s ease;">
+                    <!-- Login Form -->
+                    <form action="/login" method="post">
+                        <!-- CSRF Token -->
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        
+                        <!-- Field - COMPACT -->
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">
+                                System
+                            </label>
+                            <input 
+                                type="text" 
+                                readonly
+                                value="{% if university_name %}{{ university_name }}{% else %}StudentVC{% endif %}"
+                                style="width: 100%; padding: 0.625rem 0.875rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #f9fafb; color: #6b7280; cursor: not-allowed; font-size: 0.875rem;"
+                            />
+                            <p style="margin-top: 0.375rem; font-size: 0.6875rem; color: #9ca3af; display: flex; align-items: center;">
+                                <i class="fas fa-lock" style="margin-right: 0.25rem; font-size: 0.625rem;"></i>
+                                System is automatically selected and cannot be changed
+                            </p>
+                        </div>
+                        
+                        <!-- Email Address - COMPACT -->
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">
+                                Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                name="name" 
+                                required
+                                autofocus
+                                placeholder="demo@studentvc.de"
+                                style="width: 100%; padding: 0.625rem 0.875rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background: #eff6ff; color: #111827; font-size: 0.875rem;"
+                            />
+                            <p style="margin-top: 0.375rem; font-size: 0.6875rem; color: #9ca3af;">
+                                Use your {% if university_name %}{{ university_name|lower|replace(' ', '-') }}.de{% else %}studentvc.de{% endif %} email address
+                            </p>
+                        </div>
+                        
+                        <!-- Password - COMPACT -->
+                        <div style="margin-bottom: 1.25rem;">
+                            <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">
+                                Password
+                            </label>
+                            <input 
+                                type="password" 
+                                name="password" 
+                                required
+                                placeholder="Enter your password"
+                                style="width: 100%; padding: 0.625rem 0.875rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background: #eff6ff; color: #111827; font-size: 0.875rem;"
+                            />
+                        </div>
+                        
+                        <!-- Login Button - COMPACT -->
+                        <button 
+                            type="submit" 
+                            style="width: 100%; background: {{ '#' + primary_color if primary_color else '#1e40af' }}; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); cursor: pointer; border: none; transition: all 0.2s;"
+                            onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 15px -3px rgba(0, 0, 0, 0.1)';"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1)';"
+                        >
+                            Login to {% if university_name %}{{ university_name }}{% else %}StudentVC{% endif %}
+                        </button>
+                    </form>
+                    
+                    <!-- OR Divider -->
+                    <div style="margin: 1.5rem 0; text-align: center; position: relative;">
+                        <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #e5e7eb;"></div>
+                        <span style="position: relative; background: rgba(255, 255, 255, 0.95); padding: 0 1rem; color: #9ca3af; font-size: 0.75rem; font-weight: 500;">OR</span>
+                    </div>
+                    
+                    <!-- Login with VC Button -->
+                    <button 
+                        type="button"
+                        onclick="switchToVC()"
+                        style="width: 100%; background: white; color: {{ '#' + primary_color if primary_color else '#1e40af' }}; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; border: 2px solid {{ '#' + primary_color if primary_color else '#1e40af' }}; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+                        onmouseover="this.style.background='rgba(0,0,0,0.02)';"
+                        onmouseout="this.style.background='white';"
+                    >
+                        <i class="fas fa-qrcode"></i>
+                        <span>Login with Verifiable Credential</span>
+                    </button>
+                </div>
+                
+                <!-- VC QR Code Section (Hidden by default) -->
+                <div id="vc-qr-section" style="display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;">
+                    <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 0.5rem; border: 1px solid #e5e7eb;">
+                        <p style="font-size: 0.875rem; color: #374151; font-weight: 600; margin-bottom: 1rem;">
+                            <i class="fas fa-mobile-alt" style="margin-right: 0.5rem; color: {{ '#' + primary_color if primary_color else '#1e40af' }};"></i>
+                            Scan with your Wallet
+                        </p>
+                        
+                        <!-- Actual QR Code -->
+                        {% if vc_qr_code %}
+                        <div style="width: 200px; height: 200px; margin: 0 auto 1rem auto; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; padding: 0.5rem;">
+                            <img src="data:image/png;base64,{{ vc_qr_code }}" 
+                                 alt="VC Login QR Code" 
+                                 style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                        </div>
+                        {% else %}
+                        <!-- Fallback placeholder if QR code generation failed -->
+                        <div style="width: 200px; height: 200px; margin: 0 auto 1rem auto; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.95); padding: 0.5rem 1rem; border-radius: 0.25rem; border: 1px solid #e5e7eb;">
+                                <i class="fas fa-qrcode" style="font-size: 2rem; color: {{ '#' + primary_color if primary_color else '#1e40af' }};"></i>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <p style="font-size: 0.75rem; color: #6b7280; line-height: 1.5; margin-bottom: 1rem;">
+                            Open your StudentVC wallet app and scan this QR code to authenticate with your verifiable credential from {% if university_name %}{{ university_name }}{% else %}your issuer{% endif %}.
+                        </p>
+                        
+                        <p style="font-size: 0.6875rem; color: #9ca3af; margin-bottom: 1.5rem;">
+                            <i class="fas fa-info-circle" style="margin-right: 0.25rem;"></i>
+                            Use a VC issued by {% if university_name %}{{ university_name }}{% else %}this system{% endif %} to login
+                        </p>
+                        
+                        <!-- OR Divider -->
+                        <div style="margin: 1.5rem 0; text-align: center; position: relative;">
+                            <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #d1d5db;"></div>
+                            <span style="position: relative; background: #f9fafb; padding: 0 1rem; color: #9ca3af; font-size: 0.75rem; font-weight: 500;">OR</span>
+                        </div>
+                        
+                        <!-- Switch back to Username/Password Button -->
+                        <button 
+                            type="button"
+                            onclick="switchToPassword()"
+                            style="width: 100%; background: white; color: {{ '#' + primary_color if primary_color else '#1e40af' }}; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; border: 2px solid {{ '#' + primary_color if primary_color else '#1e40af' }}; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+                            onmouseover="this.style.background='rgba(0,0,0,0.02)';"
+                            onmouseout="this.style.background='white';"
+                        >
+                            <i class="fas fa-key"></i>
+                            <span>Login with Username & Password</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <script>
+                    function switchToVC() {
+                        const passwordSection = document.getElementById('username-password-section');
+                        const vcSection = document.getElementById('vc-qr-section');
+                        
+                        // Fade out password section
+                        passwordSection.style.opacity = '0';
+                        passwordSection.style.transform = 'translateY(-10px)';
+                        
+                        setTimeout(() => {
+                            passwordSection.style.display = 'none';
+                            vcSection.style.display = 'block';
+                            
+                            // Trigger reflow
+                            vcSection.offsetHeight;
+                            
+                            // Fade in VC section
+                            vcSection.style.opacity = '1';
+                            vcSection.style.transform = 'translateY(0)';
+                            
+                            // Initialize Socket.IO connection for VC login
+                            initVCLoginSocket();
+                        }, 300);
+                    }
+                    
+                    function switchToPassword() {
+                        const passwordSection = document.getElementById('username-password-section');
+                        const vcSection = document.getElementById('vc-qr-section');
+                        
+                        // Fade out VC section
+                        vcSection.style.opacity = '0';
+                        vcSection.style.transform = 'translateY(-10px)';
+                        
+                        setTimeout(() => {
+                            vcSection.style.display = 'none';
+                            passwordSection.style.display = 'block';
+                            
+                            // Trigger reflow
+                            passwordSection.offsetHeight;
+                            
+                            // Fade in password section
+                            passwordSection.style.opacity = '1';
+                            passwordSection.style.transform = 'translateY(0)';
+                        }, 300);
+                    }
+                    
+                    // Socket.IO connection for VC login
+                    function initVCLoginSocket() {
+                        // Check if socket.io is available
+                        if (typeof io === 'undefined') {
+                            console.warn('Socket.IO not loaded - VC login status updates will not work');
+                            return;
+                        }
+                        
+                        const serverUrl = window.location.origin;
+                        console.log('[VC Login] Connecting to Socket.IO:', serverUrl);
+                        
+                        const socket = io(serverUrl, {
+                            transports: ['polling', 'websocket'],
+                            reconnection: true,
+                            reconnectionAttempts: 5,
+                            reconnectionDelay: 1000
+                        });
+                        
+                        socket.on('connect', function() {
+                            console.log('[VC Login] Socket.IO connected');
+                        });
+                        
+                        socket.on('vc_login_success', function(data) {
+                            console.log('[VC Login] Login successful:', data);
+                            
+                            // Show success message
+                            const vcSection = document.getElementById('vc-qr-section');
+                            if (vcSection) {
+                                const successMsg = document.createElement('div');
+                                successMsg.style.cssText = 'background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 0.75rem; border-radius: 0.5rem; margin-top: 1rem; text-align: center;';
+                                successMsg.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>Login successful! Redirecting...';
+                                vcSection.querySelector('div').appendChild(successMsg);
+                            }
+                            
+                            // Redirect to home page
+                            if (data.redirect_url) {
+                                setTimeout(() => {
+                                    window.location.href = data.redirect_url;
+                                }, 1000);
+                            } else {
+                                setTimeout(() => {
+                                    window.location.href = '/';
+                                }, 1000);
+                            }
+                        });
+                        
+                        socket.on('verification_result', function(data) {
+                            // Also listen for general verification results
+                            if (data.status === 'success' && data.login) {
+                                console.log('[VC Login] Verification successful, attempting login redirect');
+                                if (data.redirect_url) {
+                                    setTimeout(() => {
+                                        window.location.href = data.redirect_url;
+                                    }, 1000);
+                                }
+                            }
+                        });
+                        
+                        socket.on('disconnect', function() {
+                            console.log('[VC Login] Socket.IO disconnected');
+                        });
+                    }
+                </script>
+                
+                <!-- Footer -->
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: center;">
+                    <p style="font-weight: 500; color: #374151; font-size: 0.875rem; margin-bottom: 0.25rem;">
+                        {% if university_name %}{{ university_name }}{% else %}StudentVC{% endif %}
+                    </p>
+                    <p style="font-size: 0.75rem; color: #9ca3af;">Secure System-Specific Access</p>
+                    <p style="font-size: 0.75rem; color: #d1d5db; margin-top: 0.25rem;">Session expires after 12 hours</p>
+                </div>
+                
+            </div>
+            
+            <!-- Platform Footer -->
+            <div style="margin-top: 1.5rem; text-align: center; font-size: 0.75rem; color: #6b7280;">
+                <p>Multi Platform</p>
+                <p style="margin-top: 0.25rem;">
+                    <i class="fas fa-shield-alt" style="margin-right: 0.25rem;"></i>
+                    Enforced Authentication System
+                </p>
+            </div>
+            
+        </div>
+    </div>
+    
+</body>
+</html>

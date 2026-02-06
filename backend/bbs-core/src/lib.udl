@@ -1,0 +1,46 @@
+
+// Keep this namespace, even when empty - otherwise binding generation will throw an error!
+namespace bbs_core { 
+};
+// Generating Keys
+dictionary KeyPair {
+    bytes dpub_key_bytes;
+    bytes priv_key_bytes;
+};
+
+
+interface GenerateKeyPair {
+	constructor();
+	KeyPair generate_key_pair();
+};
+
+
+// Signing Messages
+dictionary SignResult {
+    bytes pub_key_bytes;
+    bytes signature;
+};
+
+interface SignRequest {
+	constructor(sequence<string> messages, bytes dpub_key_bytes, bytes priv_key_bytes);
+	SignResult sign_messages();
+};
+
+// Generating Proof
+dictionary ProofResult {
+    bytes nonce_bytes;
+    bytes proof_request_bytes;
+    bytes proof_bytes;
+};
+
+interface GenerateProofRequest {
+	constructor(bytes pub_key_bytes, bytes signature_bytes, sequence<u64> revealed_indices, sequence<string> messages);
+	ProofResult generate_proof();
+};
+
+
+// Verifying Proof
+interface VerifyRequest {
+	constructor(bytes nonce_bytes, bytes proof_request_bytes, bytes proof_bytes, sequence<string> disclosed_messages, bytes dpub_key_bytes, u64 total_message_count);
+	string is_valid();
+};

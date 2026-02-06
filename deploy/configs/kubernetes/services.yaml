@@ -1,0 +1,62 @@
+---
+# TU Berlin Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: studentvc-tub
+  namespace: studentvc
+  labels:
+    app: studentvc-tub
+    tenant: tub
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: studentvc-tub
+    tenant: tub
+
+---
+# FU Berlin Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: studentvc-fub
+  namespace: studentvc
+  labels:
+    app: studentvc-fub
+    tenant: fub
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: studentvc-fub
+    tenant: fub
+
+---
+# Root Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: studentvc-root
+  namespace: studentvc
+  labels:
+    app: studentvc-root
+    tenant: root
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: studentvc-root
+    tenant: root 

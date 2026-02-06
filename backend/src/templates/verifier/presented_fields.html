@@ -1,0 +1,338 @@
+<!-- Enhanced Transmitted Fields Display with Values -->
+<div class="verification-section compact mt-4" id="transmitted-fields-section" style="display: none;">
+    <div class="section-header">
+        <div class="icon-wrapper success">
+            <i class="fas fa-exchange-alt"></i>
+        </div>
+        <div class="section-content">
+            <h3>Übertragene Daten</h3>
+            <p class="section-description">Folgende Informationen wurden erfolgreich bei der Verifikation übertragen:</p>
+        </div>
+    </div>
+    
+    <!-- ✅ Technical Data Section - COLLAPSIBLE -->
+    <div class="field-category">
+        <button 
+            type="button"
+            onclick="toggleFieldSection('technical')"
+            class="category-title-button w-full text-left flex items-center justify-between p-2 hover:bg-gray-100 rounded transition-colors"
+        >
+            <div class="flex items-center gap-2">
+                <i class="fas fa-cogs text-blue-600"></i>
+                <span>📋 Technische Daten</span>
+            </div>
+            <i id="technical-toggle-icon" class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+        </button>
+        <div id="technical-section-content" class="mt-2" style="display: none;">
+            <p class="text-xs text-gray-500 mb-2">Credential-Metadaten und technische Eigenschaften</p>
+            <div class="field-values-grid" id="technical-fields-container">
+                <!-- Technical fields will be populated via JavaScript when verification completes -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Personal Data Section - COLLAPSIBLE (Disclosed by User) -->
+    <div class="field-category" id="personal-fields-category" style="display: none;">
+        <button 
+            type="button"
+            onclick="toggleFieldSection('personal')"
+            class="category-title-button w-full text-left flex items-center justify-between p-2 hover:bg-gray-100 rounded transition-colors"
+        >
+            <div class="flex items-center gap-2">
+                <i class="fas fa-user-circle text-green-600"></i>
+                <span>👤 Persönliche Daten</span>
+            </div>
+            <i id="personal-toggle-icon" class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+        </button>
+        <div id="personal-section-content" class="mt-2" style="display: none;">
+            <p class="text-xs text-gray-500 mb-2">Vom Nutzer freigegebene persönliche Informationen</p>
+            <div class="field-values-grid" id="personal-fields-container">
+                <!-- Personal fields will be populated via JavaScript when verification completes -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Additional Fields (Undeclared but transmitted) -->
+    <div class="field-category" id="additional-fields-category" style="display: none;">
+        <button 
+            type="button"
+            onclick="toggleFieldSection('additional')"
+            class="category-title-button w-full text-left flex items-center justify-between p-2 hover:bg-gray-100 rounded transition-colors"
+        >
+            <div class="flex items-center gap-2">
+                <i class="fas fa-plus-circle text-gray-600"></i>
+                <span>Zusätzliche Daten (Übertragen)</span>
+            </div>
+            <i id="additional-toggle-icon" class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+        </button>
+        <div id="additional-section-content" class="mt-2" style="display: none;">
+            <div class="field-values-grid" id="additional-fields-container">
+                <!-- Additional fields will be populated via JavaScript when verification completes -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ✅ Toggle function for collapsible field sections
+function toggleFieldSection(sectionName) {
+    const content = document.getElementById(sectionName + '-section-content');
+    const icon = document.getElementById(sectionName + '-toggle-icon');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.classList.add('rotated');
+    } else {
+        content.style.display = 'none';
+        icon.classList.remove('rotated');
+    }
+}
+</script>
+
+<style>
+.verification-section.compact {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.verification-section.compact .section-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.verification-section.compact .icon-wrapper {
+    width: 24px;
+    height: 24px;
+    background: #dc3545;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.verification-section.compact .icon-wrapper i {
+    color: white;
+    font-size: 12px;
+}
+
+.verification-section.compact .section-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 2px 0;
+}
+
+.verification-section.compact .section-description {
+    font-size: 12px;
+    color: #6c757d;
+    margin: 0;
+}
+
+.field-category {
+    margin-bottom: 16px;
+}
+
+.field-category:last-child {
+    margin-bottom: 0;
+}
+
+.category-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.field-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.field-values-grid {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: 1fr;
+}
+
+.field-value-item {
+    background: white;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    border-left: 3px solid #007bff;
+    position: relative;
+}
+
+.field-value-item.personal {
+    border-left-color: #28a745;
+}
+
+.field-value-item.additional {
+    border-left-color: #6c757d;
+}
+
+.field-value-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+.field-value-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.field-value-content {
+    font-size: 12px;
+    color: #212529;
+    word-break: break-word;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    background: #f8f9fa;
+    padding: 4px 6px;
+    border-radius: 3px;
+    border: 1px solid #e9ecef;
+    max-height: 60px;
+    overflow-y: auto;
+    cursor: pointer;
+    position: relative;
+    user-select: all;
+}
+
+.field-value-content:hover {
+    background: #e9ecef;
+    border-color: #007bff;
+}
+
+.field-value-type {
+    font-size: 9px;
+    color: #6c757d;
+    font-style: italic;
+    margin-top: 1px;
+}
+
+.copy-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.field-value-item:hover .copy-button {
+    display: flex;
+}
+
+.copy-button:hover {
+    background: #0056b3;
+}
+
+.copy-button.copied {
+    background: #28a745;
+}
+
+.copy-feedback {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    background: #28a745;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 20;
+}
+
+.copy-feedback.show {
+    opacity: 1;
+}
+
+.field-chip {
+    background: white;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #212529;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.field-chip.technical {
+    border: 1px solid #007bff;
+    color: #007bff;
+}
+
+.field-chip.technical i {
+    color: #007bff;
+}
+
+.field-chip.optional {
+    border: 1px solid #28a745;
+    color: #28a745;
+}
+
+.field-chip.optional i {
+    color: #28a745;
+}
+
+.field-chip i {
+    font-size: 10px;
+}
+
+.verification-section.compact .icon-wrapper.success {
+    background: #28a745;
+}
+
+/* ✅ Collapsible Section Styles */
+.category-title-button {
+    border: 1px solid #e9ecef;
+    background: white;
+    cursor: pointer;
+}
+
+.category-title-button:hover {
+    background: #f8f9fa;
+}
+
+.category-title-button .fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.category-title-button .fa-chevron-down.rotated {
+    transform: rotate(-180deg);
+}
+
+/* JavaScript Toggle Functions */
+
+</style> 

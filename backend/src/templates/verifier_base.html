@@ -1,0 +1,802 @@
+{% extends "base.html" %} 
+{% block title %}{% block usecase_title %}Verifier{% endblock %}{% endblock %} 
+{% block content %}
+
+<!-- 🩺 Use Case Template für alle Verifier-Anwendungsbereiche -->
+<style>
+  /* Basis-Styling für alle Use Cases */
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  /* Theme-Farben - werden durch Usecase überschrieben */
+  :root {
+    --theme-primary: #003f7f;
+    --theme-primary-dark: #002a56;
+    --theme-primary-light: #0066cc;
+    --theme-secondary: #6B7280;
+    --theme-accent: #3B82F6;
+    
+    /* Dark mode variables */
+    --theme-bg: #ffffff;
+    --theme-bg-secondary: #f9fafb;
+    --theme-text: #111827;
+    --theme-text-secondary: #4b5563;
+    --theme-border: #e5e7eb;
+    --theme-card-bg: #ffffff;
+    --theme-card-hover: #f3f4f6;
+    --theme-qr-container-bg: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    --theme-qr-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --theme-step-bg: rgba(255, 255, 255, 0.5);
+    --theme-step-border: rgba(229, 231, 235, 0.8);
+    --theme-step-hover-bg: rgba(249, 250, 251, 1);
+    --theme-info-bg: rgba(219, 234, 254, 0.5);
+    --theme-info-border: rgba(147, 197, 253, 0.8);
+    --theme-info-text: #1e40af;
+  }
+  
+  .dark {
+    --theme-bg: #111827;
+    --theme-bg-secondary: #1f2937;
+    --theme-text: #f9fafb;
+    --theme-text-secondary: #d1d5db;
+    --theme-border: #374151;
+    --theme-card-bg: #1f2937;
+    --theme-card-hover: #2d3748;
+    --theme-qr-container-bg: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    --theme-qr-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --theme-step-bg: rgba(31, 41, 55, 0.5);
+    --theme-step-border: rgba(55, 65, 81, 0.8);
+    --theme-step-hover-bg: rgba(31, 41, 55, 1);
+    --theme-info-bg: rgba(29, 78, 216, 0.2);
+    --theme-info-border: rgba(59, 130, 246, 0.5);
+    --theme-info-text: #93c5fd;
+  }
+  
+  .theme-primary {
+    color: var(--theme-primary);
+  }
+  
+  .bg-theme-primary {
+    background-color: var(--theme-primary);
+  }
+  
+  .border-theme-primary {
+    border-color: var(--theme-primary);
+  }
+  
+  .hover\:bg-theme-primary:hover {
+    background-color: var(--theme-primary);
+  }
+  
+  .hover\:text-theme-primary:hover {
+    color: var(--theme-primary);
+  }
+  
+  .bg-theme-primary-light {
+    background-color: var(--theme-primary-light);
+  }
+  
+  .bg-theme-primary-dark {
+    background-color: var(--theme-primary-dark);
+  }
+  
+  /* Page-level dark mode styles */
+  .usecase-container {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+  }
+  
+  .usecase-card {
+    background-color: var(--theme-card-bg);
+    border-color: var(--theme-border);
+  }
+  
+  .usecase-text-secondary {
+    color: var(--theme-text-secondary);
+  }
+  
+  /* QR code container */
+  .qr-container {
+    background: var(--theme-qr-container-bg);
+    box-shadow: var(--theme-qr-shadow);
+  }
+  
+  /* Verification steps and info blocks */
+  .verification-step {
+    background-color: var(--theme-step-bg);
+    border: 1px solid var(--theme-step-border);
+  }
+  
+  .verification-step:hover {
+    background-color: var(--theme-step-hover-bg);
+  }
+  
+  .info-block {
+    background-color: var(--theme-info-bg);
+    border-color: var(--theme-info-border);
+    color: var(--theme-info-text);
+  }
+  
+  /* Smooth animations for collapsible sections */
+  .verification-group {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .verification-group:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Compact step styling */
+  .verification-step {
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    margin: 0.125rem 0;
+  }
+  
+  .verification-step:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  
+  /* Collapsible sections */
+  .collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+  
+  .collapsible-content.expanded {
+    max-height: 1200px;
+  }
+  
+  /* Code snippet collapsible */
+  .code-snippet {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+  
+  .code-snippet.expanded {
+    max-height: 200px;
+  }
+  
+  /* Tooltip positioning fixes */
+  .tooltip-container {
+    position: relative;
+  }
+  
+  /* QR code styling */
+  .qr-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  }
+  
+  /* Progress bar enhancements */
+  .progress-bar {
+    transition: width 0.4s ease-in-out;
+  }
+  
+  /* Use-Case Header Styling */
+  .usecase-header {
+    background: linear-gradient(135deg, var(--theme-primary-light) 0%, var(--theme-primary) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .usecase-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="50" height="50" fill="rgba(255,255,255,0.05)" /><rect x="50" y="50" width="50" height="50" fill="rgba(255,255,255,0.05)" /></svg>');
+    background-repeat: repeat;
+    opacity: 0.3;
+  }
+  
+  /* Usecase-spezifische Überschreibungen */
+  {% block style_overrides %}{% endblock %}
+</style>
+
+<!-- Compact Modern Verifier Layout mit Use-Case Anpassungen -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Use Case Header Section -->
+  <div class="usecase-header text-white">
+    <div class="max-w-6xl mx-auto px-4 py-8 relative z-10">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div class="mb-4 md:mb-0">
+          {% block usecase_icon %}
+          <div class="bg-white/20 w-12 h-12 rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-shield-alt text-white text-xl"></i>
+          </div>
+          {% endblock %}
+          <h1 class="text-2xl md:text-3xl font-bold mb-1">{% block usecase_heading %}Credential Verifier{% endblock %}</h1>
+          <p class="text-white/80 max-w-xl">
+            {% block usecase_description %}
+            Sichere Verifikation digitaler Nachweise mit unserem standardisierten Verifier
+            {% endblock %}
+          </p>
+        </div>
+        
+        {% block usecase_header_extra %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Use Case Spezifische Top-Sektion -->
+  {% block usecase_top %}
+  <!-- Standard-Implementation wird hier überschrieben -->
+  {% endblock %}
+
+  <!-- Compact Main Content -->
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <!-- QR Code & Scanning Section -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+            <h2 class="text-base font-semibold text-gray-800 flex items-center">
+              <i class="fas fa-qrcode theme-primary mr-2"></i>
+              Credential scannen
+            </h2>
+            <div>
+              <span id="refreshQR" class="text-sm cursor-pointer text-blue-500 hover:text-blue-700">
+                <i class="fas fa-sync-alt mr-1"></i> Aktualisieren
+              </span>
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="qr-container flex items-center justify-center rounded-lg border-2 border-gray-200 p-4 mb-4">
+              <img src="{{ img_data }}" alt="QR-Code zum Scannen" class="qr-code-image w-full max-w-xs">
+            </div>
+            <p class="text-sm text-gray-600 text-center">Scannen Sie den QR-Code mit einer SSI Wallet App</p>
+            <div class="flex justify-center mt-4">
+              <a href="#" id="deepLinkTrigger" class="w-full bg-theme-primary hover:bg-theme-primary-dark text-white text-center py-2 px-4 rounded transition-colors duration-200 flex items-center justify-center">
+                <i class="fas fa-mobile-alt mr-2"></i> Direkt öffnen
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Neuer Bereich: Technischer Hintergrund der Verifikation -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 class="font-semibold flex items-center text-blue-800 mb-2">
+            <i class="fas fa-info-circle mr-2"></i>
+            🔍 Technischer Hintergrund der Verifikation
+          </h3>
+          <p class="text-sm text-blue-700 mb-2">
+            Diese Anwendung nutzt ZK-basierte Verifikation mit BBS+ Signaturen. Der Ablauf ist:
+          </p>
+          <ol class="text-xs text-blue-600 ml-5 list-decimal mb-2">
+            <li>Flattening der Nachrichtenattribute</li>
+            <li>Extraktion des öffentlichen Schlüssels über die Verification-Method</li>
+            <li>BBS+ Signaturprüfung mit Selective Disclosure</li>
+          </ol>
+          <pre class="text-xs bg-blue-100 text-blue-800 p-2 rounded mt-2 overflow-x-auto">const messages = flatten(presentation.attributes);
+const pk = fetchPublicKey(presentation.verificationMethod);
+const result = bbs.verify(messages, presentation.signature, pk);</pre>
+        </div>
+
+        {% block additional_scanning_options %}
+        <!-- Optionen für Demo-Credentials -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="p-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-base font-semibold text-gray-800 flex items-center">
+              <i class="fas fa-flask theme-primary mr-2"></i>
+              Demo-Modus
+            </h2>
+          </div>
+          <div class="p-4">
+            <button id="demoButton" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded transition-colors duration-200 flex items-center justify-center mb-3">
+              <i class="fas fa-vial mr-2"></i> Demo-Credential testen
+            </button>
+            <p class="text-xs text-gray-500 text-center">
+              Kein Smartphone zur Hand? Testen Sie die Verifikation mit einem vorgefertigten Demo-Credential.
+            </p>
+          </div>
+        </div>
+        {% endblock %}
+      </div>
+
+      <!-- Verification Results Section -->
+      <div class="lg:col-span-3 space-y-4">
+        <!-- Status Card -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+            <h2 class="text-base font-semibold text-gray-800 flex items-center">
+              <i class="fas fa-clipboard-check theme-primary mr-2"></i>
+              Verifikationsstatus
+            </h2>
+            <span class="text-xs bg-gray-100 text-gray-600 py-1 px-2 rounded-full">
+              <i class="fas fa-clock mr-1"></i> <span id="verifierStatusLabel">Warte auf Credential...</span>
+            </span>
+          </div>
+          
+          <!-- Verification Status -->
+          <div id="statusContainer" class="p-4">
+            <div class="flex items-center justify-center h-24 bg-gray-50 rounded-lg border border-gray-200">
+              <div class="text-center">
+                <div class="text-gray-400 mb-1">
+                  <i class="fas fa-shield-alt text-2xl"></i>
+                </div>
+                <p class="text-gray-500">Bereit zum Scannen eines Credentials</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Details Panel -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h2 class="text-base font-semibold text-gray-800 flex items-center">
+              <i class="fas fa-list-check theme-primary mr-2"></i>
+              Verifikationsdetails
+            </h2>
+            <button id="expandCollapseAll" class="text-xs bg-white hover:bg-gray-100 text-gray-700 py-1 px-2 rounded border border-gray-200 flex items-center">
+              <i class="fas fa-expand-alt mr-1"></i> Alle anzeigen
+            </button>
+          </div>
+
+          <div class="divide-y divide-gray-200" id="verificationDetailGroups">
+            <!-- Platzhalter für Verifikationsergebnisse - wird dynamisch gefüllt -->
+            <div class="p-4 text-center text-gray-500">
+              <p>Warte auf Credential-Daten...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credential Data Container -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h2 class="text-base font-semibold text-gray-800 flex items-center">
+              <i class="fas fa-id-card theme-primary mr-2"></i>
+              Credential-Inhalt
+            </h2>
+            <div>
+              <button id="toggleCredentialFormat" class="text-xs bg-white hover:bg-gray-100 text-gray-700 py-1 px-2 rounded border border-gray-200">
+                <i class="fas fa-code mr-1"></i> Format wechseln
+              </button>
+            </div>
+          </div>
+
+          <div id="credentialDataContainer" class="p-4 text-center text-gray-500">
+            <p>Noch keine Daten vorhanden</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Verifier JavaScript - Wird durch Use-Case Implementierung nicht verändert -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // QR-Code Aktualisierung
+    document.getElementById("refreshQR").addEventListener("click", function () {
+      location.reload();
+    });
+
+    // Demo-Modus Trigger
+    document.getElementById("demoButton").addEventListener("click", function () {
+      showDemoCredential();
+    });
+
+    // Deep Link Trigger
+    document.getElementById("deepLinkTrigger").addEventListener("click", function (e) {
+      e.preventDefault();
+      // Wir bauen den Link jetzt dynamisch aus dem aktuellen Basis-URL
+      const baseUrl = window.location.origin;
+      window.location.href = "openid4vp://?request_uri=" + baseUrl + "/verifier/presentation-request";
+    });
+
+    // Expand/Collapse All Button
+    document.getElementById("expandCollapseAll").addEventListener("click", function () {
+      const isExpanding = this.querySelector("i").classList.contains("fa-expand-alt");
+      const groups = document.querySelectorAll(".collapsible-content");
+      
+      groups.forEach(group => {
+        if (isExpanding) {
+          group.classList.add("expanded");
+        } else {
+          group.classList.remove("expanded");
+        }
+      });
+      
+      // Update the button icon and text
+      if (isExpanding) {
+        this.querySelector("i").classList.replace("fa-expand-alt", "fa-compress-alt");
+        this.innerHTML = '<i class="fas fa-compress-alt mr-1"></i> Alle einklappen';
+      } else {
+        this.querySelector("i").classList.replace("fa-compress-alt", "fa-expand-alt");
+        this.innerHTML = '<i class="fas fa-expand-alt mr-1"></i> Alle anzeigen';
+      }
+    });
+
+    // Toggle Credential Format
+    document.getElementById("toggleCredentialFormat").addEventListener("click", function () {
+      const container = document.getElementById("credentialDataContainer");
+      if (container.classList.contains("credential-raw-view")) {
+        container.classList.remove("credential-raw-view");
+        renderFormattedCredential(currentCredentialData);
+      } else {
+        container.classList.add("credential-raw-view");
+        renderRawCredential(currentCredentialData);
+      }
+    });
+
+    // Listen for WebSocket messages (SocketIO)
+    let socket = io();
+    socket.on("verifier_message", function (message) {
+      processVerifierMessage(message);
+    });
+    
+    // Function to process WebSocket messages
+    function processVerifierMessage(message) {
+      console.log("Received message:", message);
+      
+      if (message.type === "presentation_received") {
+        updateStatus("processing", "Credential wird verarbeitet...");
+        
+        // Store the credential data globally for format toggling
+        currentCredentialData = message.data;
+        
+        // Render the credential data
+        renderFormattedCredential(message.data);
+        
+        // Process verification details
+        processVerificationDetails(message.verification_details);
+      }
+      
+      if (message.type === "verification_result") {
+        if (message.success) {
+          updateStatus("success", "Credential erfolgreich verifiziert!");
+        } else {
+          updateStatus("error", "Verifikation fehlgeschlagen: " + message.message);
+        }
+      }
+    }
+    
+    // Global variable to store the current credential data
+    let currentCredentialData = null;
+    
+    // Update the status indicator
+    function updateStatus(type, message) {
+      const container = document.getElementById("statusContainer");
+      const label = document.getElementById("verifierStatusLabel");
+      let iconClass, bgClass, textClass;
+      
+      switch(type) {
+        case "processing":
+          iconClass = "fa-spinner fa-spin";
+          bgClass = "bg-blue-50";
+          textClass = "text-blue-700";
+          break;
+        case "success":
+          iconClass = "fa-check-circle";
+          bgClass = "bg-green-50";
+          textClass = "text-green-700";
+          break;
+        case "error":
+          iconClass = "fa-exclamation-triangle";
+          bgClass = "bg-red-50";
+          textClass = "text-red-700";
+          break;
+        default:
+          iconClass = "fa-shield-alt";
+          bgClass = "bg-gray-50";
+          textClass = "text-gray-500";
+      }
+      
+      label.textContent = message;
+      
+      container.innerHTML = `
+        <div class="flex items-center justify-center h-24 ${bgClass} rounded-lg border border-gray-200">
+          <div class="text-center px-4">
+            <div class="${textClass} mb-2">
+              <i class="fas ${iconClass} text-3xl"></i>
+            </div>
+            <p class="${textClass} font-medium">${message}</p>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Process and display verification details
+    function processVerificationDetails(details) {
+      if (!details || !Array.isArray(details)) {
+        return;
+      }
+      
+      const container = document.getElementById("verificationDetailGroups");
+      container.innerHTML = "";
+      
+      details.forEach((group, groupIndex) => {
+        const groupElement = document.createElement("div");
+        groupElement.className = "verification-group p-4";
+        
+        // Determine group icon and status color
+        let groupIcon = "fa-check-circle";
+        let groupColor = "text-green-500";
+        
+        if (group.status === "error" || (group.steps && group.steps.some(step => step.status === "error"))) {
+          groupIcon = "fa-exclamation-circle";
+          groupColor = "text-red-500";
+        } else if (group.status === "warning" || (group.steps && group.steps.some(step => step.status === "warning"))) {
+          groupIcon = "fa-exclamation-triangle";
+          groupColor = "text-yellow-500";
+        }
+        
+        groupElement.innerHTML = `
+          <div class="flex justify-between items-center cursor-pointer toggle-group" data-group="${groupIndex}">
+            <div class="flex items-center">
+              <i class="fas ${groupIcon} ${groupColor} mr-3"></i>
+              <h3 class="font-medium text-gray-900">${group.title}</h3>
+            </div>
+            <i class="fas fa-chevron-down text-gray-400 transition-transform duration-200"></i>
+          </div>
+          <div class="collapsible-content mt-3 pl-6 space-y-2">
+            ${group.steps && group.steps.map(step => {
+              let stepIcon, stepColor;
+              
+              switch(step.status) {
+                case "success":
+                  stepIcon = "fa-check-circle";
+                  stepColor = "text-green-500";
+                  break;
+                case "error":
+                  stepIcon = "fa-times-circle";
+                  stepColor = "text-red-500";
+                  break;
+                case "warning":
+                  stepIcon = "fa-exclamation-triangle";
+                  stepColor = "text-yellow-500";
+                  break;
+                default:
+                  stepIcon = "fa-info-circle";
+                  stepColor = "text-blue-500";
+              }
+              
+              return `
+                <div class="verification-step">
+                  <div class="flex items-start">
+                    <i class="fas ${stepIcon} ${stepColor} mr-2 mt-1"></i>
+                    <div>
+                      <p class="text-sm text-gray-800">${step.text}</p>
+                      ${step.details ? `<p class="text-xs text-gray-500 mt-1">${step.details}</p>` : ''}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('') || '<p class="text-sm text-gray-500">Keine Details verfügbar</p>'}
+          </div>
+        `;
+        
+        container.appendChild(groupElement);
+      });
+      
+      // Add event listeners for toggling groups
+      document.querySelectorAll('.toggle-group').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+          const content = this.nextElementSibling;
+          const icon = this.querySelector('.fa-chevron-down');
+          
+          content.classList.toggle('expanded');
+          icon.style.transform = content.classList.contains('expanded') ? 'rotate(180deg)' : '';
+        });
+      });
+    }
+    
+    // Render credential data in a formatted view
+    function renderFormattedCredential(data) {
+      if (!data) return;
+      
+      const container = document.getElementById("credentialDataContainer");
+      container.classList.remove("credential-raw-view");
+      container.innerHTML = "";
+      
+      // Extract the most important fields first
+      const vcData = {};
+      
+      // Recursive function to flatten and collect data
+      function collectData(obj, prefix = '') {
+        if (!obj || typeof obj !== 'object') return;
+        
+        Object.entries(obj).forEach(([key, value]) => {
+          const fullKey = prefix ? `${prefix}.${key}` : key;
+          
+          // Skip certain internal fields
+          if (key === 'bbs_signature' || key === '_raw' || key === 'bbs_signature_params' || key === 'unsignedVc') return;
+          
+          if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+            collectData(value, fullKey);
+          } else {
+            vcData[fullKey] = value;
+          }
+        });
+      }
+      
+      collectData(data);
+      
+      // Organize fields into sections
+      const sections = {
+        identity: ['vc.credentialSubject.id', 'sub', 'iss', 'vc.credentialSubject.firstName', 'vc.credentialSubject.lastName', 'vc.credentialSubject.name', 'vc.credentialSubject.email'],
+        academic: ['vc.credentialSubject.university', 'vc.credentialSubject.studentId', 'vc.credentialSubject.program', 'vc.credentialSubject.enrollmentStatus'],
+        dates: ['vc.issuanceDate', 'vc.expirationDate', 'exp', 'iat', 'nbf'],
+        verification: ['vc.issuer', 'nonce', 'validity_identifier', 'jti']
+      };
+      
+      // Function to create a section of the credential display
+      function createSection(title, fields) {
+        const relevantFields = fields.filter(f => vcData[f] !== undefined);
+        
+        if (relevantFields.length === 0) return '';
+        
+        let html = `
+          <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">${title}</h3>
+            <div class="bg-gray-50 rounded-md p-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+        `;
+        
+        relevantFields.forEach(field => {
+          // Format the label
+          const label = field.split('.').pop().replace(/([A-Z])/g, ' $1').trim();
+          const displayLabel = label.charAt(0).toUpperCase() + label.slice(1);
+          
+          // Format the value
+          let displayValue = vcData[field];
+          
+          // Handle dates
+          if (field.toLowerCase().includes('date') && displayValue) {
+            try {
+              const date = new Date(displayValue);
+              if (!isNaN(date)) {
+                displayValue = date.toLocaleString('de-DE');
+              }
+            } catch (e) {
+              console.error("Error formatting date:", e);
+            }
+          }
+          
+          // Handle arrays
+          if (Array.isArray(displayValue)) {
+            displayValue = displayValue.join(', ');
+          }
+          
+          html += `
+            <div class="flex flex-col">
+              <span class="text-xs text-gray-500">${displayLabel}</span>
+              <span class="text-sm font-medium text-gray-900 break-words">${displayValue}</span>
+            </div>
+          `;
+        });
+        
+        html += `
+            </div>
+          </div>
+        `;
+        
+        return html;
+      }
+      
+      // Add sections to the UI
+      let credentialHTML = `
+        <div class="space-y-4">
+          ${createSection('Identität', sections.identity)}
+          ${createSection('Akademische Informationen', sections.academic)}
+          ${createSection('Datumsangaben', sections.dates)}
+          ${createSection('Verifikationsdetails', sections.verification)}
+      `;
+      
+      // Add any fields that weren't explicitly categorized
+      const categorizedFields = Object.values(sections).flat();
+      const remainingFields = Object.keys(vcData).filter(f => !categorizedFields.includes(f));
+      
+      if (remainingFields.length > 0) {
+        credentialHTML += createSection('Weitere Informationen', remainingFields);
+      }
+      
+      credentialHTML += '</div>';
+      
+      container.innerHTML = credentialHTML;
+    }
+    
+    // Render credential data in raw JSON format
+    function renderRawCredential(data) {
+      if (!data) return;
+      
+      const container = document.getElementById("credentialDataContainer");
+      container.classList.add("credential-raw-view");
+      
+      // Remove potentially sensitive fields
+      const sanitizedData = JSON.parse(JSON.stringify(data));
+      if (sanitizedData.bbs_signature) delete sanitizedData.bbs_signature;
+      if (sanitizedData.bbs_signature_params) delete sanitizedData.bbs_signature_params;
+      
+      const formattedJson = JSON.stringify(sanitizedData, null, 2);
+      
+      container.innerHTML = `
+        <div class="overflow-auto max-h-96">
+          <pre class="text-xs text-gray-800 bg-gray-50 p-4 rounded"><code>${formattedJson}</code></pre>
+        </div>
+      `;
+    }
+    
+    // Function to simulate the demo credential verification
+    function showDemoCredential() {
+      updateStatus("processing", "Demo-Credential wird verarbeitet...");
+      
+      setTimeout(() => {
+        // Demonstration credential data
+        const demoCredential = {{ demo_credential|safe }};
+        
+        // Set the global credential data
+        currentCredentialData = demoCredential;
+        
+        // Render the formatted credential
+        renderFormattedCredential(demoCredential);
+        
+        // Display verification groups and steps
+        processVerificationDetails([
+          {
+            title: "Allgemeine Validierung",
+            status: "success",
+            steps: [
+              {
+                status: "success",
+                text: "Credential-Format ist gültig",
+                details: "Das Credential entspricht dem erwarteten Format für StudentVCs."
+              },
+              {
+                status: "success",
+                text: "Pflichtfelder sind vorhanden",
+                details: "Alle erforderlichen Felder sind im Credential enthalten."
+              }
+            ]
+          },
+          {
+            title: "Kryptografische Prüfung",
+            status: "success",
+            steps: [
+              {
+                status: "success",
+                text: "Signatur validiert",
+                details: "Die BBS+ Signatur wurde erfolgreich mit dem öffentlichen Schlüssel des Ausstellers validiert."
+              },
+              {
+                status: "success",
+                text: "Nonce-Prüfung bestanden",
+                details: "Der signierte Nonce-Wert stimmt mit dem erwarteten Wert überein."
+              }
+            ]
+          },
+          {
+            title: "Statusprüfung",
+            status: "success",
+            steps: [
+              {
+                status: "success",
+                text: "Credential ist nicht widerrufen",
+                details: "Eine Überprüfung der Status-Registry bestätigt, dass das Credential gültig ist."
+              },
+              {
+                status: "success",
+                text: "Credential ist nicht abgelaufen",
+                details: "Das Ablaufdatum des Credentials liegt in der Zukunft."
+              }
+            ]
+          }
+        ]);
+        
+        // Update status to success
+        setTimeout(() => {
+          updateStatus("success", "Demo-Credential erfolgreich verifiziert!");
+        }, 500);
+      }, 1000);
+    }
+  });
+</script>
+
+{% block usecase_custom_scripts %}{% endblock %}
+{% endblock %}

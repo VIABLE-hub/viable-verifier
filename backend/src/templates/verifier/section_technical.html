@@ -1,0 +1,70 @@
+{% from 'verifier/collapsible_step.html' import verification_step %}
+
+<!-- Group 1: Technical Presentation -->
+<div class="verification-group border border-gray-100 rounded-lg shadow-sm">
+  <button class="w-full bg-gray-50 p-3 rounded-t-lg border-b border-gray-100 text-left group-toggle" data-group="technical">
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-gray-900 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Präsentation & Struktur
+      </h3>
+      <svg class="w-4 h-4 transform transition-transform duration-300 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </div>
+  </button>
+  <div class="collapsible-content" data-group="technical">
+    <div class="p-3 space-y-1">
+      {{ verification_step(
+        "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+        "Präsentation empfangen",
+        "Präsentation technisch empfangen und strukturell auswertbar.",
+        "presentation_requested",
+        "code-presentation",
+        "📡 Presentation Reception Analysis",
+        '<div><span class="text-blue-600">Protocol:</span> OpenID4VP (OpenID for Verifiable Presentations)</div>
+         <div><span class="text-blue-600">Transport:</span> HTTPS POST to /verifier/presentation-response</div>
+         <div><span class="text-blue-600">Input:</span> vp_token (JWT format), presentation_submission</div>
+         <div><span class="text-blue-600">Validation:</span> JWT signature, structure compliance, nonce verification</div>
+         <div><span class="text-green-600">Status:</span> ✓ Valid JSON structure, headers decoded</div>'
+      ) }}
+      
+      {{ verification_step(
+        "M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 011 9a6 6 0 0112 0 6 6 0 01-1 3.343z",
+        "Schlüssel extrahiert",
+        "Öffentliche Schlüssel erfolgreich extrahiert und auswertbar.",
+        "key_extraction",
+        "code-key-extraction",
+        "🔑 Cryptographic Key Extraction",
+        '<div><span class="text-blue-600">Algorithm:</span> BBS+ Key Derivation (BLS12-381 Curve)</div>
+         <div><span class="text-blue-600">Input:</span> proof.verificationMethod (DID URL)</div>
+         <div><span class="text-blue-600">Output:</span> Public Key (96 bytes, G2 element)</div>
+         <div><span class="text-blue-600">Encoding:</span> Base58btc (multibase format)</div>
+         <div><span class="text-blue-600">Validation:</span> Point-on-curve check, subgroup membership</div>
+         <div><span class="text-green-600">Status:</span> ✓ Valid BLS12-381 G2 public key</div>'
+      ) }}
+      
+      {{ verification_step(
+        "M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+        "Pflichtfelder vorhanden",
+        "Alle strukturellen Mindestanforderungen erfüllt.",
+        "mandatory_fields_verification",
+        "code-mandatory-fields",
+        "📋 W3C VC Schema Validation",
+        '<div><span class="text-blue-600">Standard:</span> W3C Verifiable Credentials Data Model v1.1</div>
+         <div><span class="text-blue-600">Required Core:</span> @context, id, type, issuer, issuanceDate</div>
+         <div><span class="text-blue-600">Subject Fields:</span> credentialSubject.firstName, .lastName, .studentId</div>
+         <div><span class="text-blue-600">Proof Suite:</span> BbsBlsSignature2020 with verification method</div>
+         <div><span class="text-blue-600">Validation:</span> JSON Schema compliance, context resolution</div>
+         <div><span class="text-green-600">Status:</span> ✓ All mandatory fields present and valid</div>'
+      ) }}
+
+      <!-- Selective Disclosure Results -->
+      <div id="disclosure-results" class="hidden mt-4 bg-white rounded-lg border border-gray-100 p-3">
+        <!-- Will be populated by JavaScript when verification succeeds -->
+      </div>
+    </div>
+  </div>
+</div> 

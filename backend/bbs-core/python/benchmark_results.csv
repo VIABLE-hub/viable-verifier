@@ -1,0 +1,751 @@
+,class_name,loop_count,variance_description,variance_value,variance_title,time
+0,BBS_plus,10,Amount of keys generated,10,Key Generation Benchmark,0.0
+1,BBS_plus,100,Amount of keys generated,100,Key Generation Benchmark,0.07816791534423828
+2,BBS_plus,1000,Amount of keys generated,1000,Key Generation Benchmark,0.7499666213989258
+3,BBS_plus,10000,Amount of keys generated,10000,Key Generation Benchmark,7.601478099822998
+4,BBS_plus,20000,Amount of keys generated,20000,Key Generation Benchmark,15.151692628860474
+5,BBS_plus,30000,Amount of keys generated,30000,Key Generation Benchmark,22.7727153301239
+6,BBS_plus,40000,Amount of keys generated,40000,Key Generation Benchmark,30.331348657608032
+7,W3C_JWT,10,Amount of keys generated,10,Key Generation Benchmark,0.0
+8,W3C_JWT,100,Amount of keys generated,100,Key Generation Benchmark,0.0
+9,W3C_JWT,1000,Amount of keys generated,1000,Key Generation Benchmark,0.04690670967102051
+10,W3C_JWT,10000,Amount of keys generated,10000,Key Generation Benchmark,0.36435699462890625
+11,W3C_JWT,20000,Amount of keys generated,20000,Key Generation Benchmark,0.7501747608184814
+12,W3C_JWT,30000,Amount of keys generated,30000,Key Generation Benchmark,1.1057591438293457
+13,W3C_JWT,40000,Amount of keys generated,40000,Key Generation Benchmark,1.469007968902588
+14,SD_JWT,10,Amount of keys generated,10,Key Generation Benchmark,0.01562952995300293
+15,SD_JWT,100,Amount of keys generated,100,Key Generation Benchmark,0.0
+16,SD_JWT,1000,Amount of keys generated,1000,Key Generation Benchmark,0.13898944854736328
+17,SD_JWT,10000,Amount of keys generated,10000,Key Generation Benchmark,1.281374216079712
+18,SD_JWT,20000,Amount of keys generated,20000,Key Generation Benchmark,2.7247743606567383
+19,SD_JWT,30000,Amount of keys generated,30000,Key Generation Benchmark,3.936342239379883
+20,SD_JWT,40000,Amount of keys generated,40000,Key Generation Benchmark,5.284691572189331
+21,BBS_plus,10,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.03125119209289551
+22,BBS_plus,10,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.06697201728820801
+23,BBS_plus,10,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.0781242847442627
+24,BBS_plus,50,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.10938167572021484
+25,BBS_plus,50,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.37499380111694336
+26,BBS_plus,50,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.3593745231628418
+27,BBS_plus,100,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.2103421688079834
+28,BBS_plus,100,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.7389521598815918
+29,BBS_plus,100,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.7499997615814209
+30,W3C_JWT,10,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.0
+31,W3C_JWT,10,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.0
+32,W3C_JWT,10,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.0
+33,W3C_JWT,50,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.015662670135498047
+34,W3C_JWT,50,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.0
+35,W3C_JWT,50,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.0
+36,W3C_JWT,100,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.015629291534423828
+37,W3C_JWT,100,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.0
+38,W3C_JWT,100,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.015628576278686523
+39,SD_JWT,10,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.0
+40,SD_JWT,10,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.0
+41,SD_JWT,10,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.0
+42,SD_JWT,50,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.015624523162841797
+43,SD_JWT,50,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.0
+44,SD_JWT,50,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.015581607818603516
+45,SD_JWT,100,Amount of entries in credential,1,Signing:Vertical Credential Size Benchmark,0.015667200088500977
+46,SD_JWT,100,Amount of entries in credential,1,Proof Generation:Vertical Credential Size Benchmark,0.0
+47,SD_JWT,100,Amount of entries in credential,1,Verification:Vertical Credential Size Benchmark,0.015629053115844727
+48,BBS_plus,10,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.046837806701660156
+49,BBS_plus,10,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.0937504768371582
+50,BBS_plus,10,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.109375
+51,BBS_plus,50,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.1720268726348877
+52,BBS_plus,50,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.5127935409545898
+53,BBS_plus,50,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.5312831401824951
+54,BBS_plus,100,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.33542346954345703
+55,BBS_plus,100,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,1.0434935092926025
+56,BBS_plus,100,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,1.073019027709961
+57,W3C_JWT,10,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.0
+58,W3C_JWT,10,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.0
+59,W3C_JWT,10,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.0
+60,W3C_JWT,50,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.0
+61,W3C_JWT,50,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.0
+62,W3C_JWT,50,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.015624046325683594
+63,W3C_JWT,100,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.0
+64,W3C_JWT,100,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.015627145767211914
+65,W3C_JWT,100,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.015584468841552734
+66,SD_JWT,10,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.0
+67,SD_JWT,10,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.0
+68,SD_JWT,10,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.0
+69,SD_JWT,50,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.015665054321289062
+70,SD_JWT,50,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.0
+71,SD_JWT,50,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.015628814697265625
+72,SD_JWT,100,Amount of entries in credential,10,Signing:Vertical Credential Size Benchmark,0.031244277954101562
+73,SD_JWT,100,Amount of entries in credential,10,Proof Generation:Vertical Credential Size Benchmark,0.015598297119140625
+74,SD_JWT,100,Amount of entries in credential,10,Verification:Vertical Credential Size Benchmark,0.031235456466674805
+75,BBS_plus,10,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.11361122131347656
+76,BBS_plus,10,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.2968325614929199
+77,BBS_plus,10,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.39066481590270996
+78,BBS_plus,50,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.6252496242523193
+79,BBS_plus,50,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,1.482154369354248
+80,BBS_plus,50,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,1.9165832996368408
+81,BBS_plus,100,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,1.2344067096710205
+82,BBS_plus,100,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,2.9736971855163574
+83,BBS_plus,100,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,3.822075366973877
+84,W3C_JWT,10,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.0
+85,W3C_JWT,10,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.0
+86,W3C_JWT,10,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.015622138977050781
+87,W3C_JWT,50,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.0
+88,W3C_JWT,50,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.0
+89,W3C_JWT,50,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.015625476837158203
+90,W3C_JWT,100,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.0
+91,W3C_JWT,100,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.0156252384185791
+92,W3C_JWT,100,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.015659332275390625
+93,SD_JWT,10,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.015586376190185547
+94,SD_JWT,10,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.031248092651367188
+95,SD_JWT,10,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.0
+96,SD_JWT,50,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.06254053115844727
+97,SD_JWT,50,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.1875004768371582
+98,SD_JWT,50,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.015624761581420898
+99,SD_JWT,100,Amount of entries in credential,100,Signing:Vertical Credential Size Benchmark,0.09395885467529297
+100,SD_JWT,100,Amount of entries in credential,100,Proof Generation:Vertical Credential Size Benchmark,0.3732430934906006
+101,SD_JWT,100,Amount of entries in credential,100,Verification:Vertical Credential Size Benchmark,0.031249523162841797
+102,BBS_plus,10,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.2187178134918213
+103,BBS_plus,10,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,0.5160045623779297
+104,BBS_plus,10,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.6729962825775146
+105,BBS_plus,50,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,1.0775988101959229
+106,BBS_plus,50,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,2.53879976272583
+107,BBS_plus,50,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,3.40667724609375
+108,BBS_plus,100,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,2.175069570541382
+109,BBS_plus,100,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,5.110046625137329
+110,BBS_plus,100,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,6.833701848983765
+111,W3C_JWT,10,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.015667200088500977
+112,W3C_JWT,10,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,0.0
+113,W3C_JWT,10,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.0
+114,W3C_JWT,50,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.0
+115,W3C_JWT,50,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,0.015625
+116,W3C_JWT,50,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.0
+117,W3C_JWT,100,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.0
+118,W3C_JWT,100,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,0.015624284744262695
+119,W3C_JWT,100,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.015625476837158203
+120,SD_JWT,10,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.031252145767211914
+121,SD_JWT,10,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,0.09391617774963379
+122,SD_JWT,10,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.015625476837158203
+123,SD_JWT,50,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.09375739097595215
+124,SD_JWT,50,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,0.5139410495758057
+125,SD_JWT,50,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.031247615814208984
+126,SD_JWT,100,Amount of entries in credential,200,Signing:Vertical Credential Size Benchmark,0.18753290176391602
+127,SD_JWT,100,Amount of entries in credential,200,Proof Generation:Vertical Credential Size Benchmark,1.0781257152557373
+128,SD_JWT,100,Amount of entries in credential,200,Verification:Vertical Credential Size Benchmark,0.06266164779663086
+129,BBS_plus,10,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.30223703384399414
+130,BBS_plus,10,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,0.7030138969421387
+131,BBS_plus,10,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.9902453422546387
+132,BBS_plus,50,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,1.481898307800293
+133,BBS_plus,50,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,3.5933995246887207
+134,BBS_plus,50,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,4.890661239624023
+135,BBS_plus,100,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,2.96742844581604
+136,BBS_plus,100,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,7.198483228683472
+137,BBS_plus,100,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,9.76270079612732
+138,W3C_JWT,10,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.01566767692565918
+139,W3C_JWT,10,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,0.0
+140,W3C_JWT,10,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.0
+141,W3C_JWT,50,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.015624284744262695
+142,W3C_JWT,50,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,0.0
+143,W3C_JWT,50,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.015625715255737305
+144,W3C_JWT,100,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.015624046325683594
+145,W3C_JWT,100,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,0.01562666893005371
+146,W3C_JWT,100,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.03125143051147461
+147,SD_JWT,10,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.015626907348632812
+148,SD_JWT,10,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,0.21874737739562988
+149,SD_JWT,10,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.0
+150,SD_JWT,50,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.1562504768371582
+151,SD_JWT,50,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,1.1457452774047852
+152,SD_JWT,50,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.04687333106994629
+153,SD_JWT,100,Amount of entries in credential,300,Signing:Vertical Credential Size Benchmark,0.26985859870910645
+154,SD_JWT,100,Amount of entries in credential,300,Proof Generation:Vertical Credential Size Benchmark,2.301156759262085
+155,SD_JWT,100,Amount of entries in credential,300,Verification:Vertical Credential Size Benchmark,0.09375119209289551
+156,BBS_plus,10,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.37977099418640137
+157,BBS_plus,10,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,0.9218635559082031
+158,BBS_plus,10,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,1.2634727954864502
+159,BBS_plus,50,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,1.9363062381744385
+160,BBS_plus,50,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,4.659290075302124
+161,BBS_plus,50,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,6.340216636657715
+162,BBS_plus,100,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,3.8424642086029053
+163,BBS_plus,100,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,9.286261081695557
+164,BBS_plus,100,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,12.729389429092407
+165,W3C_JWT,10,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.0
+166,W3C_JWT,10,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,0.0
+167,W3C_JWT,10,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,0.015637874603271484
+168,W3C_JWT,50,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.0
+169,W3C_JWT,50,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,0.015656232833862305
+170,W3C_JWT,50,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,0.015623807907104492
+171,W3C_JWT,100,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.01562356948852539
+172,W3C_JWT,100,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,0.03125643730163574
+173,W3C_JWT,100,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,0.015617132186889648
+174,SD_JWT,10,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.03125119209289551
+175,SD_JWT,10,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,0.421875
+176,SD_JWT,10,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,0.015630722045898438
+177,SD_JWT,50,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.17187285423278809
+178,SD_JWT,50,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,2.2017407417297363
+179,SD_JWT,50,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,0.07812213897705078
+180,SD_JWT,100,Amount of entries in credential,400,Signing:Vertical Credential Size Benchmark,0.3557107448577881
+181,SD_JWT,100,Amount of entries in credential,400,Proof Generation:Vertical Credential Size Benchmark,4.166446208953857
+182,SD_JWT,100,Amount of entries in credential,400,Verification:Vertical Credential Size Benchmark,0.1406254768371582
+183,BBS_plus,10,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.468919038772583
+184,BBS_plus,10,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,1.1266722679138184
+185,BBS_plus,10,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,1.562628984451294
+186,BBS_plus,50,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,2.3170971870422363
+187,BBS_plus,50,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,5.65474009513855
+188,BBS_plus,50,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,7.8187878131866455
+189,BBS_plus,100,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,4.661238431930542
+190,BBS_plus,100,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,11.378289461135864
+191,BBS_plus,100,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,15.569892644882202
+192,W3C_JWT,10,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.0
+193,W3C_JWT,10,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,0.0
+194,W3C_JWT,10,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,0.015641450881958008
+195,W3C_JWT,50,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.015655994415283203
+196,W3C_JWT,50,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,0.0
+197,W3C_JWT,50,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,0.015625953674316406
+198,W3C_JWT,100,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.031246423721313477
+199,W3C_JWT,100,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,0.015625
+200,W3C_JWT,100,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,0.03125166893005371
+201,SD_JWT,10,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.04687356948852539
+202,SD_JWT,10,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,0.6144368648529053
+203,SD_JWT,10,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,0.021071195602416992
+204,SD_JWT,50,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.21881675720214844
+205,SD_JWT,50,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,3.1765599250793457
+206,SD_JWT,50,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,0.09851217269897461
+207,SD_JWT,100,Amount of entries in credential,500,Signing:Vertical Credential Size Benchmark,0.4375030994415283
+208,SD_JWT,100,Amount of entries in credential,500,Proof Generation:Vertical Credential Size Benchmark,6.3948540687561035
+209,SD_JWT,100,Amount of entries in credential,500,Verification:Vertical Credential Size Benchmark,0.20312213897705078
+210,BBS_plus,10,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.1093759536743164
+211,BBS_plus,10,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.29684019088745117
+212,BBS_plus,10,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.39091062545776367
+213,BBS_plus,50,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.5937099456787109
+214,BBS_plus,50,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,1.484506607055664
+215,BBS_plus,50,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,1.9171299934387207
+216,BBS_plus,100,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,1.1993176937103271
+217,BBS_plus,100,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,2.9510416984558105
+218,BBS_plus,100,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,3.8400001525878906
+219,W3C_JWT,10,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.0
+220,W3C_JWT,10,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.0
+221,W3C_JWT,10,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.0
+222,W3C_JWT,50,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.015624284744262695
+223,W3C_JWT,50,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.0
+224,W3C_JWT,50,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.015622615814208984
+225,W3C_JWT,100,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.0
+226,W3C_JWT,100,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.015626192092895508
+227,W3C_JWT,100,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.015660524368286133
+228,SD_JWT,10,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.0
+229,SD_JWT,10,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.046874284744262695
+230,SD_JWT,10,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.0
+231,SD_JWT,50,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.0625
+232,SD_JWT,50,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.17187905311584473
+233,SD_JWT,50,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.031246185302734375
+234,SD_JWT,100,Length of entry values in credential,1,Signing:Horizontal Credential Size Benchmark,0.09374856948852539
+235,SD_JWT,100,Length of entry values in credential,1,Proof Generation:Horizontal Credential Size Benchmark,0.3750002384185791
+236,SD_JWT,100,Length of entry values in credential,1,Verification:Horizontal Credential Size Benchmark,0.04687762260437012
+237,BBS_plus,10,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.1315934658050537
+238,BBS_plus,10,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.2867105007171631
+239,BBS_plus,10,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.39876222610473633
+240,BBS_plus,50,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.6217372417449951
+241,BBS_plus,50,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,1.474515438079834
+242,BBS_plus,50,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,1.947310209274292
+243,BBS_plus,100,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,1.2617418766021729
+244,BBS_plus,100,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,2.967968702316284
+245,BBS_plus,100,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,3.87044358253479
+246,W3C_JWT,10,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.0
+247,W3C_JWT,10,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.0
+248,W3C_JWT,10,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.0
+249,W3C_JWT,50,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.015668153762817383
+250,W3C_JWT,50,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.0
+251,W3C_JWT,50,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.015625715255737305
+252,W3C_JWT,100,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.0
+253,W3C_JWT,100,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.01562952995300293
+254,W3C_JWT,100,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.021219968795776367
+255,SD_JWT,10,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.010711669921875
+256,SD_JWT,10,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.030520200729370117
+257,SD_JWT,10,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.0
+258,SD_JWT,50,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.0625464916229248
+259,SD_JWT,50,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.17950177192687988
+260,SD_JWT,50,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.031245708465576172
+261,SD_JWT,100,Length of entry values in credential,10,Signing:Horizontal Credential Size Benchmark,0.09375214576721191
+262,SD_JWT,100,Length of entry values in credential,10,Proof Generation:Horizontal Credential Size Benchmark,0.39062070846557617
+263,SD_JWT,100,Length of entry values in credential,10,Verification:Horizontal Credential Size Benchmark,0.03125429153442383
+264,BBS_plus,10,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.14063477516174316
+265,BBS_plus,10,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.31248927116394043
+266,BBS_plus,10,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.3870723247528076
+267,BBS_plus,50,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.7187497615814209
+268,BBS_plus,50,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,1.5897247791290283
+269,BBS_plus,50,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,1.9232416152954102
+270,BBS_plus,100,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,1.4294185638427734
+271,BBS_plus,100,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,3.1934289932250977
+272,BBS_plus,100,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,3.8351664543151855
+273,W3C_JWT,10,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.0
+274,W3C_JWT,10,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.0
+275,W3C_JWT,10,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.0
+276,W3C_JWT,50,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.0
+277,W3C_JWT,50,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.015659093856811523
+278,W3C_JWT,50,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.0
+279,W3C_JWT,100,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.015657424926757812
+280,W3C_JWT,100,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.015625953674316406
+281,W3C_JWT,100,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.015626192092895508
+282,SD_JWT,10,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.015630722045898438
+283,SD_JWT,10,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.046866416931152344
+284,SD_JWT,10,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.0
+285,SD_JWT,50,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.0625
+286,SD_JWT,50,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.17187762260437012
+287,SD_JWT,50,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.015624046325683594
+288,SD_JWT,100,Length of entry values in credential,100,Signing:Horizontal Credential Size Benchmark,0.10937380790710449
+289,SD_JWT,100,Length of entry values in credential,100,Proof Generation:Horizontal Credential Size Benchmark,0.3890213966369629
+290,SD_JWT,100,Length of entry values in credential,100,Verification:Horizontal Credential Size Benchmark,0.03124713897705078
+291,BBS_plus,10,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.17183399200439453
+292,BBS_plus,10,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.3437497615814209
+293,BBS_plus,10,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.39063572883605957
+294,BBS_plus,50,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.83518385887146
+295,BBS_plus,50,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,1.7186269760131836
+296,BBS_plus,50,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,1.936253309249878
+297,BBS_plus,100,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,1.6878657341003418
+298,BBS_plus,100,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,3.4691319465637207
+299,BBS_plus,100,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,3.848881721496582
+300,W3C_JWT,10,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.0
+301,W3C_JWT,10,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.0
+302,W3C_JWT,10,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.0
+303,W3C_JWT,50,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.0
+304,W3C_JWT,50,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.015633583068847656
+305,W3C_JWT,50,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.01562190055847168
+306,W3C_JWT,100,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.031245708465576172
+307,W3C_JWT,100,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.03127002716064453
+308,W3C_JWT,100,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.031228303909301758
+309,SD_JWT,10,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.01562643051147461
+310,SD_JWT,10,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.031250953674316406
+311,SD_JWT,10,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.015625476837158203
+312,SD_JWT,50,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.0625007152557373
+313,SD_JWT,50,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.18631577491760254
+314,SD_JWT,50,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.01562356948852539
+315,SD_JWT,100,Length of entry values in credential,200,Signing:Horizontal Credential Size Benchmark,0.1250002384185791
+316,SD_JWT,100,Length of entry values in credential,200,Proof Generation:Horizontal Credential Size Benchmark,0.3906254768371582
+317,SD_JWT,100,Length of entry values in credential,200,Verification:Horizontal Credential Size Benchmark,0.031248807907104492
+318,BBS_plus,10,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.25000739097595215
+319,BBS_plus,10,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.4218266010284424
+320,BBS_plus,10,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.39063215255737305
+321,BBS_plus,50,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,1.2218446731567383
+322,BBS_plus,50,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,2.132734775543213
+323,BBS_plus,50,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,1.9326660633087158
+324,BBS_plus,100,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,2.478121280670166
+325,BBS_plus,100,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,4.230215311050415
+326,BBS_plus,100,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,3.8685288429260254
+327,W3C_JWT,10,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.0
+328,W3C_JWT,10,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.015620231628417969
+329,W3C_JWT,10,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.0
+330,W3C_JWT,50,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.0156252384185791
+331,W3C_JWT,50,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.031244516372680664
+332,W3C_JWT,50,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.03125166893005371
+333,W3C_JWT,100,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.04687309265136719
+334,W3C_JWT,100,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.054569244384765625
+335,W3C_JWT,100,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.04692268371582031
+336,SD_JWT,10,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.015625715255737305
+337,SD_JWT,10,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.031250715255737305
+338,SD_JWT,10,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.0
+339,SD_JWT,50,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.0821983814239502
+340,SD_JWT,50,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.21880412101745605
+341,SD_JWT,50,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.015621423721313477
+342,SD_JWT,100,Length of entry values in credential,500,Signing:Horizontal Credential Size Benchmark,0.1562511920928955
+343,SD_JWT,100,Length of entry values in credential,500,Proof Generation:Horizontal Credential Size Benchmark,0.4062516689300537
+344,SD_JWT,100,Length of entry values in credential,500,Verification:Horizontal Credential Size Benchmark,0.031249046325683594
+345,BBS_plus,10,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.3869204521179199
+346,BBS_plus,10,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.546868085861206
+347,BBS_plus,10,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.37496304512023926
+348,BBS_plus,50,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,1.8753185272216797
+349,BBS_plus,50,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,2.840827703475952
+350,BBS_plus,50,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,1.9355273246765137
+351,BBS_plus,100,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,3.835207939147949
+352,BBS_plus,100,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,5.634073734283447
+353,BBS_plus,100,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,3.8616857528686523
+354,W3C_JWT,10,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.0
+355,W3C_JWT,10,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.0
+356,W3C_JWT,10,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.01562666893005371
+357,W3C_JWT,50,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.046871185302734375
+358,W3C_JWT,50,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.046875
+359,W3C_JWT,50,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.03125309944152832
+360,W3C_JWT,100,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.09379243850708008
+361,W3C_JWT,100,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.09375214576721191
+362,W3C_JWT,100,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.07812309265136719
+363,SD_JWT,10,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.015624761581420898
+364,SD_JWT,10,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.03124403953552246
+365,SD_JWT,10,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.0
+366,SD_JWT,50,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.09374403953552246
+367,SD_JWT,50,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.2322702407836914
+368,SD_JWT,50,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.015625715255737305
+369,SD_JWT,100,Length of entry values in credential,1000,Signing:Horizontal Credential Size Benchmark,0.2031257152557373
+370,SD_JWT,100,Length of entry values in credential,1000,Proof Generation:Horizontal Credential Size Benchmark,0.3906230926513672
+371,SD_JWT,100,Length of entry values in credential,1000,Verification:Horizontal Credential Size Benchmark,0.031209707260131836
+372,BBS_plus,10,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.5155811309814453
+373,BBS_plus,10,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.6736335754394531
+374,BBS_plus,10,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.3815004825592041
+375,BBS_plus,50,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,2.5866496562957764
+376,BBS_plus,50,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,3.434412956237793
+377,BBS_plus,50,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,1.9355309009552002
+378,BBS_plus,100,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,5.109168767929077
+379,BBS_plus,100,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,6.941540956497192
+380,BBS_plus,100,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,3.8738760948181152
+381,W3C_JWT,10,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.015627145767211914
+382,W3C_JWT,10,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.015624523162841797
+383,W3C_JWT,10,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.0
+384,W3C_JWT,50,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.08503103256225586
+385,W3C_JWT,50,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.06249880790710449
+386,W3C_JWT,50,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.062497615814208984
+387,W3C_JWT,100,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.14519786834716797
+388,W3C_JWT,100,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.14062929153442383
+389,W3C_JWT,100,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.12499332427978516
+390,SD_JWT,10,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.015627622604370117
+391,SD_JWT,10,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.03909659385681152
+392,SD_JWT,10,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.0
+393,SD_JWT,50,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.1250014305114746
+394,SD_JWT,50,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.22622275352478027
+395,SD_JWT,50,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.03124713897705078
+396,SD_JWT,100,Length of entry values in credential,1500,Signing:Horizontal Credential Size Benchmark,0.2499980926513672
+397,SD_JWT,100,Length of entry values in credential,1500,Proof Generation:Horizontal Credential Size Benchmark,0.4789886474609375
+398,SD_JWT,100,Length of entry values in credential,1500,Verification:Horizontal Credential Size Benchmark,0.03125262260437012
+399,BBS_plus,10,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.6252484321594238
+400,BBS_plus,10,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.7812600135803223
+401,BBS_plus,10,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.3906557559967041
+402,BBS_plus,50,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,3.118480920791626
+403,BBS_plus,50,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,3.886185646057129
+404,BBS_plus,50,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,1.9338796138763428
+405,BBS_plus,100,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,6.303625583648682
+406,BBS_plus,100,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,7.958233118057251
+407,BBS_plus,100,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,3.886887550354004
+408,W3C_JWT,10,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.015676498413085938
+409,W3C_JWT,10,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.031249046325683594
+410,W3C_JWT,10,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.015624523162841797
+411,W3C_JWT,50,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.09374594688415527
+412,W3C_JWT,50,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.08236432075500488
+413,W3C_JWT,50,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.0781245231628418
+414,W3C_JWT,100,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.18068432807922363
+415,W3C_JWT,100,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.19036054611206055
+416,W3C_JWT,100,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.14067435264587402
+417,SD_JWT,10,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.03124856948852539
+418,SD_JWT,10,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.04687190055847168
+419,SD_JWT,10,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.015625
+420,SD_JWT,50,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.17183375358581543
+421,SD_JWT,50,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.26562070846557617
+422,SD_JWT,50,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.015626907348632812
+423,SD_JWT,100,Length of entry values in credential,2000,Signing:Horizontal Credential Size Benchmark,0.32812952995300293
+424,SD_JWT,100,Length of entry values in credential,2000,Proof Generation:Horizontal Credential Size Benchmark,0.5624949932098389
+425,SD_JWT,100,Length of entry values in credential,2000,Verification:Horizontal Credential Size Benchmark,0.03125452995300293
+426,BBS_plus,10,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.7614915370941162
+427,BBS_plus,10,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.9094550609588623
+428,BBS_plus,10,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.3802363872528076
+429,BBS_plus,50,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,3.7470929622650146
+430,BBS_plus,50,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,4.675546407699585
+431,BBS_plus,50,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,1.9495816230773926
+432,BBS_plus,100,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,7.366142272949219
+433,BBS_plus,100,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,9.114108800888062
+434,BBS_plus,100,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,3.89788818359375
+435,W3C_JWT,10,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.031250953674316406
+436,W3C_JWT,10,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.03125119209289551
+437,W3C_JWT,10,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.015622138977050781
+438,W3C_JWT,50,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.12500405311584473
+439,W3C_JWT,50,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.10937142372131348
+440,W3C_JWT,50,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.09375
+441,W3C_JWT,100,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.21709513664245605
+442,W3C_JWT,100,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.2343745231628418
+443,W3C_JWT,100,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.18751049041748047
+444,SD_JWT,10,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.031255245208740234
+445,SD_JWT,10,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.06249570846557617
+446,SD_JWT,10,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.015624284744262695
+447,SD_JWT,50,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.17191076278686523
+448,SD_JWT,50,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.2968745231628418
+449,SD_JWT,50,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.015625715255737305
+450,SD_JWT,100,Length of entry values in credential,2500,Signing:Horizontal Credential Size Benchmark,0.34375739097595215
+451,SD_JWT,100,Length of entry values in credential,2500,Proof Generation:Horizontal Credential Size Benchmark,0.6095890998840332
+452,SD_JWT,100,Length of entry values in credential,2500,Verification:Horizontal Credential Size Benchmark,0.04687619209289551
+453,BBS_plus,10,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.8513274192810059
+454,BBS_plus,10,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.9772524833679199
+455,BBS_plus,10,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.3906569480895996
+456,BBS_plus,50,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,4.230224132537842
+457,BBS_plus,50,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,5.158857583999634
+458,BBS_plus,50,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,1.9516334533691406
+459,BBS_plus,100,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,8.790669202804565
+460,BBS_plus,100,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,10.095075368881226
+461,BBS_plus,100,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,3.910825490951538
+462,W3C_JWT,10,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.03125262260437012
+463,W3C_JWT,10,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.031249046325683594
+464,W3C_JWT,10,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.03125166893005371
+465,W3C_JWT,50,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.1250009536743164
+466,W3C_JWT,50,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.1406233310699463
+467,W3C_JWT,50,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.1249990463256836
+468,W3C_JWT,100,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.2812492847442627
+469,W3C_JWT,100,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.27500176429748535
+470,W3C_JWT,100,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.22274327278137207
+471,SD_JWT,10,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.04687619209289551
+472,SD_JWT,10,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.06245541572570801
+473,SD_JWT,10,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.01562666893005371
+474,SD_JWT,50,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.21875381469726562
+475,SD_JWT,50,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.3905937671661377
+476,SD_JWT,50,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.015624523162841797
+477,SD_JWT,100,Length of entry values in credential,3000,Signing:Horizontal Credential Size Benchmark,0.42206311225891113
+478,SD_JWT,100,Length of entry values in credential,3000,Proof Generation:Horizontal Credential Size Benchmark,0.6858923435211182
+479,SD_JWT,100,Length of entry values in credential,3000,Verification:Horizontal Credential Size Benchmark,0.03125
+480,BBS_plus,10,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.8592720031738281
+481,BBS_plus,10,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,2.1288981437683105
+482,BBS_plus,10,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,2.9991586208343506
+483,BBS_plus,50,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,4.321005821228027
+484,BBS_plus,50,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,10.676491498947144
+485,BBS_plus,50,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,15.021167755126953
+486,BBS_plus,100,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,8.689858436584473
+487,BBS_plus,100,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,21.534371376037598
+488,BBS_plus,100,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,30.011312007904053
+489,W3C_JWT,10,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.0
+490,W3C_JWT,10,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,0.0
+491,W3C_JWT,10,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,0.01566767692565918
+492,W3C_JWT,50,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.015625715255737305
+493,W3C_JWT,50,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,0.015622854232788086
+494,W3C_JWT,50,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,0.03120899200439453
+495,W3C_JWT,100,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.031290531158447266
+496,W3C_JWT,100,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,0.03125
+497,W3C_JWT,100,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,0.04687809944152832
+498,SD_JWT,10,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.07812333106994629
+499,SD_JWT,10,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,2.30653977394104
+500,SD_JWT,10,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,0.046874284744262695
+501,SD_JWT,50,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.43750429153442383
+502,SD_JWT,50,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,11.976143836975098
+503,SD_JWT,50,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,0.2968864440917969
+504,SD_JWT,100,Amount of entries to reveal in credential,1,Signing:Reveal Size Benchmark,0.8559114933013916
+505,SD_JWT,100,Amount of entries to reveal in credential,1,Proof Generation:Reveal Size Benchmark,23.546739101409912
+506,SD_JWT,100,Amount of entries to reveal in credential,1,Verification:Reveal Size Benchmark,0.593761682510376
+507,BBS_plus,10,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.8530824184417725
+508,BBS_plus,10,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,2.1053640842437744
+509,BBS_plus,10,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,3.0407402515411377
+510,BBS_plus,50,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,4.345840215682983
+511,BBS_plus,50,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,10.630039930343628
+512,BBS_plus,50,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,15.812901496887207
+513,BBS_plus,100,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,8.73891568183899
+514,BBS_plus,100,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,21.2239511013031
+515,BBS_plus,100,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,30.60857319831848
+516,W3C_JWT,10,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.0
+517,W3C_JWT,10,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,0.0
+518,W3C_JWT,10,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,0.01563119888305664
+519,W3C_JWT,50,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.01565408706665039
+520,W3C_JWT,50,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,0.015594005584716797
+521,W3C_JWT,50,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,0.020885705947875977
+522,W3C_JWT,100,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.04687213897705078
+523,W3C_JWT,100,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,0.03125143051147461
+524,W3C_JWT,100,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,0.0312502384185791
+525,SD_JWT,10,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.07812690734863281
+526,SD_JWT,10,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,2.2079834938049316
+527,SD_JWT,10,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,0.06250166893005371
+528,SD_JWT,50,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.4374995231628418
+529,SD_JWT,50,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,11.399988889694214
+530,SD_JWT,50,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,0.32813262939453125
+531,SD_JWT,100,Amount of entries to reveal in credential,100,Signing:Reveal Size Benchmark,0.8593654632568359
+532,SD_JWT,100,Amount of entries to reveal in credential,100,Proof Generation:Reveal Size Benchmark,23.288720846176147
+533,SD_JWT,100,Amount of entries to reveal in credential,100,Verification:Reveal Size Benchmark,0.6504526138305664
+534,BBS_plus,10,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.8576133251190186
+535,BBS_plus,10,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,2.053041934967041
+536,BBS_plus,10,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,3.0678863525390625
+537,BBS_plus,50,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,4.352646112442017
+538,BBS_plus,50,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,10.394371747970581
+539,BBS_plus,50,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,15.34290099143982
+540,BBS_plus,100,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,8.647931337356567
+541,BBS_plus,100,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,20.885535717010498
+542,BBS_plus,100,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,30.551067352294922
+543,W3C_JWT,10,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.015626192092895508
+544,W3C_JWT,10,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,0.0
+545,W3C_JWT,10,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,0.0
+546,W3C_JWT,50,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.01562190055847168
+547,W3C_JWT,50,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,0.015661954879760742
+548,W3C_JWT,50,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,0.031255483627319336
+549,W3C_JWT,100,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.0312497615814209
+550,W3C_JWT,100,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,0.0468747615814209
+551,W3C_JWT,100,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,0.031249523162841797
+552,SD_JWT,10,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.0781252384185791
+553,SD_JWT,10,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,2.2225394248962402
+554,SD_JWT,10,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,0.08278179168701172
+555,SD_JWT,50,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.431002140045166
+556,SD_JWT,50,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,11.17118525505066
+557,SD_JWT,50,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,0.3593876361846924
+558,SD_JWT,100,Amount of entries to reveal in credential,200,Signing:Reveal Size Benchmark,0.8593604564666748
+559,SD_JWT,100,Amount of entries to reveal in credential,200,Proof Generation:Reveal Size Benchmark,21.64415955543518
+560,SD_JWT,100,Amount of entries to reveal in credential,200,Verification:Reveal Size Benchmark,0.7390804290771484
+561,BBS_plus,10,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.8595125675201416
+562,BBS_plus,10,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,1.9978439807891846
+563,BBS_plus,10,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,3.1782686710357666
+564,BBS_plus,50,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,4.332608938217163
+565,BBS_plus,50,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,10.173263549804688
+566,BBS_plus,50,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,15.389594793319702
+567,BBS_plus,100,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,8.662486791610718
+568,BBS_plus,100,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,20.434202432632446
+569,BBS_plus,100,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,30.8117573261261
+570,W3C_JWT,10,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.0
+571,W3C_JWT,10,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,0.01567244529724121
+572,W3C_JWT,10,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,0.0
+573,W3C_JWT,50,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.015625
+574,W3C_JWT,50,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,0.015623807907104492
+575,W3C_JWT,50,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,0.015630722045898438
+576,W3C_JWT,100,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.03124856948852539
+577,W3C_JWT,100,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,0.046875
+578,W3C_JWT,100,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,0.031249284744262695
+579,SD_JWT,10,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.07812619209289551
+580,SD_JWT,10,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,2.1443519592285156
+581,SD_JWT,10,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,0.08148479461669922
+582,SD_JWT,50,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.429121732711792
+583,SD_JWT,50,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,10.127526760101318
+584,SD_JWT,50,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,0.3750472068786621
+585,SD_JWT,100,Amount of entries to reveal in credential,300,Signing:Reveal Size Benchmark,0.8871970176696777
+586,SD_JWT,100,Amount of entries to reveal in credential,300,Proof Generation:Reveal Size Benchmark,21.112526655197144
+587,SD_JWT,100,Amount of entries to reveal in credential,300,Verification:Reveal Size Benchmark,0.7813971042633057
+588,BBS_plus,10,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.8728034496307373
+589,BBS_plus,10,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,1.9842300415039062
+590,BBS_plus,10,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,3.0936434268951416
+591,BBS_plus,50,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,4.315439462661743
+592,BBS_plus,50,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,10.018845796585083
+593,BBS_plus,50,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,15.497617959976196
+594,BBS_plus,100,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,8.607831001281738
+595,BBS_plus,100,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,20.12378215789795
+596,BBS_plus,100,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,30.953536987304688
+597,W3C_JWT,10,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.0
+598,W3C_JWT,10,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,0.0
+599,W3C_JWT,10,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,0.01566004753112793
+600,W3C_JWT,50,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.015624284744262695
+601,W3C_JWT,50,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,0.015624046325683594
+602,W3C_JWT,50,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,0.03125262260437012
+603,W3C_JWT,100,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.031249284744262695
+604,W3C_JWT,100,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,0.031247615814208984
+605,W3C_JWT,100,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,0.0468752384185791
+606,SD_JWT,10,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.07812762260437012
+607,SD_JWT,10,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,1.9828572273254395
+608,SD_JWT,10,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,0.09376382827758789
+609,SD_JWT,50,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.4374876022338867
+610,SD_JWT,50,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,9.97685980796814
+611,SD_JWT,50,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,0.42214083671569824
+612,SD_JWT,100,Amount of entries to reveal in credential,400,Signing:Reveal Size Benchmark,0.8650288581848145
+613,SD_JWT,100,Amount of entries to reveal in credential,400,Proof Generation:Reveal Size Benchmark,20.073590517044067
+614,SD_JWT,100,Amount of entries to reveal in credential,400,Verification:Reveal Size Benchmark,0.820335865020752
+615,BBS_plus,10,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.8593738079071045
+616,BBS_plus,10,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,1.9353554248809814
+617,BBS_plus,10,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,3.0864033699035645
+618,BBS_plus,50,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,4.315522193908691
+619,BBS_plus,50,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,9.693583965301514
+620,BBS_plus,50,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,15.592133522033691
+621,BBS_plus,100,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,8.655092477798462
+622,BBS_plus,100,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,19.553983449935913
+623,BBS_plus,100,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,31.044663190841675
+624,W3C_JWT,10,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.0
+625,W3C_JWT,10,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,0.0
+626,W3C_JWT,10,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,0.0
+627,W3C_JWT,50,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.02317047119140625
+628,W3C_JWT,50,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,0.015673160552978516
+629,W3C_JWT,50,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,0.03125166893005371
+630,W3C_JWT,100,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.03125309944152832
+631,W3C_JWT,100,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,0.046869754791259766
+632,W3C_JWT,100,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,0.04687619209289551
+633,SD_JWT,10,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.08541226387023926
+634,SD_JWT,10,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,1.7974357604980469
+635,SD_JWT,10,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,0.0854489803314209
+636,SD_JWT,50,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.442211389541626
+637,SD_JWT,50,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,9.789911270141602
+638,SD_JWT,50,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,0.44011831283569336
+639,SD_JWT,100,Amount of entries to reveal in credential,500,Signing:Reveal Size Benchmark,0.8670494556427002
+640,SD_JWT,100,Amount of entries to reveal in credential,500,Proof Generation:Reveal Size Benchmark,19.44155240058899
+641,SD_JWT,100,Amount of entries to reveal in credential,500,Verification:Reveal Size Benchmark,0.9218666553497314
+642,BBS_plus,10,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.8750038146972656
+643,BBS_plus,10,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,1.8885877132415771
+644,BBS_plus,10,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,3.1207122802734375
+645,BBS_plus,50,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,4.320956707000732
+646,BBS_plus,50,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,9.557366609573364
+647,BBS_plus,50,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,15.571625232696533
+648,BBS_plus,100,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,8.643193244934082
+649,BBS_plus,100,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,19.2128643989563
+650,BBS_plus,100,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,31.157621145248413
+651,W3C_JWT,10,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.0
+652,W3C_JWT,10,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,0.0
+653,W3C_JWT,10,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,0.015665054321289062
+654,W3C_JWT,50,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.015625
+655,W3C_JWT,50,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,0.022493600845336914
+656,W3C_JWT,50,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,0.015688657760620117
+657,W3C_JWT,100,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.0312497615814209
+658,W3C_JWT,100,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,0.04687356948852539
+659,W3C_JWT,100,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,0.03125119209289551
+660,SD_JWT,10,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.10934162139892578
+661,SD_JWT,10,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,1.672062873840332
+662,SD_JWT,10,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,0.09211039543151855
+663,SD_JWT,50,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.41530513763427734
+664,SD_JWT,50,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,8.723511695861816
+665,SD_JWT,50,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,0.4999685287475586
+666,SD_JWT,100,Amount of entries to reveal in credential,600,Signing:Reveal Size Benchmark,0.8584063053131104
+667,SD_JWT,100,Amount of entries to reveal in credential,600,Proof Generation:Reveal Size Benchmark,17.63112998008728
+668,SD_JWT,100,Amount of entries to reveal in credential,600,Verification:Reveal Size Benchmark,0.9281034469604492
+669,BBS_plus,10,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,0.8595118522644043
+670,BBS_plus,10,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,1.8571784496307373
+671,BBS_plus,10,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,3.1281485557556152
+672,BBS_plus,50,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,4.362308740615845
+673,BBS_plus,50,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,9.276792526245117
+674,BBS_plus,50,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,15.740399360656738
+675,BBS_plus,100,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,9.395914793014526
+676,BBS_plus,100,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,19.925857067108154
+677,BBS_plus,100,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,31.959254503250122
+678,W3C_JWT,10,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,0.01562643051147461
+679,W3C_JWT,10,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,0.0
+680,W3C_JWT,10,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,0.0
+681,W3C_JWT,50,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,0.03125500679016113
+682,W3C_JWT,50,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,0.015619516372680664
+683,W3C_JWT,50,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,0.03124833106994629
+684,W3C_JWT,100,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,0.03125286102294922
+685,W3C_JWT,100,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,0.046844482421875
+686,W3C_JWT,100,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,0.04703378677368164
+687,SD_JWT,10,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,0.09371590614318848
+688,SD_JWT,10,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,1.6542062759399414
+689,SD_JWT,10,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,0.10937333106994629
+690,SD_JWT,50,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,0.46889472007751465
+691,SD_JWT,50,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,8.237815856933594
+692,SD_JWT,50,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,0.5312492847442627
+693,SD_JWT,100,Amount of entries to reveal in credential,700,Signing:Reveal Size Benchmark,1.0126867294311523
+694,SD_JWT,100,Amount of entries to reveal in credential,700,Proof Generation:Reveal Size Benchmark,16.818360090255737
+695,SD_JWT,100,Amount of entries to reveal in credential,700,Verification:Reveal Size Benchmark,1.008061170578003
+696,BBS_plus,10,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.8632805347442627
+697,BBS_plus,10,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,1.8263471126556396
+698,BBS_plus,10,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,3.176142930984497
+699,BBS_plus,50,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,4.340000152587891
+700,BBS_plus,50,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,9.092359066009521
+701,BBS_plus,50,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,15.775007009506226
+702,BBS_plus,100,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,8.680542707443237
+703,BBS_plus,100,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,18.284202575683594
+704,BBS_plus,100,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,31.480037212371826
+705,W3C_JWT,10,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.0
+706,W3C_JWT,10,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,0.015676259994506836
+707,W3C_JWT,10,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,0.0
+708,W3C_JWT,50,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.031249284744262695
+709,W3C_JWT,50,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,0.015625
+710,W3C_JWT,50,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,0.015625
+711,W3C_JWT,100,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.031209945678710938
+712,W3C_JWT,100,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,0.03934764862060547
+713,W3C_JWT,100,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,0.046881914138793945
+714,SD_JWT,10,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.09379768371582031
+715,SD_JWT,10,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,1.4847841262817383
+716,SD_JWT,10,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,0.10940313339233398
+717,SD_JWT,50,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.4530956745147705
+718,SD_JWT,50,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,7.572939872741699
+719,SD_JWT,50,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,0.5406105518341064
+720,SD_JWT,100,Amount of entries to reveal in credential,800,Signing:Reveal Size Benchmark,0.9218854904174805
+721,SD_JWT,100,Amount of entries to reveal in credential,800,Proof Generation:Reveal Size Benchmark,15.13691782951355
+722,SD_JWT,100,Amount of entries to reveal in credential,800,Verification:Reveal Size Benchmark,1.0601720809936523
+723,BBS_plus,10,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.8437414169311523
+724,BBS_plus,10,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,1.7656245231628418
+725,BBS_plus,10,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,3.133817672729492
+726,BBS_plus,50,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,4.33736252784729
+727,BBS_plus,50,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,8.806048393249512
+728,BBS_plus,50,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,15.792404413223267
+729,BBS_plus,100,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,8.605687141418457
+730,BBS_plus,100,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,17.690980911254883
+731,BBS_plus,100,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,31.510650157928467
+732,W3C_JWT,10,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.0
+733,W3C_JWT,10,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,0.01562356948852539
+734,W3C_JWT,10,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,0.0
+735,W3C_JWT,50,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.015610218048095703
+736,W3C_JWT,50,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,0.01566028594970703
+737,W3C_JWT,50,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,0.015583992004394531
+738,W3C_JWT,100,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.031258583068847656
+739,W3C_JWT,100,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,0.04687356948852539
+740,W3C_JWT,100,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,0.0468752384185791
+741,SD_JWT,10,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.07814860343933105
+742,SD_JWT,10,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,1.3439030647277832
+743,SD_JWT,10,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,0.10938739776611328
+744,SD_JWT,50,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.43567538261413574
+745,SD_JWT,50,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,6.9036290645599365
+746,SD_JWT,50,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,0.5470211505889893
+747,SD_JWT,100,Amount of entries to reveal in credential,900,Signing:Reveal Size Benchmark,0.9005756378173828
+748,SD_JWT,100,Amount of entries to reveal in credential,900,Proof Generation:Reveal Size Benchmark,13.758835077285767
+749,SD_JWT,100,Amount of entries to reveal in credential,900,Verification:Reveal Size Benchmark,1.1680479049682617

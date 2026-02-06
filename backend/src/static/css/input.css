@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Berlin Blue theme variables */
+:root {
+  --berlin-blue: #003f7f;
+  --berlin-light: #0066cc;
+  --berlin-dark: #002a56;
+}
+
+/* Custom Berlin Blue utility classes */
+.bg-berlin-blue { 
+  background-color: var(--berlin-blue); 
+}
+
+.text-berlin-blue { 
+  color: var(--berlin-blue); 
+}
+
+.border-berlin-blue { 
+  border-color: var(--berlin-blue); 
+}
+
+.hover\:bg-berlin-blue:hover { 
+  background-color: var(--berlin-blue); 
+}
+
+.hover\:text-berlin-blue:hover { 
+  color: var(--berlin-blue); 
+}
+
+.ring-berlin-blue { 
+  --tw-ring-color: var(--berlin-blue); 
+}
+
+/* Berlin Light variants */
+.bg-berlin-light { 
+  background-color: var(--berlin-light); 
+}
+
+.text-berlin-light { 
+  color: var(--berlin-light); 
+}
+
+.hover\:bg-berlin-light:hover { 
+  background-color: var(--berlin-light); 
+}
+
+.hover\:text-berlin-light:hover { 
+  color: var(--berlin-light); 
+}
+
+/* Berlin Dark variants */
+.bg-berlin-dark { 
+  background-color: var(--berlin-dark); 
+}
+
+.hover\:bg-berlin-dark:hover { 
+  background-color: var(--berlin-dark); 
+}
+
+/* Dark mode variants */
+.dark .dark\:bg-berlin-light { 
+  background-color: var(--berlin-light); 
+}
+
+.dark .dark\:text-berlin-light { 
+  color: var(--berlin-light); 
+}
+
+.dark .dark\:hover\:bg-berlin-light:hover { 
+  background-color: var(--berlin-light); 
+}
+
+.dark .dark\:hover\:text-berlin-light:hover { 
+  color: var(--berlin-light); 
+}
+
+.dark .dark\:border-berlin-light { 
+  border-color: var(--berlin-light); 
+}
+
+.dark .dark\:hover\:bg-berlin-blue:hover { 
+  background-color: var(--berlin-blue); 
+}
+
+/* Additional utility classes for StudentVC */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Alpine.js x-cloak directive */
+[x-cloak] { 
+  display: none !important; 
+}
+
+/* Tooltip styles */
+#tooltip-portal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 99999;
+  max-width: 300px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+} 

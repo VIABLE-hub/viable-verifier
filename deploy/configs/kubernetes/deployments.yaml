@@ -1,0 +1,263 @@
+---
+# TU Berlin (TUB) Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studentvc-tub
+  namespace: studentvc
+  labels:
+    app: studentvc-tub
+    tenant: tub
+    university: tu-berlin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: studentvc-tub
+      tenant: tub
+  template:
+    metadata:
+      labels:
+        app: studentvc-tub
+        tenant: tub
+        university: tu-berlin
+    spec:
+      containers:
+      - name: studentvc
+        image: studentvc:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: TENANT_ID
+          value: "tub"
+        - name: SERVER_HOST
+          value: "0.0.0.0"
+        - name: SERVER_PORT
+          value: "8080"
+        - name: USE_HTTPS
+          value: "true"
+        - name: NGROK_URL
+          valueFrom:
+            secretKeyRef:
+              name: ngrok-secrets
+              key: tub-url
+        - name: DATABASE_PATH
+          value: "/app/data"
+        - name: STATIC_PATH
+          value: "/app/static"
+        - name: PYTHONPATH
+          value: "/app"
+        volumeMounts:
+        - name: data-storage
+          mountPath: /app/data
+        - name: static-storage
+          mountPath: /app/static
+        - name: tenant-config
+          mountPath: /app/tenants/tub
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: data-storage
+        persistentVolumeClaim:
+          claimName: tub-data-pvc
+      - name: static-storage
+        persistentVolumeClaim:
+          claimName: tub-static-pvc
+      - name: tenant-config
+        configMap:
+          name: tub-config
+
+---
+# Freie Universität Berlin (FUB) Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studentvc-fub
+  namespace: studentvc
+  labels:
+    app: studentvc-fub
+    tenant: fub
+    university: fu-berlin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: studentvc-fub
+      tenant: fub
+  template:
+    metadata:
+      labels:
+        app: studentvc-fub
+        tenant: fub
+        university: fu-berlin
+    spec:
+      containers:
+      - name: studentvc
+        image: studentvc:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: TENANT_ID
+          value: "fub"
+        - name: SERVER_HOST
+          value: "0.0.0.0"
+        - name: SERVER_PORT
+          value: "8080"
+        - name: USE_HTTPS
+          value: "true"
+        - name: NGROK_URL
+          valueFrom:
+            secretKeyRef:
+              name: ngrok-secrets
+              key: fub-url
+        - name: DATABASE_PATH
+          value: "/app/data"
+        - name: STATIC_PATH
+          value: "/app/static"
+        - name: PYTHONPATH
+          value: "/app"
+        volumeMounts:
+        - name: data-storage
+          mountPath: /app/data
+        - name: static-storage
+          mountPath: /app/static
+        - name: tenant-config
+          mountPath: /app/tenants/fub
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: data-storage
+        persistentVolumeClaim:
+          claimName: fub-data-pvc
+      - name: static-storage
+        persistentVolumeClaim:
+          claimName: fub-static-pvc
+      - name: tenant-config
+        configMap:
+          name: fub-config
+
+---
+# Root/Default Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studentvc-root
+  namespace: studentvc
+  labels:
+    app: studentvc-root
+    tenant: root
+    university: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: studentvc-root
+      tenant: root
+  template:
+    metadata:
+      labels:
+        app: studentvc-root
+        tenant: root
+        university: default
+    spec:
+      containers:
+      - name: studentvc
+        image: studentvc:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: TENANT_ID
+          value: "root"
+        - name: SERVER_HOST
+          value: "0.0.0.0"
+        - name: SERVER_PORT
+          value: "8080"
+        - name: USE_HTTPS
+          value: "true"
+        - name: NGROK_URL
+          valueFrom:
+            secretKeyRef:
+              name: ngrok-secrets
+              key: root-url
+        - name: DATABASE_PATH
+          value: "/app/data"
+        - name: STATIC_PATH
+          value: "/app/static"
+        - name: PYTHONPATH
+          value: "/app"
+        volumeMounts:
+        - name: data-storage
+          mountPath: /app/data
+        - name: static-storage
+          mountPath: /app/static
+        - name: tenant-config
+          mountPath: /app/tenants/root
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: data-storage
+        persistentVolumeClaim:
+          claimName: root-data-pvc
+      - name: static-storage
+        persistentVolumeClaim:
+          claimName: root-static-pvc
+      - name: tenant-config
+        configMap:
+          name: root-config 

@@ -1,0 +1,50 @@
+{% from 'verifier/collapsible_step.html' import verification_step %}
+
+<!-- Group 4: Status & Validity -->
+<div class="verification-group border border-gray-100 rounded-lg shadow-sm">
+  <button class="w-full bg-red-50 p-3 rounded-t-lg border-b border-gray-100 text-left group-toggle" data-group="status">
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-red-900 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 15c-.77.833.192 2.5 1.732 2.5z" />
+        </svg>
+        Status & Gültigkeit
+      </h3>
+      <svg class="w-4 h-4 transform transition-transform duration-300 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </div>
+  </button>
+  <div class="collapsible-content" data-group="status">
+    <div class="p-3 space-y-1">
+      {{ verification_step(
+        "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 15c-.77.833.192 2.5 1.732 2.5z",
+        "Credential-Gültigkeit",
+        "KRITISCH: VC in DB & nicht widerrufen.",
+        "credential_validity_status",
+        "code-credential-status",
+        "Waiting for verification result...",
+        '<div><span class="text-blue-600">Checking...</span></div>'
+      ) }}
+      
+      <!-- Overall result -->
+      <div class="verification-step flex items-center justify-between font-medium border-t border-gray-200 pt-2 mt-2">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="text-sm">Gesamtergebnis</span>
+          <div class="tooltip-container ml-1">
+            <span class="text-xs text-gray-400 hover:text-gray-600 cursor-help">ⓘ</span>
+            <div class="tooltip-content hidden absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black text-white text-xs rounded-lg p-3 z-50 w-48">
+              Finale Entscheidung über Credential-Gültigkeit.
+            </div>
+          </div>
+        </div>
+        <span id="verification_result_all" class="text-sm">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</div> 

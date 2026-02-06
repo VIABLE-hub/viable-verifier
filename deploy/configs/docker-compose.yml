@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  studentvc:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+      target: app
+    container_name: studentvc
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8080
+      - DOCKER_MODE=true
+      - ACCEPT_SELF_SIGNED_CERTS=true
+      - PYTHONPATH=/app
+      # 🚀 PRODUCTION SERVER URL: Override Docker internal IP with external server address
+      - EXTERNAL_SERVER_URL=${EXTERNAL_SERVER_URL:-https://localhost:8080}
+      - PUBLIC_DOMAIN=${PUBLIC_DOMAIN:-localhost}
+      - PUBLIC_PORT=${PUBLIC_PORT:-8080}
+      - USE_EXTERNAL_URL=${USE_EXTERNAL_URL:-false}
+      # 🚀 SOCKET.IO FIX: Allow Socket.IO to work in Docker with external access
+      - SOCKET_IO_URL=${SOCKET_IO_URL:-https://localhost:8080}
+      - CORS_ORIGINS=*
+    volumes:
+      - studentvc_data:/app/instance
+    restart: unless-stopped
+    healthcheck:
+      # 🚀 HEALTH CHECK FIX: Use HTTP for internal health checks, HTTPS is handled at container level
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - studentvc-network
+
+networks:
+  studentvc-network:
+    driver: bridge
+
+volumes:
+  studentvc_data:

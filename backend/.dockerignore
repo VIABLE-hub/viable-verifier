@@ -1,0 +1,20 @@
+# This file contains ignore-rules for files that are not tracked by docker for container builds.
+data/
+.git/
+Dockerfile
+docker-compose.yml
+.dockerignore
+.gitignore
+.env
+demo/
+instance/
+__pycache__/
+.VSCodeCounter/
+/target
+/generated
+/BBSCoreIOS
+/python/__pycache__
+/python/libuniffi_bbs_core.so
+/python/uniffi_bbs_core.dll
+/python/libuniffi_bbs_core.dylib
+/python/bbs_core.py

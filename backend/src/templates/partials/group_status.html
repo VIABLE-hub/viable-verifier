@@ -1,0 +1,54 @@
+<!-- Gruppe 3: Statusprüfung -->
+<details class="border border-gray-200 rounded-lg shadow-sm bg-white hover:bg-gray-50">
+  <summary class="p-4 cursor-pointer transition-all">
+    <div class="flex items-center justify-between w-full">
+      <div class="flex items-center gap-2">
+        <div class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900">Statusprüfung</h3>
+          <p class="text-xs text-gray-600">Abfrage im Statusregister</p>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span id="status-status-icon" class="text-yellow-600">⏳</span>
+        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-md ml-2 mr-2 font-medium">0/3</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+  </summary>
+
+  <div class="p-4 space-y-4">
+    <!-- Verifikationspunkt: Credential nicht widerrufen -->
+    <div class="flex items-center justify-between border-b py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Credential nicht widerrufen</span>
+        <span title="Prüfung ob das Credential widerrufen wurde oder noch gültig ist." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="verification_result" class="text-sm font-mono">⏳</span>
+    </div>
+
+    <!-- Verifikationspunkt: Statusregister erfolgreich abgefragt -->
+    <div class="flex items-center justify-between border-b py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Statusregister erfolgreich abgefragt</span>
+        <span title="Das Statusregister wurde erfolgreich kontaktiert und lieferte ein Ergebnis." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="credential_validity_status" class="text-sm font-mono">⏳</span>
+    </div>
+
+    <!-- Verifikationspunkt: Gesamtergebnis -->
+    <div class="flex items-center justify-between py-1.5">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-sm text-gray-800">Gesamtergebnis</span>
+        <span title="Zusammenfassung aller Verifikationsschritte." class="text-xs text-gray-500">?</span>
+      </div>
+      <span id="verification_result_all" class="text-sm font-mono">⏳</span>
+    </div>
+  </div>
+</details> 

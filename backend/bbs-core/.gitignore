@@ -1,0 +1,8 @@
+/target
+/generated
+/BBSCoreIOS
+/python/__pycache__
+/python/libuniffi_bbs_core.so
+/python/uniffi_bbs_core.dll
+/python/libuniffi_bbs_core.dylib
+/python/bbs_core.py

@@ -1,0 +1,89 @@
+---
+# TU Berlin Data PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tub-data-pvc
+  namespace: studentvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+
+---
+# TU Berlin Static PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tub-static-pvc
+  namespace: studentvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+
+---
+# FU Berlin Data PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fub-data-pvc
+  namespace: studentvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+
+---
+# FU Berlin Static PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fub-static-pvc
+  namespace: studentvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+
+---
+# Root Data PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: root-data-pvc
+  namespace: studentvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+
+---
+# Root Static PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: root-static-pvc
+  namespace: studentvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard 

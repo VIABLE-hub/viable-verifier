@@ -1,0 +1,163 @@
+/* Settings.css - Externe CSS-Datei für die Einstellungsseite */
+
+/* Grundlegende Tab-Stile */
+.settings-tab {
+  @apply px-4 py-2 font-medium border-b-2 border-transparent cursor-pointer transition-colors duration-200;
+}
+
+.settings-tab.active {
+  @apply border-berlin-blue text-berlin-blue;
+}
+
+.settings-tab:hover {
+  @apply text-berlin-blue;
+}
+
+/* Panel-Stile */
+.settings-panel {
+  @apply bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700;
+}
+
+/* Formular-Elemente */
+.form-checkbox {
+  @apply rounded text-berlin-blue focus:ring-berlin-blue;
+}
+
+.form-input, .form-select {
+  @apply mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-berlin-blue focus:ring focus:ring-berlin-blue focus:ring-opacity-20;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+}
+
+/* Vertrauenseinstellungen */
+.trust-item {
+  @apply flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-md mb-2;
+}
+
+/* Kartenstil */
+.settings-card {
+  @apply bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all duration-200;
+}
+
+.settings-card:hover {
+  @apply shadow-md;
+}
+
+.settings-card-header {
+  @apply bg-gray-50 dark:bg-gray-900 px-4 py-3 border-b border-gray-200 dark:border-gray-700;
+}
+
+.settings-card-body {
+  @apply p-4;
+}
+
+/* Button-Stile */
+.btn {
+  @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+}
+
+.btn-primary {
+  @apply bg-berlin-blue text-white hover:bg-berlin-blue-dark;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700;
+}
+
+.btn-sm {
+  @apply px-3 py-1 text-sm;
+}
+
+/* Badge-Stile */
+.badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+}
+
+.badge-blue {
+  @apply bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300;
+}
+
+.badge-green {
+  @apply bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300;
+}
+
+.badge-yellow {
+  @apply bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300;
+}
+
+.badge-gray {
+  @apply bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300;
+}
+
+/* Animation */
+.settings-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wissenschaftliche Elemente */
+.data-metric {
+  @apply flex items-center;
+}
+
+.data-metric-value {
+  @apply text-xl font-semibold text-gray-900 dark:text-white;
+}
+
+.data-metric-label {
+  @apply text-xs text-gray-500 dark:text-gray-400;
+}
+
+.data-chart-container {
+  @apply bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+/* ARIA und Zugänglichkeit */
+[role="tab"][aria-selected="true"] {
+  @apply border-berlin-blue text-berlin-blue;
+}
+
+[role="tab"]:focus {
+  @apply outline-none ring-2 ring-berlin-blue ring-opacity-50;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 640px) {
+  .settings-grid {
+    @apply grid-cols-1;
+  }
+  
+  .settings-card-body {
+    @apply p-3;
+  }
+}

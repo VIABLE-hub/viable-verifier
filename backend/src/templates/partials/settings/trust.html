@@ -1,0 +1,277 @@
+<!-- Trust Tab Content -->
+<div class="space-y-4" x-show.transition.opacity="activeTab === 'trust'" id="trust-tab">
+  <div class="settings-panel">
+    <div class="panel-header">
+      <h3 class="text-base font-semibold">Vertrauenseinstellungen</h3>
+      <div class="text-xs text-gray-500">Konfiguration des Vertrauensmodells für Aussteller und Verifizierer</div>
+    </div>
+    <div class="panel-body">
+      <form id="trust-form" 
+            hx-post="/settings/api/trust" 
+            hx-trigger="submit"
+            hx-indicator="#trust-spinner"
+            hx-swap="none">
+        
+        <!-- Trusted Issuers -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-900 border-b pb-1 mb-3">Vertrauenswürdige Aussteller</h4>
+          
+          <div x-data="{ trustedIssuers: {{ settings.trust.trusted_issuers|tojson }} }">
+            <div class="mb-4">
+              <div class="flex space-x-2">
+                <input type="text" x-ref="issuerInput" placeholder="DID des Ausstellers" 
+                       class="settings-input">
+                <button type="button" @click="trustedIssuers.push($refs.issuerInput.value); $refs.issuerInput.value = ''"
+                        class="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150">
+                  Hinzufügen
+                </button>
+              </div>
+            </div>
+            
+            <div class="border rounded-md border-gray-200 bg-gray-50 p-4">
+              <p x-show="trustedIssuers.length === 0" class="text-sm text-gray-500">
+                Keine vertrauenswürdigen Aussteller konfiguriert
+              </p>
+              
+              <template x-for="(issuer, index) in trustedIssuers" :key="index">
+                <div class="flex items-center justify-between py-2 px-3 bg-white border border-gray-200 rounded-md mb-2">
+                  <span class="text-sm font-mono text-gray-700 truncate" x-text="issuer"></span>
+                  <button type="button" @click="trustedIssuers.splice(index, 1)"
+                          class="text-red-500 hover:text-red-700">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                </div>
+              </template>
+            </div>
+            
+            <input type="hidden" name="trusted_issuers" x-bind:value="JSON.stringify(trustedIssuers)">
+          </div>
+        </div>
+        
+        <!-- Trusted Verifiers -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-900 border-b pb-1 mb-3">Vertrauenswürdige Verifizierer</h4>
+          
+          <div x-data="{ trustedVerifiers: {{ settings.trust.trusted_verifiers|tojson }} }">
+            <div class="mb-4">
+              <div class="flex space-x-2">
+                <input type="text" x-ref="verifierInput" placeholder="DID des Verifizierers" 
+                       class="settings-input">
+                <button type="button" @click="trustedVerifiers.push($refs.verifierInput.value); $refs.verifierInput.value = ''"
+                        class="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150">
+                  Hinzufügen
+                </button>
+              </div>
+            </div>
+            
+            <div class="border rounded-md border-gray-200 bg-gray-50 p-4">
+              <p x-show="trustedVerifiers.length === 0" class="text-sm text-gray-500">
+                Keine vertrauenswürdigen Verifizierer konfiguriert
+              </p>
+              
+              <template x-for="(verifier, index) in trustedVerifiers" :key="index">
+                <div class="flex items-center justify-between py-2 px-3 bg-white border border-gray-200 rounded-md mb-2">
+                  <span class="text-sm font-mono text-gray-700 truncate" x-text="verifier"></span>
+                  <button type="button" @click="trustedVerifiers.splice(index, 1)"
+                          class="text-red-500 hover:text-red-700">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                </div>
+              </template>
+            </div>
+            
+            <input type="hidden" name="trusted_verifiers" x-bind:value="JSON.stringify(trustedVerifiers)">
+          </div>
+        </div>
+        
+        <!-- Trust Settings -->
+        <div class="mb-6 space-y-4">
+          <h4 class="font-medium text-gray-900 border-b pb-1 mb-3">Vertrauenseinstellungen</h4>
+          
+          <div class="settings-form-group flex items-center">
+            <div class="flex items-center h-5">
+              <input id="strict_mode" name="strict_mode" type="checkbox" class="form-checkbox" 
+                     {% if settings.trust.strict_mode %}checked{% endif %}>
+            </div>
+            <label for="strict_mode" class="ml-2 text-sm text-gray-700">
+              Strikter Modus
+              <span class="block text-xs text-gray-500">
+                Akzeptiert nur Credentials von explizit vertrauenswürdigen Ausstellern
+              </span>
+            </label>
+          </div>
+          
+          <div class="settings-form-group flex items-center">
+            <div class="flex items-center h-5">
+              <input id="auto_trust_verified" name="auto_trust_verified" type="checkbox" class="form-checkbox" 
+                     {% if settings.trust.auto_trust_verified %}checked{% endif %}>
+            </div>
+            <label for="auto_trust_verified" class="ml-2 text-sm text-gray-700">
+              Automatisch verifizierten DIDs vertrauen
+              <span class="block text-xs text-gray-500">
+                Vertrauen automatisch aufbauen für DIDs, die erfolgreich verifiziert wurden
+              </span>
+            </label>
+          </div>
+          
+          <div class="settings-form-group flex items-center">
+            <div class="flex items-center h-5">
+              <input id="log_untrusted" name="log_untrusted" type="checkbox" class="form-checkbox" 
+                     {% if settings.trust.log_untrusted %}checked{% endif %}>
+            </div>
+            <label for="log_untrusted" class="ml-2 text-sm text-gray-700">
+              Nicht vertrauenswürdige Anfragen protokollieren
+              <span class="block text-xs text-gray-500">
+                Anfragen von nicht vertrauenswürdigen Quellen in Logs aufzeichnen
+              </span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Trust Discovery -->
+        <div class="mb-6 p-3 bg-gray-50 border border-gray-200 rounded-md">
+          <h4 class="font-medium text-gray-900 mb-3">Vertrauens-Discovery</h4>
+          
+          <p class="text-sm text-gray-600 mb-3">
+            Neue vertrauenswürdige Entitäten im Netzwerk entdecken
+          </p>
+          
+          <button type="button" id="discover-trust" class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Vertrauenswürdige DIDs entdecken
+          </button>
+          
+          <div class="mt-3 text-sm text-gray-600 hidden" id="discovery-result">
+            <!-- Discovery-Ergebnisse würden hier angezeigt -->
+          </div>
+        </div>
+        
+        <div class="flex justify-between items-center pt-3 border-t border-gray-200">
+          <div>
+            <span class="text-xs text-gray-500">Letzte Änderung: {{ settings._meta.updated_at|default('Keine') }}</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div id="trust-spinner" class="htmx-indicator">
+              <svg class="animate-spin h-4 w-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150">
+              Einstellungen speichern
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Audit Trail für diese Kategorie -->
+  <div class="settings-panel">
+    <div class="panel-header">
+      <h3 class="text-base font-semibold">Änderungsverlauf</h3>
+    </div>
+    <div class="panel-body p-0">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Zeitpunkt</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Benutzer</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Änderung</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Version</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {% for audit in audit_trail.trust %}
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ audit.timestamp }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ audit.user }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ audit.change_description }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ audit.version }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4" class="px-6 py-4 text-sm text-center text-gray-500">Keine Änderungen bisher aufgezeichnet</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Form-Handling
+    document.getElementById('trust-form').addEventListener('htmx:afterRequest', function(event) {
+      const detail = event.detail;
+      
+      if (detail.successful) {
+        // Erfolgreiche Anfrage
+        try {
+          const response = JSON.parse(detail.xhr.responseText);
+          
+          Toastify({
+            text: response.message || "Vertrauenseinstellungen wurden erfolgreich gespeichert",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#10B981",
+            stopOnFocus: true
+          }).showToast();
+          
+        } catch (error) {
+          console.error('Failed to parse response:', error);
+          Toastify({
+            text: "Einstellungen gespeichert",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#10B981",
+            stopOnFocus: true
+          }).showToast();
+        }
+      } else {
+        // Fehlerfall
+        Toastify({
+          text: "Fehler beim Speichern der Vertrauenseinstellungen",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "#EF4444",
+          stopOnFocus: true
+        }).showToast();
+      }
+    });
+    
+    // Trust Discovery Handler
+    document.getElementById('discover-trust').addEventListener('click', function() {
+      const discoveryResult = document.getElementById('discovery-result');
+      discoveryResult.textContent = "Suche nach vertrauenswürdigen DIDs im Netzwerk...";
+      discoveryResult.classList.remove('hidden');
+      
+      // In einem echten System: Hier würde ein AJAX-Aufruf erfolgen, um Vertrauens-Discovery durchzuführen
+      setTimeout(function() {
+        // Simuliertes Ergebnis
+        discoveryResult.innerHTML = `
+          <div class="mb-2">3 vertrauenswürdige DIDs gefunden:</div>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>did:web:example.university.de</li>
+            <li>did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK</li>
+            <li>did:ethr:0x123abc...</li>
+          </ul>
+          <div class="mt-2">
+            <button type="button" class="text-xs px-2 py-1 bg-blue-600 text-white rounded">
+              Alle importieren
+            </button>
+          </div>
+        `;
+      }, 2000);
+    });
+  });
+</script>

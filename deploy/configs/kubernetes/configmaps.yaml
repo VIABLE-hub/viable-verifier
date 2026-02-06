@@ -1,0 +1,68 @@
+---
+# TU Berlin ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tub-config
+  namespace: studentvc
+data:
+  config.json: |
+    {
+      "tenant_id": "tub",
+      "display_name": "TU Berlin",
+      "branding": {
+        "primary_color": "#c50e1f",
+        "logo_path": "/static/tub_logo.png",
+        "vc_logo_path": "/static/tub-vc-logo.png"
+      },
+      "issuer": {
+        "name": "Technical University Berlin",
+        "url": "https://www.tu.berlin"
+      }
+    }
+
+---
+# FU Berlin ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fub-config
+  namespace: studentvc
+data:
+  config.json: |
+    {
+      "tenant_id": "fub",
+      "display_name": "FU Berlin",
+      "branding": {
+        "primary_color": "#007a3e",
+        "logo_path": "/static/fub-logo.png",
+        "vc_logo_path": "/static/fub-logo.png"
+      },
+      "issuer": {
+        "name": "Free University Berlin",
+        "url": "https://www.fu-berlin.de"
+      }
+    }
+
+---
+# Root ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: root-config
+  namespace: studentvc
+data:
+  config.json: |
+    {
+      "tenant_id": "root",
+      "display_name": "StudentVC",
+      "branding": {
+        "primary_color": "#003f7f",
+        "logo_path": "/static/studentvc_logo.png",
+        "vc_logo_path": "/static/studentvc_logo.png"
+      },
+      "issuer": {
+        "name": "StudentVC Default",
+        "url": "https://studentvc.org"
+      }
+    } 

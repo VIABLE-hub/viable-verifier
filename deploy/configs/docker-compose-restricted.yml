@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # Traefik reverse proxy with built-in authentication
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--api.insecure=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@university.edu"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    networks:
+      - studentvc-network
+    labels:
+      # Redirect HTTP to HTTPS
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+  # TUB Tenant with authentication
+  studentvc-tub:
+    image: studentvc:latest
+    environment:
+      - TENANT_ID=tub
+      - DATABASE_URL=sqlite:////app/backend/src/tenants/instances/tub/database.db
+      - FLASK_ENV=production
+    volumes:
+      - tub-data:/app/backend/src/tenants/instances/tub
+    networks:
+      - studentvc-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tub.rule=Host(`studentvc.yourdomain.com`) && PathPrefix(`/tub`)"
+      - "traefik.http.routers.tub.entrypoints=websecure"
+      - "traefik.http.routers.tub.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.tub.middlewares=tub-auth,tub-stripprefix"
+      # Basic auth middleware
+      - "traefik.http.middlewares.tub-auth.basicauth.users=colleague1@university.edu:$$2y$$10$$HASHED_PASSWORD_1,colleague2@university.edu:$$2y$$10$$HASHED_PASSWORD_2"
+      - "traefik.http.middlewares.tub-stripprefix.stripprefix.prefixes=/tub"
+      - "traefik.http.services.tub.loadbalancer.server.port=8080"
+
+  # FUB Tenant with authentication
+  studentvc-fub:
+    image: studentvc:latest
+    environment:
+      - TENANT_ID=fub
+      - DATABASE_URL=sqlite:////app/backend/src/tenants/instances/fub/database.db
+      - FLASK_ENV=production
+    volumes:
+      - fub-data:/app/backend/src/tenants/instances/fub
+    networks:
+      - studentvc-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fub.rule=Host(`studentvc.yourdomain.com`) && PathPrefix(`/fub`)"
+      - "traefik.http.routers.fub.entrypoints=websecure"
+      - "traefik.http.routers.fub.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fub.middlewares=fub-auth,fub-stripprefix"
+      # Basic auth middleware
+      - "traefik.http.middlewares.fub-auth.basicauth.users=colleague1@university.edu:$$2y$$10$$HASHED_PASSWORD_1,colleague3@university.edu:$$2y$$10$$HASHED_PASSWORD_3"
+      - "traefik.http.middlewares.fub-stripprefix.stripprefix.prefixes=/fub"
+      - "traefik.http.services.fub.loadbalancer.server.port=8080"
+
+  # ROOT Tenant with authentication
+  studentvc-root:
+    image: studentvc:latest
+    environment:
+      - TENANT_ID=root
+      - DATABASE_URL=sqlite:////app/backend/src/tenants/instances/root/database.db
+      - FLASK_ENV=production
+    volumes:
+      - root-data:/app/backend/src/tenants/instances/root
+    networks:
+      - studentvc-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.root.rule=Host(`studentvc.yourdomain.com`)"
+      - "traefik.http.routers.root.entrypoints=websecure"
+      - "traefik.http.routers.root.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.root.middlewares=root-auth"
+      # Basic auth middleware
+      - "traefik.http.middlewares.root-auth.basicauth.users=colleague1@university.edu:$$2y$$10$$HASHED_PASSWORD_1,colleague2@university.edu:$$2y$$10$$HASHED_PASSWORD_2,colleague3@university.edu:$$2y$$10$$HASHED_PASSWORD_3"
+      - "traefik.http.services.root.loadbalancer.server.port=8080"
+
+volumes:
+  tub-data:
+  fub-data:
+  root-data:
+
+networks:
+  studentvc-network:
+    driver: bridge 

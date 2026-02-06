@@ -1,0 +1,7 @@
+requests
+base58
+cryptography
+pyjwt
+flatten_json
+pyzbar
+pillow

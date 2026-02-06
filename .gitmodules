@@ -1,0 +1,9 @@
+[submodule "backend/bbs-core"]
+	path = backend/bbs-core
+	url = ../bbs-core.git
+[submodule "mobile/android"]
+	path = mobile/android
+    url = ../android.git
+[submodule "mobile/ios"]
+	path = mobile/ios
+	url = ../ios.git

@@ -1,0 +1,17 @@
+.vscode/
+.cursor/
+.claude/
+.idea/
+.venv/
+.lh/
+tags
+test_venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*log
+*zip
+.Python
+instance/service.log
+backend/bbs_core.py

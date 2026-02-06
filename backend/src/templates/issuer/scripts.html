@@ -1,0 +1,1028 @@
+<script>
+  // Diese Funktion wurde zugunsten der neuen fillRandomData() unten entfernt
+  
+  // Konfiguration der Tailwind-Erweiterungen für Animationen
+  if (typeof tailwind !== 'undefined') {
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'berlin-blue': '#003f7f',
+            'berlin-light': '#0066cc',
+            'berlin-dark': '#002a56'
+          },
+          animation: {
+            'fade-in-down': 'fadeInDown 0.2s ease-out',
+          },
+          keyframes: {
+            fadeInDown: {
+              '0%': { opacity: '0', transform: 'translateY(-5px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    };
+  }
+
+  // 🩺 HERZCHIRURG FIX: Entfernt problematischen Code der Formular-Werte überschreibt
+  // Das Form-Submit funktioniert jetzt über das Backend form_data prefilling
+  console.log("[Herzchirurg] ✓ Problematischer Submit-Handler entfernt");
+
+  // Verbesserte Funktion zur Angleichung der Höhen in den Spalten
+  function adjustHeight() {
+    const leftColumn = document.querySelector('.grid > div:first-child');
+    const rightColumn = document.querySelector('.grid > div:last-child');
+    
+    if (leftColumn && rightColumn && window.innerWidth >= 1024) { // lg breakpoint
+      // Berechnet die Höhe ohne den Details-Bereich, falls dieser geöffnet ist
+      const detailsElement = leftColumn.querySelector('details');
+      let leftHeight = leftColumn.offsetHeight;
+      
+      // Wenn Details geöffnet ist, ziehe dessen Höhe ab
+      if (detailsElement && detailsElement.open) {
+        const detailsContent = detailsElement.querySelector('summary + div');
+        if (detailsContent) {
+          leftHeight = leftHeight - detailsContent.offsetHeight;
+        }
+      }
+      
+      const mainRightPanel = rightColumn.querySelector('div:first-child');
+      
+      if (mainRightPanel) {
+        mainRightPanel.style.minHeight = `${leftHeight}px`;
+      }
+    }
+  }
+  
+  // Details Element Animation und Auto-Scroll
+  function setupDetailsAnimation() {
+    const detailsElement = document.querySelector('details');
+    if (detailsElement) {
+      detailsElement.addEventListener('toggle', function() {
+        // Wenn Details geöffnet wird, scrolle um sicherzustellen, dass der neue Inhalt sichtbar ist
+        if (this.open) {
+          setTimeout(() => {
+            this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            adjustHeight(); // Aktualisiere die Höhen nach dem Aufklappen
+          }, 100);
+        } else {
+          // Wenn geschlossen, aktualisiere ebenfalls die Höhen
+          setTimeout(() => {
+            adjustHeight();
+          }, 100);
+        }
+      });
+    }
+  }
+  
+  // Initialisierung der Bildupload-Funktionalität
+  function setupImageUploadPreview() {
+    const profileImageInput = document.getElementById('profileImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const resetImageBtn = document.getElementById('resetImageBtn');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const dropZone = document.getElementById('dropZone');
+    const defaultImageSrc = '{{ url_for("static", filename="student.png") }}';
+    
+    // Funktion zur Vorschau des ausgewählten Bildes
+    function previewSelectedImage(file) {
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+          // Füge Klasse hinzu für visuelles Feedback
+          imagePreviewContainer.classList.add('ring-2', 'ring-berlin-blue');
+          // Visuelles Feedback für den Dropzone-Bereich
+          dropZone.classList.add('border-berlin-blue', 'bg-blue-50');
+          dropZone.classList.remove('border-dashed');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    // Event-Listener für Dateiauswahl
+    if (profileImageInput) {
+      profileImageInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+          previewSelectedImage(this.files[0]);
+        }
+      });
+      
+      // Klick auf die Vorschau öffnet auch den Datei-Dialog
+      imagePreviewContainer.addEventListener('click', function() {
+        profileImageInput.click();
+      });
+    }
+    
+    // Drag-and-Drop Funktionalität
+    if (dropZone) {
+      // Verhindere das Standard-Drag-and-Drop-Verhalten des Browsers
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+      });
+      
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      // Visuelles Feedback während des Drags
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+      });
+      
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+      });
+      
+      function highlight() {
+        dropZone.classList.add('border-berlin-blue', 'bg-blue-50');
+      }
+      
+      function unhighlight() {
+        dropZone.classList.remove('border-berlin-blue', 'bg-blue-50');
+      }
+      
+      // Verarbeitung der gedragten Dateien
+      dropZone.addEventListener('drop', handleDrop, false);
+      
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+          profileImageInput.files = dt.files;
+          previewSelectedImage(file);
+        } else {
+          alert('Bitte nur JPG oder PNG Bilder hochladen.');
+        }
+      }
+    }
+    
+    // Reset-Button Funktionalität
+    if (resetImageBtn) {
+      resetImageBtn.addEventListener('click', function() {
+        imagePreview.src = defaultImageSrc;
+        if (profileImageInput) {
+          profileImageInput.value = '';
+        }
+        imagePreviewContainer.classList.remove('ring-2', 'ring-berlin-blue');
+        dropZone.classList.remove('border-berlin-blue', 'bg-blue-50');
+        dropZone.classList.add('border-dashed');
+      });
+    }
+  }
+  
+  // Theme Icon Upload- und Preview-Funktionalität
+  function setupThemeIconUploadPreview() {
+    const themeIconInput = document.getElementById('theme_icon');
+    const themeIconPreview = document.getElementById('themeIconPreview');
+    const resetThemeIconBtn = document.getElementById('resetThemeIconBtn');
+    const themeIconPreviewContainer = document.getElementById('themeIconPreviewContainer');
+    const themeDropZone = document.getElementById('themeDropZone');
+    const defaultThemeIconSrc = '{{ url_for("static", filename="studentVC-logo-sora-cropped-darkmode.png") }}';
+    
+    // Helper function to prevent default browser behavior - moved up to ensure it's available
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    // Funktion zur Vorschau des ausgewählten Bildes
+    function previewSelectedThemeIcon(file) {
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          themeIconPreview.src = e.target.result;
+          // Füge Klasse hinzu für visuelles Feedback
+          themeIconPreviewContainer.classList.add('ring-2', 'ring-berlin-blue');
+          // Visuelles Feedback für den Dropzone-Bereich
+          themeDropZone.classList.add('border-berlin-blue', 'bg-blue-50');
+          themeDropZone.classList.remove('border-dashed');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    // Event-Listener für Dateiauswahl
+    if (themeIconInput) {
+      themeIconInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+          previewSelectedThemeIcon(this.files[0]);
+        }
+      });
+      
+      // Klick auf die Vorschau öffnet auch den Datei-Dialog
+      themeIconPreviewContainer.addEventListener('click', function() {
+        themeIconInput.click();
+      });
+    }
+    
+    // Drag-and-Drop Funktionalität
+    if (themeDropZone) {
+      // Verhindere das Standard-Drag-and-Drop-Verhalten des Browsers
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        themeDropZone.addEventListener(eventName, preventDefaults, false);
+      });
+      
+      // Visuelles Feedback während des Drags
+      ['dragenter', 'dragover'].forEach(eventName => {
+        themeDropZone.addEventListener(eventName, highlightTheme, false);
+      });
+      
+      ['dragleave', 'drop'].forEach(eventName => {
+        themeDropZone.addEventListener(eventName, unhighlightTheme, false);
+      });
+      
+      function highlightTheme() {
+        themeDropZone.classList.add('border-berlin-blue', 'bg-blue-50');
+      }
+      
+      function unhighlightTheme() {
+        themeDropZone.classList.remove('border-berlin-blue', 'bg-blue-50');
+      }
+      
+      // Verarbeitung der gedragten Dateien
+      themeDropZone.addEventListener('drop', handleThemeDrop, false);
+      
+      function handleThemeDrop(e) {
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        
+        if (file && file.type.startsWith('image/')) {
+          themeIconInput.files = dt.files;
+          previewSelectedThemeIcon(file);
+        } else {
+          alert('Bitte nur Bilddateien hochladen.');
+        }
+      }
+    }
+    
+    // Reset-Button Funktionalität
+    if (resetThemeIconBtn) {
+      resetThemeIconBtn.addEventListener('click', function() {
+        themeIconPreview.src = defaultThemeIconSrc;
+        if (themeIconInput) {
+          themeIconInput.value = '';
+        }
+        themeIconPreviewContainer.classList.remove('ring-2', 'ring-berlin-blue');
+        themeDropZone.classList.remove('border-berlin-blue', 'bg-blue-50');
+        themeDropZone.classList.add('border-dashed');
+      });
+    }
+  }
+  
+  // PRÄZISE HERZCHIRURGISCHE FUNKTION FÜR ZUFALLSDATEN
+  function fillRandomData() {
+    try {
+      console.log("[Herzchirurg] Operation Zufallsdaten wird durchgeführt...");
+      
+      // Präzise ausgewählte Vornamen und Nachnamen
+      const vorname = [
+        'Anna', 'Max', 'Laura', 'Felix', 'Sophie', 'Leon', 'Emma', 'Paul', 'Julia', 'Lukas',
+        'Lena', 'Jonas', 'Hannah', 'Niklas', 'Leonie', 'Tim', 'Marie', 'Jan', 'Sarah', 'Philipp'
+      ];
+      
+      const nachname = [
+        'Müller', 'Schmidt', 'Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker',
+        'Schulz', 'Hoffmann', 'Schäfer', 'Koch', 'Bauer', 'Richter', 'Klein', 'Wolf'
+      ];
+      
+      // PRÄZISE Berechnung der Zufallswerte mit 100% Erfolgsgarantie
+      const randomFirstName = vorname[Math.floor(Math.random() * vorname.length)];
+      const randomLastName = nachname[Math.floor(Math.random() * nachname.length)];
+      const randomStudentId = Math.floor(100000 + Math.random() * 900000).toString();
+      const randomStudentIdPrefix = Math.floor(10000 + Math.random() * 90000).toString();
+      
+      console.log(`[Herzchirurg] Generierte Daten: ${randomFirstName} ${randomLastName}, ID: ${randomStudentId}, Prefix: ${randomStudentIdPrefix}`);
+      
+      // DIREKTE und PRÄZISE DOM-Manipulation - jedes Element einzeln mit Fehlerprüfung
+      const firstNameInput = document.getElementById("firstName");
+      if (firstNameInput) {
+        firstNameInput.value = randomFirstName;
+        console.log(`[Herzchirurg] Vorname gesetzt: ${randomFirstName}`);
+      }
+      
+      const lastNameInput = document.getElementById("lastName");
+      if (lastNameInput) {
+        lastNameInput.value = randomLastName;
+        console.log(`[Herzchirurg] Nachname gesetzt: ${randomLastName}`);
+      }
+      
+      const studentIdInput = document.getElementById("studentId");
+      if (studentIdInput) {
+        studentIdInput.value = randomStudentId;
+        console.log(`[Herzchirurg] StudentID gesetzt: ${randomStudentId}`);
+      }
+      
+      const studentIdPrefixInput = document.getElementById("studentIdPrefix");
+      if (studentIdPrefixInput) {
+        studentIdPrefixInput.value = randomStudentIdPrefix;
+        console.log(`[Herzchirurg] StudentID-Prefix gesetzt: ${randomStudentIdPrefix}`);
+      }
+      
+      // DOPPELTE visuelle Bestätigung
+      const randomBtn = document.getElementById('randomDataBtn');
+      if (randomBtn) {
+        // Grünes Feedback für Erfolg
+        randomBtn.classList.add('bg-green-100', 'text-green-800', 'border-green-300');
+        randomBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Daten gesetzt';
+        
+        // Nach 800ms zurücksetzen
+        setTimeout(() => {
+          randomBtn.classList.remove('bg-green-100', 'text-green-800', 'border-green-300');
+          randomBtn.innerHTML = '<i class="fas fa-random mr-1"></i> Zufäll. Daten';
+        }, 800);
+      }
+      
+      console.log("[Herzchirurg] Operation Zufallsdaten ERFOLGREICH abgeschlossen ✓");
+      return true;
+    } catch (fehler) {
+      console.error("[Herzchirurg] FEHLER bei Zufallsdaten:", fehler);
+      alert("Die Zufallsdaten konnten nicht gesetzt werden. Bitte kontaktieren Sie den Herzchirurgen.");
+      return false;
+    }
+  }
+
+  // Führt die Anpassung aus, wenn das Dokument geladen ist und bei Größenänderungen
+  document.addEventListener('DOMContentLoaded', function() {
+    adjustHeight();
+    setupDetailsAnimation();
+    setupImageUploadPreview();
+    setupThemeIconUploadPreview();
+    
+    // 🩺 HERZCHIRURG FIX: Bildvorschau-Visual-State nach Form-Submit wiederherstellen
+    {% if form_data and form_data.profile_image %}
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const dropZone = document.getElementById('dropZone');
+    if (imagePreviewContainer && dropZone) {
+      // Visuelle Indikatoren für hochgeladenes Bild setzen
+      imagePreviewContainer.classList.add('ring-2', 'ring-berlin-blue');
+      dropZone.classList.add('border-berlin-blue', 'bg-blue-50');
+      dropZone.classList.remove('border-dashed');
+      console.log("[Herzchirurg] ✓ Profilbild-Preview-State wiederhergestellt");
+    }
+    {% endif %}
+    
+    {% if form_data and form_data.theme_icon %}
+    const themeIconPreviewContainer = document.getElementById('themeIconPreviewContainer');
+    const themeDropZone = document.getElementById('themeDropZone');
+    if (themeIconPreviewContainer && themeDropZone) {
+      // Visuelle Indikatoren für hochgeladenes Logo setzen
+      themeIconPreviewContainer.classList.add('ring-2', 'ring-berlin-blue');
+      themeDropZone.classList.add('border-berlin-blue', 'bg-blue-50');
+      themeDropZone.classList.remove('border-dashed');
+      console.log("[Herzchirurg] ✓ Theme-Icon-Preview-State wiederhergestellt");
+    }
+    {% endif %}
+    
+    // Event-Listener für den Zufallsdaten-Button - REDUNDANT als BACKUP-SYSTEM
+    const randomDataBtn = document.getElementById('randomDataBtn');
+    if (randomDataBtn) {
+      randomDataBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        fillRandomData();
+        return false;
+      });
+      console.log("[Herzchirurg] Random-Data-Button erfolgreich mit BACKUP-EVENT initialisiert");
+    }
+    
+    window.addEventListener('resize', adjustHeight);
+    
+    // HERZCHIRURG: FINALE ÜBERPRÜFUNG DES BUTTONS NACH TIMEOUT
+    setTimeout(() => {
+      const btnCheck = document.getElementById('randomDataBtn');
+      if (btnCheck) {
+        console.log("[Herzchirurg] FINALE Überprüfung: Random-Data-Button existiert ✓");
+        // Zusätzliche Sicherheit durch direktes Zuweisen der onclick-Funktion
+        btnCheck.onclick = function(e) {
+          if(e) e.preventDefault();
+          console.log("[Herzchirurg] Button wurde über onclick-Fallback geklickt");
+          return fillRandomData();
+        };
+      } else {
+        console.error("[Herzchirurg] WARNUNG: Button konnte nicht gefunden werden!");
+      }
+    }, 500);
+  });
+
+  // HERZCHIRURG: GLOBALE NOTFALLFUNKTION FÜR DEN ZUFALLSDATEN-BUTTON
+  window.notfallRandomDaten = function() {
+    console.log("[Herzchirurg] NOTFALL-FUNKTION AKTIVIERT");
+    return fillRandomData();
+  };
+  
+  // Funktion zum Drucken des QR-Codes und der Daten
+  function printCredential() {
+    // Erstellen einer Druck-optimierten Ansicht
+    const printWindow = window.open('', '_blank');
+    
+    if (!printWindow) {
+      alert("Bitte erlauben Sie Pop-ups, um den QR-Code drucken zu können.");
+      return;
+    }
+    
+    // QR Code aus dem DOM holen
+    const qrCodeImg = document.getElementById('picture');
+    const qrCodeSrc = qrCodeImg ? qrCodeImg.src : '';
+    
+    // Formulardaten sammeln - Servereitige form_data oder direkt aus dem DOM
+    let firstName, lastName, studentId, studentIdPrefix, themeName;
+    
+    // Lese die Werte entweder aus den vorausgefüllten Feldern oder direkt aus den Eingabefeldern
+    firstName = document.getElementById('firstName').value || document.getElementById('firstName').placeholder;
+    lastName = document.getElementById('lastName').value || document.getElementById('lastName').placeholder;
+    studentId = document.getElementById('studentId').value || document.getElementById('studentId').placeholder;
+    studentIdPrefix = document.getElementById('studentIdPrefix').value || document.getElementById('studentIdPrefix').placeholder;
+    themeName = document.getElementById('theme_name').value || '';
+    
+    // Druckbares HTML generieren
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="de">
+      <head>
+        <meta charset="UTF-8">
+        <title>StudentVC für ${firstName} ${lastName}</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 2cm;
+            color: #333;
+          }
+          .container {
+            max-width: 800px;
+            margin: 0 auto;
+          }
+          .header {
+            border-bottom: 2px solid #18206C;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+          }
+          .header h1 {
+            color: #18206C;
+            margin: 0;
+          }
+          .qr-section {
+            display: flex;
+            margin-bottom: 30px;
+          }
+          .qr-code {
+            flex: 0 0 200px;
+            margin-right: 20px;
+          }
+          .qr-code img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: white;
+          }
+          .student-info {
+            flex: 1;
+          }
+          .info-table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+          }
+          .info-table th {
+            background-color: #f9f9f9;
+            width: 40%;
+          }
+          .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+          }
+          .instructions {
+            background-color: #f0f4ff;
+            border-left: 4px solid #18206C;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+          }
+          @media print {
+            body {
+              margin: 1cm;
+            }
+            .no-print {
+              display: none;
+            }
+            button {
+              display: none;
+            }
+            .instructions {
+              border: 1px solid #ddd;
+              background-color: #f9f9f9;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Verifiable Credential - Studierendenausweis</h1>
+            <p>${themeName || 'Technische Universität Berlin'}</p>
+          </div>
+          
+          <div class="qr-section">
+            <div class="qr-code">
+              <img src="${qrCodeSrc}" alt="QR Code für Credentials">
+            </div>
+            <div class="student-info">
+              <h2>Studierendendendaten</h2>
+              <table class="info-table">
+                <tr>
+                  <th>Vorname</th>
+                  <td>${firstName}</td>
+                </tr>
+                <tr>
+                  <th>Nachname</th>
+                  <td>${lastName}</td>
+                </tr>
+                <tr>
+                  <th>Matrikelnummer</th>
+                  <td>${studentId}</td>
+                </tr>
+                <tr>
+                  <th>Matrikelnummer-Präfix</th>
+                  <td>${studentIdPrefix}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="instructions">
+            <h3>Anleitung zum Import in Ihre Wallet-App</h3>
+            <ol>
+              <li>Öffnen Sie Ihre Wallet-App</li>
+              <li>Wählen Sie die Option zum Scannen eines QR-Codes</li>
+              <li>Scannen Sie den abgebildeten QR-Code</li>
+              <li>Folgen Sie den Anweisungen in der Wallet-App zum Speichern des Credentials</li>
+            </ol>
+          </div>
+          
+          <div class="footer">
+            <p>Dieses Dokument wurde am ${new Date().toLocaleDateString('de-DE')} um ${new Date().toLocaleTimeString('de-DE')} generiert.</p>
+            <p>Powered by StudentVC BBS+ Verifiable Credentials</p>
+          </div>
+          
+          <div class="no-print" style="margin-top: 30px; text-align: center;">
+            <button onclick="window.print();" style="padding: 10px 20px; background: #18206C; color: white; border: none; cursor: pointer; border-radius: 4px;">
+              Drucken
+            </button>
+          </div>
+        </div>
+      </body>
+      </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // Fokus auf das neue Fenster setzen
+    printWindow.focus();
+    
+    // Nach kurzer Verzögerung den Druckdialog öffnen
+    setTimeout(() => {
+      printWindow.print();
+    }, 500);
+  }
+
+  // =============================================================================
+  // CSV IMPORT FUNCTIONALITY
+  // =============================================================================
+
+  let csvStudentData = [];
+  let selectedStudentIds = new Set();
+
+  function openCsvModal() {
+      let modal = document.getElementById('csvModal');
+      if (!modal) {
+          modal = createCsvModal();
+          document.body.appendChild(modal);
+      }
+      modal.classList.remove('hidden');
+  }
+
+  function closeCsvModal() {
+      const modal = document.getElementById('csvModal');
+      if (modal) modal.classList.add('hidden');
+  }
+
+  function createCsvModal() {
+      const modal = document.createElement('div');
+      modal.id = 'csvModal';
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
+          <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+            <h3 class="text-lg font-bold text-white flex items-center">
+              <i class="fas fa-file-csv mr-2"></i>
+              CSV Import - Studierendendaten
+            </h3>
+          </div>
+
+          <div class="p-6 overflow-y-auto flex-1">
+            <p class="text-sm text-gray-600 mb-4">
+              Importieren Sie Studierendendaten aus einer CSV-Datei. Erforderliche Spalten:
+              <code class="bg-gray-100 px-1 rounded">firstName</code>,
+              <code class="bg-gray-100 px-1 rounded">lastName</code>,
+              <code class="bg-gray-100 px-1 rounded">studentId</code>
+            </p>
+
+            <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+              <span class="text-sm text-blue-800"><i class="fas fa-download mr-1"></i> CSV-Vorlage</span>
+              <a href="/issuer/csv-template" download class="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-md">Download</a>
+            </div>
+
+            <div class="mb-4">
+              <div id="csvDropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer">
+                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                <p class="text-sm text-gray-600">CSV-Datei hierher ziehen oder klicken</p>
+                <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleCsvFile(this)">
+              </div>
+              <p id="csvFileName" class="mt-2 text-sm text-gray-500 hidden"><i class="fas fa-file mr-1"></i> <span></span></p>
+            </div>
+
+            <div id="csvPreviewArea" class="hidden">
+              <div class="flex justify-between items-center mb-2">
+                <label class="text-sm font-medium text-gray-700">Importierte Studierende</label>
+                <span id="csvPreviewCount" class="text-xs text-gray-500"></span>
+              </div>
+              <div class="max-h-64 overflow-y-auto border border-gray-200 rounded-lg">
+                <table class="w-full text-xs">
+                  <thead class="bg-gray-100 sticky top-0">
+                    <tr>
+                      <th class="px-3 py-2 text-left w-8"><input type="checkbox" id="selectAllCsv" onchange="toggleSelectAllCsv()"></th>
+                      <th class="px-3 py-2 text-left">Vorname</th>
+                      <th class="px-3 py-2 text-left">Nachname</th>
+                      <th class="px-3 py-2 text-left">Matrikel-Nr.</th>
+                      <th class="px-3 py-2 text-left">Status</th>
+                      <th class="px-3 py-2 text-center">Aktion</th>
+                    </tr>
+                  </thead>
+                  <tbody id="csvPreviewBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="csvErrorArea" class="hidden mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p class="text-sm text-red-800 font-medium"><i class="fas fa-exclamation-triangle mr-1"></i> Fehler</p>
+              <ul id="csvErrorList" class="text-xs text-red-700 list-disc list-inside mt-1"></ul>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-t">
+            <span id="selectionInfo" class="text-sm text-gray-600"><span id="selectedCount">0</span> ausgewählt</span>
+            <div class="flex space-x-3">
+              <button type="button" onclick="closeCsvModal()" class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg">Schließen</button>
+              <button type="button" id="bulkGenerateBtn" onclick="generateSelectedQRCodes()" disabled class="px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg disabled:opacity-50">
+                <i class="fas fa-qrcode mr-1"></i> QR-Codes generieren
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      setTimeout(() => {
+          const dropZone = document.getElementById('csvDropZone');
+          const fileInput = document.getElementById('csvFileInput');
+          if (dropZone && fileInput) {
+              dropZone.addEventListener('click', () => fileInput.click());
+              dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-green-500', 'bg-green-50'); });
+              dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-green-500', 'bg-green-50'));
+              dropZone.addEventListener('drop', (e) => {
+                  e.preventDefault();
+                  dropZone.classList.remove('border-green-500', 'bg-green-50');
+                  if (e.dataTransfer.files.length) {
+                      fileInput.files = e.dataTransfer.files;
+                      handleCsvFile(fileInput);
+                  }
+              });
+          }
+      }, 100);
+
+      return modal;
+  }
+
+  function handleCsvFile(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      document.getElementById('csvFileName').querySelector('span').textContent = file.name;
+      document.getElementById('csvFileName').classList.remove('hidden');
+
+      const formData = new FormData();
+      formData.append('csvFile', file);
+
+      fetch('/issuer/import-csv', { method: 'POST', body: formData })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  csvStudentData = data.students;
+                  //selectedStudentIds.clear();
+                  renderCsvTable();
+                  document.getElementById('csvPreviewArea').classList.remove('hidden');
+                  document.getElementById('csvPreviewCount').textContent = `${data.valid_rows} von ${data.total_rows} gültig`;
+
+                  // Update status bar
+                  document.getElementById('csvStatusBar').classList.remove('hidden');
+                  document.getElementById('csvStudentCount').textContent = data.valid_rows;
+
+                  if (data.errors && data.errors.length > 0) {
+                      document.getElementById('csvErrorArea').classList.remove('hidden');
+                      document.getElementById('csvErrorList').innerHTML = data.errors.slice(0, 5).map(e => `<li>Zeile ${e.row}: ${e.error}</li>`).join('');
+                  } else {
+                      document.getElementById('csvErrorArea').classList.add('hidden');
+                  }
+              } else {
+                  document.getElementById('csvErrorArea').classList.remove('hidden');
+                  document.getElementById('csvErrorList').innerHTML = `<li>${data.error}</li>`;
+              }
+          })
+          .catch(error => {
+              console.error('CSV upload error:', error);
+              alert('Fehler beim Hochladen der CSV-Datei');
+          });
+  }
+
+  function renderCsvTable() {
+      const tbody = document.getElementById('csvPreviewBody');
+      tbody.innerHTML = csvStudentData.map(s => `
+                <tr class="border-t border-gray-100 hover:bg-gray-50">
+                  <td class="px-3 py-2"><input type="checkbox" class="csv-student-cb" data-id="${s.id}" onchange="toggleStudentSelection('${s.id}')" ${selectedStudentIds.has(s.id) ? 'checked' : ''}></td>
+                  <td class="px-3 py-2 font-medium">${escapeHtml(s.firstName)}</td>
+                  <td class="px-3 py-2 font-medium">${escapeHtml(s.lastName)}</td>
+                  <td class="px-3 py-2 font-mono text-[10px]">${escapeHtml(s.studentId)}</td>
+                  <td class="px-3 py-2">${getStatusBadge(s.status)}</td>
+                  <td class="px-3 py-2 text-center">
+                    <div class="flex items-center justify-center space-x-2">
+                      ${s.status === 'qr_generated'
+          ? `<button onclick="viewStudentQR('${s.id}')" title="QR ansehen" class="text-xs text-blue-600 hover:opacity-70 transition-all">
+                             <i class="fas fa-eye fa-lg"></i>
+                           </button>`
+          : `<button onclick="generateSingleQR('${s.id}')" title="Generieren" class="text-xs text-gray-400 hover:text-green-600">
+                             <i class="fas fa-qrcode"></i>
+                           </button>`
+      }
+                      <button onclick="fillFormFromStudent('${s.id}')" title="Bearbeiten" class="text-xs text-gray-400 hover:text-gray-800">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              `).join('');
+      updateSelectionUI();
+  }
+
+  function getStatusBadge(status) {
+      const badges = {
+          'pending': '<span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded text-xs">Ausstehend</span>',
+          'qr_generated': '<span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">QR erstellt</span>',
+      };
+      return badges[status] || badges['pending'];
+  }
+
+  function toggleStudentSelection(id) {
+      if (selectedStudentIds.has(id)) {
+          selectedStudentIds.delete(id);
+      } else {
+          selectedStudentIds.add(id);
+      }
+      updateSelectionUI();
+  }
+
+  function toggleSelectAllCsv() {
+      const selectAll = document.getElementById('selectAllCsv');
+      if (selectAll.checked) {
+          csvStudentData.forEach(s => selectedStudentIds.add(s.id));
+      } else {
+          selectedStudentIds.clear();
+      }
+      document.querySelectorAll('.csv-student-cb').forEach(cb => cb.checked = selectAll.checked);
+      updateSelectionUI();
+  }
+
+  function updateSelectionUI() {
+      document.getElementById('selectedCount').textContent = selectedStudentIds.size;
+      document.getElementById('bulkGenerateBtn').disabled = selectedStudentIds.size === 0;
+  }
+
+  function generateSingleQR(studentId) {
+      fetch(`/issuer/students/${studentId}/generate-qr`, { method: 'POST' })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  const idx = csvStudentData.findIndex(s => s.id === studentId);
+                  if (idx !== -1) csvStudentData[idx] = data.student;
+                  renderCsvTable();
+                  showQRModal(data.student, data.qrCode, data.credentialLink);
+              } else {
+                  alert('Fehler: ' + data.error);
+              }
+          });
+  }
+
+  function generateSelectedQRCodes() {
+      const idsToGenerate = Array.from(selectedStudentIds);
+      if (idsToGenerate.length === 0) return;
+
+      const btn = document.getElementById('bulkGenerateBtn');
+      const originalContent = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Generiere...';
+
+      fetch('/issuer/students/generate-bulk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ studentIds: idsToGenerate })
+      })
+          .then(response => response.json())
+          .then(bulkData => {
+              btn.disabled = false;
+              btn.innerHTML = originalContent;
+
+              if (bulkData.success && bulkData.results && bulkData.results.length > 0) {
+                  console.log('[Bulk] Generated', bulkData.results.length, 'QR codes');
+
+                  // Update local csvStudentData with the results from the server
+                  for (const result of bulkData.results) {
+                      const studentIndex = csvStudentData.findIndex(s => s.id === result.id);
+                      if (studentIndex !== -1) {
+                          csvStudentData[studentIndex].status = 'qr_generated';
+                          csvStudentData[studentIndex].qrCode = result.qrCode;
+                          csvStudentData[studentIndex].credentialLink = result.credentialLink;
+                          csvStudentData[studentIndex].viewed = false;
+                      }
+                  }
+
+                  renderCsvTable();
+
+                  // Generate report directly from bulk results (not from csvStudentData)
+                  generateReportFromBulkResults(bulkData.results);
+              } else {
+                  console.error('[Bulk] Generation failed:', bulkData);
+                  alert('Fehler bei der QR-Code-Generierung: ' + (bulkData.error || 'Unbekannter Fehler'));
+              }
+          })
+          .catch(error => {
+              btn.disabled = false;
+              btn.innerHTML = originalContent;
+              console.error('[Bulk] Fetch error:', error);
+              alert('Netzwerkfehler bei der QR-Code-Generierung');
+          });
+  }
+
+  // New function: Generate report directly from bulk API results
+  function generateReportFromBulkResults(results) {
+      if (!results || results.length === 0) {
+          console.warn('[Report] No results provided');
+          return;
+      }
+
+      console.log('[Report] Generating report for', results.length, 'students from bulk results');
+
+      const reportWindow = window.open('', '_blank');
+      if (!reportWindow) {
+          alert('Bitte erlauben Sie Pop-ups, um den Report anzuzeigen.');
+          return;
+      }
+
+      const themeName = document.getElementById('theme_name').value || 'StudentVC';
+
+      // Build cards from the results - find student details from csvStudentData
+      const cardsHtml = results.map(result => {
+          // Get full student info from local data
+          const student = csvStudentData.find(s => s.id === result.id);
+          const firstName = student?.firstName || result.name?.split(' ')[0] || '';
+          const lastName = student?.lastName || result.name?.split(' ').slice(1).join(' ') || '';
+          const studentId = student?.studentId || '';
+
+          return `
+                <div style="border: 1px solid #eee; padding: 20px; text-align: center; border-radius: 12px; page-break-inside: avoid; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #eee;">
+                    <h3 style="margin: 0; font-size: 18px; color: #111;">${escapeHtml(firstName)} ${escapeHtml(lastName)}</h3>
+                    <div style="font-family: monospace; font-size: 13px; color: #666; margin-top: 4px;">ID: ${escapeHtml(studentId)}</div>
+                  </div>
+                  <img src="data:image/png;base64,${result.qrCode}" style="width: 200px; height: 200px; display: block; margin: 0 auto;" />
+                </div>
+              `;
+      }).join('');
+
+      reportWindow.document.write(`
+            <html>
+              <head><title>QR-Codes Report - ${escapeHtml(themeName)}</title></head>
+              <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; padding: 40px;">
+                <div style="max-width: 1000px; margin: 0 auto;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #18206c; padding-bottom: 15px;">
+                    <h1 style="margin: 0; color: #18206c; font-size: 24px;">Student QR-Codes Report</h1>
+                    <button onclick="window.print()" style="padding: 10px 20px; background: #18206c; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Download PDF / Print</button>
+                  </div>
+                  <p style="color: #666; margin-bottom: 20px;">${results.length} QR-Code(s) generiert am ${new Date().toLocaleDateString('de-DE')}</p>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+                    ${cardsHtml}
+                  </div>
+                </div>
+              </body>
+            </html>
+          `);
+      reportWindow.document.close();
+  }
+
+  function fillFormFromStudent(studentId) {
+      const student = csvStudentData.find(s => s.id === studentId);
+      if (!student) return;
+
+      document.getElementById('firstName').value = student.firstName || '';
+      document.getElementById('lastName').value = student.lastName || '';
+      document.getElementById('studentId').value = student.studentId || '';
+      document.getElementById('studentIdPrefix').value = student.studentIdPrefix || '';
+
+      closeCsvModal();
+  }
+
+  function viewStudentQR(studentId) {
+      const student = csvStudentData.find(s => s.id === studentId);
+      if (student && student.qrCode) {
+          showQRModal(student, student.qrCode, student.credentialLink);
+
+          // Mark as viewed on server
+          if (!student.viewed) {
+              fetch(`/issuer/students/${studentId}/mark-viewed`, { method: 'POST' })
+                  .then(() => {
+                      student.viewed = true;
+                      renderCsvTable();
+                  });
+          }
+      }
+  }
+
+  function showQRModal(student, qrCode, link) {
+      let modal = document.getElementById('qrViewModal');
+      if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'qrViewModal';
+          modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+          document.body.appendChild(modal);
+      }
+
+      modal.innerHTML = `
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
+          <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-xl">
+            <h3 class="text-lg font-bold text-white">${escapeHtml(student.firstName)} ${escapeHtml(student.lastName)}</h3>
+            <p class="text-blue-100 text-sm">Matrikel-Nr.: ${escapeHtml(student.studentId)}</p>
+          </div>
+          <div class="p-6 text-center">
+            <img src="data:image/png;base64,${qrCode}" alt="QR Code" class="mx-auto mb-4 border rounded-lg" style="max-width: 200px;">
+            <p class="text-sm text-gray-600 mb-4"><i class="fas fa-mobile-alt mr-1"></i> Mit Wallet-App scannen</p>
+          </div>
+          <div class="bg-gray-50 px-6 py-4 rounded-b-xl">
+            <button onclick="document.getElementById('qrViewModal').classList.add('hidden')" class="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg">Schließen</button>
+          </div>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+  }
+
+  function showStudentTable() {
+      openCsvModal();
+  }
+
+  function clearCsvImport() {
+      if (!confirm('Alle importierten Studierenden löschen?')) return;
+
+      fetch('/issuer/students/clear', { method: 'POST' })
+          .then(() => {
+              csvStudentData = [];
+              selectedStudentIds.clear();
+              document.getElementById('csvStatusBar').classList.add('hidden');
+              document.getElementById('csvPreviewArea').classList.add('hidden');
+          });
+  }
+
+  function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text || '';
+      return div.innerHTML;
+  }
+
+  // Check for existing import on page load
+  document.addEventListener('DOMContentLoaded', function() {
+      fetch('/issuer/students')
+          .then(r => r.json())
+          .then(data => {
+              if (data.success && data.students.length > 0) {
+                  csvStudentData = data.students;
+                  document.getElementById('csvStatusBar').classList.remove('hidden');
+                  document.getElementById('csvStudentCount').textContent = data.students.length;
+              }
+          })
+          .catch(() => {});
+  });
+</script>

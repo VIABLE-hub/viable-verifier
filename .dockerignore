@@ -1,0 +1,59 @@
+# Version control
+.git/
+.gitignore
+
+# Documentation
+docs/
+*.md
+README*
+
+# Tests
+tests/
+*_test.py
+test_*
+
+# Development
+scripts/development/
+.vscode/
+.idea/
+
+# Archives
+archives/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Virtual environments
+venv/
+test_env/
+env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local History
+.lh/
+
+# Build artifacts
+target/
+.cache/
+coverage/
+
+# Node.js
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Backup files
+*backup*
+*.bak 

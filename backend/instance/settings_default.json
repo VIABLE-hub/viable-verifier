@@ -1,0 +1,85 @@
+{
+    "disclosure": {
+        "studentID": true,
+        "studentStatus": true,
+        "name": false,
+        "email": false,
+        "course": false,
+        "semester": false,
+        "faculty": false,
+        "universityName": false,
+        "issuanceDate": false,
+        "expiryDate": false,
+        "address": false,
+        "birthdate": false,
+        "personalID": false,
+        "firstName": true,
+        "lastName": true,
+        "dateOfBirth": false,
+        "studentId": true,
+        "studentIdPrefix": true,
+        "studyProgram": true,
+        "issuanceCount": false,
+        "profileImage": false,
+        "themeName": false,
+        "themeIcon": false,
+        "bgColorCard": false,
+        "fgColorTitle": false,
+        "accentColor": false,
+        "textColor": false,
+        "validFrom": false,
+        "issuer": false,
+        "credentialSchema": false
+    },
+    "appearance": {
+        "theme": "light",
+        "primaryColor": "#18206c",
+        "accentColor": "#304a9f",
+        "logoUrl": "",
+        "customCss": "",
+        "displayDensity": "compact",
+        "language": "de"
+    },
+    "notifications": {
+        "emailNotifications": false,
+        "credentialExpiry": false,
+        "keyRotation": false,
+        "securityAlerts": false,
+        "digestFrequency": "weekly",
+        "webhookUrl": ""
+    },
+    "advanced": {
+        "autoBackup": false,
+        "backupFrequency": "daily",
+        "maxBackups": 10,
+        "apiAccess": false,
+        "debugMode": false,
+        "sessionTimeout": 30,
+        "ipRestrictions": []
+    },
+    "network": {
+        "issuer_ip": "192.168.178.122",
+        "verifier_ip": "192.168.178.122",
+        "issuer_port": "8080",
+        "verifier_port": "8080"
+    },
+    "keys": {
+        "did_method": "did:web",
+        "key_type": "Ed25519",
+        "auto_rotate": false,
+        "rotation_interval_days": 90
+    },
+    "trust": {
+        "trusted_issuers": [
+            ""
+        ],
+        "trusted_verifiers": [
+            ""
+        ]
+    },
+    "_meta": {
+        "last_modified": "2025-06-14T01:49:09.240111",
+        "modified_by": "system",
+        "version": 6
+    }
+}
