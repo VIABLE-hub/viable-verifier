@@ -63,26 +63,8 @@
                     System
                 </a>
             </li>
-            <li class="mr-2">
-                <a href="#" 
-                   @click.prevent="switchToTab('api')"
-                   :class="{'inline-block p-4 text-berlin-blue border-b-2 border-berlin-blue rounded-t-lg active dark:text-berlin-blue dark:border-berlin-blue': activeTab === 'api', 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300': activeTab !== 'api'}">
-                    <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 21H5v-6l2.257-2.257A6 6 0 1119 9z"></path>
-                    </svg>
-                    API
-                </a>
-            </li>
-            <li class="mr-2">
-                <a href="#" 
-                   @click.prevent="switchToTab('keys')"
-                   :class="{'inline-block p-4 text-berlin-blue border-b-2 border-berlin-blue rounded-t-lg active dark:text-berlin-blue dark:border-berlin-blue': activeTab === 'keys', 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300': activeTab !== 'keys'}">
-                    <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 21H5v-6l2.257-2.257A6 6 0 1119 9z"></path>
-                    </svg>
-                    Schlüsselverwaltung
-                </a>
-            </li>
+            <!-- API Tab removed -->
+            <!-- Keys Tab removed -->
             <li class="mr-2">
                 <a href="#" 
                    @click.prevent="switchToTab('selective-disclosure')"
@@ -114,15 +96,9 @@
             {% include 'settings/tab_database.html' %}
         </div>
         
-        <!-- API Tab -->
-        <div x-show="activeTab === 'api'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-            {% include 'settings/tab_api.html' %}
-        </div>
+        <!-- API Tab removed -->
         
-        <!-- Keys Tab -->
-        <div x-show="activeTab === 'keys'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-            {% include 'settings/tab_keys.html' %}
-        </div>
+        <!-- Keys Tab removed -->
         
         <!-- Selective Disclosure Tab -->
         <div x-show="activeTab === 'selective-disclosure'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">

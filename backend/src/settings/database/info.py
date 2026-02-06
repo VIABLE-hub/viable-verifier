@@ -5,7 +5,7 @@ import sqlite3
 from datetime import datetime
 
 from ... import db
-from ...models import VC_validity
+# from ...models import VC_validity
 from ..utils import format_bytes
 
 # Initialize logger for database info module
@@ -62,7 +62,7 @@ def get_database_info():
             total_records = 0
             
             # Count records in VC_validity table
-            vc_count = VC_validity.query.count()
+            vc_count = 0
             record_counts['vc_validity'] = vc_count
             total_records += vc_count
             

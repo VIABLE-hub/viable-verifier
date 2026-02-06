@@ -20,8 +20,6 @@ document.addEventListener('alpine:init', () => {
       system: false,
       database: false,
       network: false,
-      api: false,
-      keys: false,
       'selective-disclosure': false
     },
     
@@ -154,8 +152,8 @@ document.addEventListener('alpine:init', () => {
       this.testingConnection = false;
       this.connectionTestResults = {
         components: {
-          issuer: { success: false, message: 'Not tested', ip: '-', latency: null },
           verifier: { success: false, message: 'Not tested', ip: '-', latency: null },
+          // issuer: { success: false, message: 'Not tested', ip: '-', latency: null },
           api: { success: false, message: 'Not tested', ip: '-', latency: null },
           network: { success: false, message: 'Not tested', ip: '-', latency: null }
         },
@@ -197,7 +195,7 @@ document.addEventListener('alpine:init', () => {
       
       // Check URL hash to determine initial tab
       const hash = window.location.hash.slice(1); // Remove the # symbol
-      const validTabs = ['dashboard', 'system', 'database', 'network', 'api', 'keys', 'selective-disclosure'];
+      const validTabs = ['dashboard', 'system', 'database', 'network', 'selective-disclosure'];
       
       if (hash && validTabs.includes(hash)) {
         this.activeTab = hash;

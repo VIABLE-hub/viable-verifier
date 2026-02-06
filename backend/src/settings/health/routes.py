@@ -8,7 +8,7 @@ import datetime
 import os
 import sqlite3
 from ... import db
-from ...models import SystemSettings, VC_validity
+from ...models import SystemSettings
 from ..core import APP_START_TIME
 from .. import utils as common_utils
 
@@ -183,7 +183,7 @@ def get_database_health():
             # For other databases, estimate size from tables
             try:
                 # Count rows in major tables
-                credential_count = VC_validity.query.count()
+                credential_count = 0
                 settings_count = SystemSettings.query.count()
                 
                 # Rough estimate: 1KB per row
@@ -206,7 +206,7 @@ def get_database_health():
             "type": db_type,
             "size": db_size_str,
             "message": message,
-            "credential_count": VC_validity.query.count()
+            "credential_count": 0
         }
     except Exception as e:
         logger.error(f"Error getting database health: {e}")
@@ -402,7 +402,6 @@ def register_routes(blueprint):
     def api_health():
         """Comprehensive health endpoint for dashboard"""
         try:
-            from ...models import VC_validity
             from .. import utils as settings_utils
             import psutil
             import time
@@ -549,10 +548,7 @@ def register_routes(blueprint):
                 from ... import db
                 
                 # Get credential count
-                try:
-                    credential_count = VC_validity.query.count()
-                except:
-                    credential_count = 0
+                credential_count = 0
                 
                 health_data["database"]["status"] = "healthy"
                 health_data["database"]["type"] = "SQLite"

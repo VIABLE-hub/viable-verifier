@@ -10,7 +10,6 @@ import secrets
 import logging
 from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify, current_app, g
-from flask_login import login_required
 from sqlalchemy.exc import SQLAlchemyError
 
 # Blueprint for API Key management

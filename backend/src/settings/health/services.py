@@ -194,11 +194,13 @@ def get_database_health():
     """
     try:
         from ... import db
-        from ...models import VC_validity
+        # from ...models import VC_validity
         
         # Test database connection by making a simple query
         start_time = time.time()
-        result = VC_validity.query.limit(1).all()
+        # result = VC_validity.query.limit(1).all()
+        # Ensure connection works with basic query since we don't have VC_validity
+        db.session.execute("SELECT 1")
         elapsed_time = (time.time() - start_time) * 1000  # Convert to ms
         
         # Get database information

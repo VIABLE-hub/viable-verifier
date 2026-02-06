@@ -8,7 +8,6 @@ from flask import Blueprint, render_template, request
 from src.utils import get_current_server_url
 from logging import getLogger
 from datetime import datetime
-from flask_login import login_required
 
 from .utils import generate_qr_code, get_demo_credential
 from .settings_integration import (
@@ -53,7 +52,6 @@ def log_request_info():
 
 
 @verifier_bp.route("/", methods=["GET", "POST"])
-@login_required
 def index():
     # 🚀 PRODUCTION-READY: Use configurable URLs for QR code and Socket.IO
     external_server_url = get_current_server_url()  # External URL for QR code

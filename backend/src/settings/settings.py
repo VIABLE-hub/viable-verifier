@@ -88,8 +88,8 @@ def get_statistics():
         app_uptime = time.time() - APP_START_TIME
         
         # Get credential count from database
-        from ..models import VC_validity
-        credential_count = VC_validity.query.count()
+        # from ..models import VC_validity
+        credential_count = 0 
         
         stats = {
             "cpu_usage": cpu_percent,

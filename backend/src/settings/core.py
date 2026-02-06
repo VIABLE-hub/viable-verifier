@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, current_app
-from flask_login import current_user, login_required
 import json
 import logging
 import time
 from .. import db
-from ..models import SystemSettings, SystemSettingsBackup, VC_validity
+from ..models import SystemSettings, SystemSettingsBackup
 from sqlalchemy.orm.attributes import flag_modified
 import traceback
 
@@ -96,8 +95,7 @@ def get_system_settings():
 
 def get_current_user_email():
     """Get current user's email, with fallback"""
-    if current_user and current_user.is_authenticated and hasattr(current_user, 'email'):
-        return current_user.email
+    return "admin@localhost"
     return 'system@example.com'
 
 def create_settings_backup(backup_type='manual', notes=None):
@@ -172,10 +170,10 @@ def register_routes(blueprint=None):
         """Get statistics for the dashboard"""
         try:
             # Count active VCs
-            vc_count = VC_validity.query.count()
+            vc_count = 0
             
             # Count revoked VCs
-            revoked_count = VC_validity.query.filter_by(is_valid=False).count()
+            revoked_count = 0
             
             # Calculate active VCs
             active_count = vc_count - revoked_count

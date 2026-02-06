@@ -1,6 +1,5 @@
 from flask import Flask, redirect, url_for, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_cors import CORS
 from flask_migrate import Migrate
 import logging
@@ -65,42 +64,19 @@ def register_blueprints(app):
     making it easy to see what blueprints are registered and in what order.
     
     Blueprint Categories:
-    - Core: Home, Auth, Issuer, Verifier
-    - Validation: VCStatus, Validate (legacy)
+    - Core: Home, Verifier
     - Settings: Settings UI, Settings API
-    - Features: API Integration, Debug, Use Cases, Monitoring
-    - Network: Network API (dynamic registration)
+    - Features: Monitoring
     
     Args:
         app: Flask application instance
     """
     # Core blueprints - Essential application functionality
     from .home import home
-    from .issuer.issuer import issuer
     from .verifier.main_routes import verifier_bp as verifier
     
     app.register_blueprint(home, url_prefix='/')
-    app.register_blueprint(issuer, url_prefix='/')
     app.register_blueprint(verifier, url_prefix='/verifier')
-    
-    # Authentication blueprints - User authentication
-    from .auth import auth, vc_auth_bp
-    app.register_blueprint(auth, url_prefix='/')
-    app.register_blueprint(vc_auth_bp)  # VC-based authentication
-    
-    # Conditional authentication (simple session auth if enabled)
-    auth_enabled = os.environ.get('ENABLE_AUTH', 'false').lower() == 'true'
-    if auth_enabled:
-        from .simple_auth import init_auth_routes
-        init_auth_routes(app)
-        logger.info("🔐 Session auth enabled")
-    
-    # Validation blueprints - Credential validation and status
-    from .validate.vcstatus import vcstatus
-    from .validate.validate import validate_legacy
-    
-    app.register_blueprint(vcstatus, url_prefix='/vcstatus')
-    app.register_blueprint(validate_legacy, url_prefix='/validate')  # Legacy route
     
     # Settings blueprints - Application configuration
     from .settings import settings, api_settings
@@ -108,17 +84,9 @@ def register_blueprints(app):
     app.register_blueprint(api_settings, url_prefix='/')
     
     # Feature blueprints - Additional functionality
-    from .api_integration import api_integration
-    from .issuer.debug import debug as debug_bp
     from .monitoring import monitoring
     
-    app.register_blueprint(api_integration, url_prefix='/')
-    app.register_blueprint(debug_bp, url_prefix='/debug')
     app.register_blueprint(monitoring)
-    
-    # Network API - Dynamic registration (kept separate for backward compatibility)
-    # from .settings.network_api import register_network_api
-    # register_network_api(app)
     
     logger.info(f"Registered {len(app.blueprints)} blueprints")
 
@@ -251,11 +219,11 @@ def create_app():
         }
         
         return context
-
-    # Optional debugging: log host-related headers to diagnose redirects/host issues
-    #if os.environ.get('LOG_HOST_HEADERS', 'false').lower() == 'true':
-    @app.before_request
-    def log_host_headers():
+# auth_enabled = os.environ.get('ENABLE_AUTH', 'false').lower() == 'true'
+    # if auth_enabled:
+    #     from .simple_auth import init_auth_routes
+    #     init_auth_routes(app)
+    # def log_host_headers():
         logger.info(
             "HOST DEBUG | Host=%s | XFH=%s | XFP=%s | XRI=%s | URL=%s",
             request.headers.get('Host'),
@@ -306,20 +274,20 @@ def create_app():
     # Register all blueprints using centralized function
     register_blueprints(app)
     
-    from .models import User
+    # from .models import User
 
     with app.app_context():
         db.create_all()
         # addAllTrackableItems()
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message_category = "warning"
-    login_manager.init_app(app)
+    # login_manager = LoginManager()
+    # login_manager.login_view = 'auth.login'
+    # login_manager.login_message_category = "warning"
+    # login_manager.init_app(app)
 
-    @login_manager.user_loader
-    def load_user(id):
-        return User.query.get(int(id))
+    # @login_manager.user_loader
+    # def load_user(id):
+    #     return User.query.get(int(id))
 
     # Match CORS configuration for security consistency
     if environment == 'production':
@@ -356,118 +324,9 @@ def create_app():
     
     socketio.init_app(app, **socketio_config)
 
-    # Create alias for /api/credentials endpoint to ensure backward compatibility
-    @app.route('/api/credentials', methods=['GET'])
-    def api_credentials_alias():
-        from .validate.vcstatus import api_get_credentials
-        return api_get_credentials()
-    
-    # Create alias for /api/credential/<identifier> endpoint for management operations
-    @app.route('/api/credential/<string:identifier>', methods=['GET', 'PUT', 'DELETE'])
-    def api_credential_manage_alias(identifier):
-        from .validate.vcstatus import api_manage_credential
-        return api_manage_credential(identifier)
-    
-    # Create alias for /api/bulk endpoint for bulk operations
-    @app.route('/api/bulk', methods=['POST'])
-    def api_bulk_operations_alias():
-        from .validate.vcstatus import api_bulk_operations
-        return api_bulk_operations()
-    
-    # Add specific endpoint for revoking a credential by ID
-    @app.route('/api/credential/<string:identifier>/revoke', methods=['POST'])
-    def api_revoke_credential(identifier):
-        from .models import VC_validity, db
-        
-        try:
-            # Validate request body
-            @validate_schema(CredentialRevokeSchema)
-            def validated_revoke():
-                credential = VC_validity.query.filter_by(identifier=identifier).first()
-                if not credential:
-                    return jsonify({'error': 'Credential not found'}), 404
-                
-                data = request.validated_data
-                reason = data.get('reason', 'Revoked via API')
-                revoked_by = data.get('revoked_by', 'api')
-            
-                credential.revoke(reason=reason, revoked_by=revoked_by)
-                db.session.commit()
-                
-                return jsonify({
-                    'success': True,
-                    'message': 'Credential revoked successfully',
-                    'identifier': identifier,
-                    'status': 'revoked',
-                    'revoked_at': credential.revoked_at.isoformat() if credential.revoked_at else None
-                })
-            
-            return validated_revoke()
-        except ValidationError as e:
-            return jsonify({'error': 'Validation failed', 'details': e.messages}), 400
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-    
-    # Add specific endpoint for restoring (unrevoking) a credential by ID
-    @app.route('/api/credential/<string:identifier>/restore', methods=['POST'])
-    @write_rate_limit
-    def api_restore_credential(identifier):
-        # Validate identifier
-        from .validators import IdentifierField, ValidationError
-        try:
-            IdentifierField()._deserialize(identifier, 'identifier', {})
-        except ValidationError as e:
-            return jsonify({'error': 'Invalid identifier format', 'details': str(e)}), 400
-        from .models import VC_validity, db
-        
-        try:
-            credential = VC_validity.query.filter_by(identifier=identifier).first()
-            if not credential:
-                return jsonify({'error': 'Credential not found'}), 404
-                
-            credential.restore()
-            db.session.commit()
-            
-            return jsonify({
-                'success': True,
-                'message': 'Credential restored successfully',
-                'identifier': identifier,
-                'status': 'valid'
-            })
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-    
-    # Add specific endpoint for deleting a credential by ID
-    @app.route('/api/credential/<string:identifier>/delete', methods=['POST'])
-    @write_rate_limit
-    def api_delete_credential(identifier):
-        # Validate identifier
-        from .validators import IdentifierField, ValidationError
-        try:
-            IdentifierField()._deserialize(identifier, 'identifier', {})
-        except ValidationError as e:
-            return jsonify({'error': 'Invalid identifier format', 'details': str(e)}), 400
-        from .models import VC_validity, db
-        
-        try:
-            credential = VC_validity.query.filter_by(identifier=identifier).first()
-            if not credential:
-                return jsonify({'error': 'Credential not found'}), 404
-                
-            db.session.delete(credential)
-            db.session.commit()
-            
-            return jsonify({
-                'success': True,
-                'message': 'Credential deleted successfully',
-                'identifier': identifier
-            })
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-    
     # Main route
     @app.route('/')
     def index():
-        return redirect(url_for('issuer.index'))
+        return redirect(url_for('home.index'))
 
     return app

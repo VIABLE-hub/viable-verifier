@@ -19,7 +19,7 @@ from .core import register_routes
 # Import other modules
 from . import utils
 from . import disclosure
-from . import keys
+# from . import keys
 from . import trust
 from . import network
 from . import health
@@ -33,7 +33,7 @@ def register_all_routes():
     """Register all routes from all modules"""
     register_routes(settings)
     disclosure.register_routes(settings)
-    keys.register_routes(settings)
+    # keys.register_routes(settings)
     trust.register_routes(settings)
     network.register_routes(settings)
     health.register_routes(settings)

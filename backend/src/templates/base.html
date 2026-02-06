@@ -145,16 +145,8 @@
               <i class="fas fa-home mr-2 text-berlin-blue dark:text-berlin-light text-xs"></i>Home
             </a>
             
-            <a href="/issuer" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
-              <i class="fas fa-certificate mr-2 text-emerald-600 dark:text-emerald-400 text-xs"></i>Ausstellen
-            </a>
-            
             <a href="/verifier" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
               <i class="fas fa-shield-alt mr-2 text-indigo-600 dark:text-indigo-400 text-xs"></i>Verifizieren
-            </a>
-            
-            <a href="/vcstatus" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800">
-              <i class="fas fa-clipboard-list mr-2 text-green-600 dark:text-green-400 text-xs"></i>VC Status
             </a>
             
             </a>
@@ -168,22 +160,7 @@
             </a>
           </div>
 
-          <!-- Auth Links -->
-          <div class="hidden md:flex items-center space-x-2">
-            
-            {% if current_user.is_authenticated %}
-              <a href="/logout" class="bg-berlin-blue dark:bg-berlin-light text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue transition-all duration-150 shadow-sm hover:shadow-md">
-                <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i>Logout
-              </a>
-            {% else %}
-              <a href="/login" class="text-berlin-blue dark:text-berlin-light border border-berlin-blue dark:border-berlin-light px-3 py-1.5 rounded-md text-sm font-medium hover:bg-berlin-blue dark:hover:bg-berlin-light hover:text-white dark:hover:text-gray-900 transition-all duration-150">
-                Login
-              </a>
-              <a href="/register" class="bg-berlin-blue dark:bg-berlin-light text-white dark:text-gray-900 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue hover:text-white transition-all duration-150 shadow-sm hover:shadow-md">
-                Register
-              </a>
-            {% endif %}
-          </div>
+          <!-- Auth Links (Removed) -->
 
           <!-- Mobile menu button -->
           <div class="md:hidden flex items-center space-x-2">
@@ -201,16 +178,8 @@
               <i class="fas fa-home mr-3 text-berlin-blue dark:text-berlin-light text-xs w-4"></i>Home
             </a>
             
-            <a href="/issuer" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
-              <i class="fas fa-certificate mr-3 text-emerald-600 dark:text-emerald-400 text-xs w-4"></i>Ausstellen
-            </a>
-            
             <a href="/verifier" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
               <i class="fas fa-shield-alt mr-3 text-indigo-600 dark:text-indigo-400 text-xs w-4"></i>Verifizieren
-            </a>
-            
-            <a href="/vcstatus" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-150">
-              <i class="fas fa-clipboard-list mr-3 text-green-600 dark:text-green-400 text-xs w-4"></i>VC Status
             </a>
             
             </a>
@@ -223,25 +192,11 @@
               <i class="fas fa-info-circle mr-3 text-blue-600 dark:text-blue-400 text-xs w-4"></i>Über uns
             </a>
             
-            <!-- Mobile Auth Links -->
-            <div class="pt-3 space-y-2 border-t border-gray-200 dark:border-gray-700">
-              {% if current_user.is_authenticated %}
-                <a href="/logout" class="flex items-center bg-berlin-blue dark:bg-berlin-light text-white dark:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue hover:text-white transition-all duration-150">
-                  <i class="fas fa-sign-out-alt mr-3 text-xs w-4"></i>Logout
-                </a>
-              {% else %}
-                <a href="/login" class="flex items-center text-berlin-blue dark:text-berlin-light border border-berlin-blue dark:border-berlin-light px-3 py-2 rounded-md text-sm font-medium hover:bg-berlin-blue dark:hover:bg-berlin-light hover:text-white dark:hover:text-gray-900 transition-all duration-150">
-                  <i class="fas fa-sign-in-alt mr-3 text-xs w-4"></i>Login
-                </a>
-                <a href="/register" class="flex items-center bg-berlin-blue dark:bg-berlin-light text-white dark:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-berlin-dark dark:hover:bg-berlin-blue hover:text-white transition-all duration-150">
-                  <i class="fas fa-user-plus mr-3 text-xs w-4"></i>Register
-                </a>
-              {% endif %}
-            </div>
+            <!-- Mobile Auth Links (Removed) -->
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}

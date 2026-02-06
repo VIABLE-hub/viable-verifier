@@ -10,7 +10,7 @@ from datetime import datetime
 
 from ..core import APP_START_TIME, EMERGENCY_SYSTEM_INFO
 from ..utils import format_bytes, format_time_delta
-from ...models import VC_validity
+# from ...models import VC_validity
 
 # Initialize logger for system health module
 logger = logging.getLogger(__name__)
@@ -108,7 +108,7 @@ def api_system_info():
         
         # Get credential count
         try:
-            credential_count = VC_validity.query.count()
+            credential_count = 0
         except Exception as e:
             logger.error(f"Error getting credential count: {e}")
             credential_count = 0
