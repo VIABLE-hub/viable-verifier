@@ -28,11 +28,11 @@ info:
 # Start the application (Single Tenant)
 dev:
 ifeq ($(OS),Windows_NT)
-	@echo "Starting StudentVC (Single Tenant) on port 8080"
-	cd $(BACKEND_DIR) && set SERVER_PORT=8080&& ..\\$(VENV_DIR)\\Scripts\\python.exe main.py
+	@echo "Starting StudentVC (Single Tenant) on port 8888"
+	cd $(BACKEND_DIR) && set SERVER_PORT=8888&& ..\\$(VENV_DIR)\\Scripts\\python.exe main.py
 else
-	@echo "Starting StudentVC (Single Tenant) on port 8080"
-	cd $(BACKEND_DIR) && SERVER_PORT=8080 ../$(VENV_DIR)/bin/python main.py
+	@echo "Starting StudentVC (Single Tenant) on port 8888"
+	cd $(BACKEND_DIR) && SERVER_PORT=8888 ../$(VENV_DIR)/bin/python main.py
 endif
 
 # Start default
@@ -41,8 +41,8 @@ start-all: dev
 
 # Stop server
 stop-all:
-	@echo "Stopping server on port 8080..."
-	@bash -c "lsof -ti:8080 | xargs kill -9 2>/dev/null && echo "  Stopped (port 8080)" || echo "  ⚠️  No server on port 8080""
+	@echo "Stopping server on port 8888..."
+	@bash -c "lsof -ti:8888 | xargs kill -9 2>/dev/null && echo "  Stopped (port 8888)" || echo "  ⚠️  No server on port 8888""
 	@rm -f logs/*.pid 2>/dev/null || true
 
 # Setup virtual environment and dependencies

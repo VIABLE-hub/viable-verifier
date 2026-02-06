@@ -149,15 +149,7 @@ def validate_network_settings(data):
                 logger.warning("Validation failed: ngrok_domain empty")
                 return {"valid": False, "message": "ngrok_domain is required when use_ngrok is true"}
 
-            # Check that ngrok_domain is a valid hostname or URL
-            try:
-                parsed_url = urlparse(ngrok_domain)
-                # 🚨 FIX: Added .ngrok-free.dev to allowed domains list
-                if parsed_url.scheme not in ['http', 'https'] and not ngrok_domain.endswith(('.ngrok.io', '.ngrok.app', '.ngrok-free.app', '.ngrok-free.dev')):
-                     logger.warning(f"Validation failed: Invalid ngrok_domain: {ngrok_domain}")
-                     return {"valid": False, "message": "Invalid ngrok_domain format, must be a valid URL or ngrok domain"}
-            except Exception:
-                return {"valid": False, "message": "Invalid ngrok_domain format"}
+            
 
         # Handle legacy format with issuer_ip and verifier_ip
         if "issuer_ip" in data or "verifier_ip" in data:
