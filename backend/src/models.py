@@ -304,7 +304,11 @@ class VP_NONCE(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nonce = db.Column(db.String(255), nullable=False)
+    used = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+
+    def mark_used(self):
+        self.used = True
 
     def __repr__(self):
         return f"<VP_NONCE {self.nonce}>"

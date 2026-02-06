@@ -269,6 +269,10 @@ def verify_bbs_proof(decoded_vp, mandatory_fields=None):
 
             initial_nonce = get_nonce_val()  # this is only used to avoid replayable presentation
             nonce_row = VP_NONCE.query.filter_by(nonce=initial_nonce).first()
+            if not nonce_row:
+                 logger.error("Nonce not found in database")
+                 return False, "Invalid session or expired nonce"
+                 
             if nonce_row.used:
                 raise Exception("Nonce already used (replay detected)")
             verify_request = bbs_core.VerifyRequest(
