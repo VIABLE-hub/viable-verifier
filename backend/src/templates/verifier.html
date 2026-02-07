@@ -150,8 +150,17 @@
   
   const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
+  // Store initial content of technical details to restore them on reset
+  const initialDetailsContent = {};
+
   // Load saved selection from LocalStorage
   document.addEventListener('DOMContentLoaded', () => {
+    // Capture initial state of code snippets
+    document.querySelectorAll('[id^="code-"]').forEach(el => {
+         const content = el.querySelector('.space-y-1');
+         if(content) initialDetailsContent[el.id] = content.innerHTML;
+    });
+
     const savedFields = localStorage.getItem('verifier_disclosure_fields');
     if (savedFields) {
       try {
@@ -165,11 +174,60 @@
     }
   });
 
+  function resetRightPanel() {
+      console.log('Resetting Right Panel...');
+      
+      // 1. Reset Status Feed & Progress Bar
+      if(typeof clearStatusFeed === 'function') {
+          clearStatusFeed();
+      }
+      
+      // 2. Reset Transmitted Fields
+      const transmittedSection = document.getElementById('transmitted-fields-section');
+      if(transmittedSection) transmittedSection.style.display = 'none';
+      
+      ['technical-fields-container', 'personal-fields-container', 'additional-fields-container'].forEach(id => {
+          const container = document.getElementById(id);
+          if(container) container.innerHTML = '';
+      });
+      
+      ['personal-fields-category', 'additional-fields-category'].forEach(id => {
+          const cat = document.getElementById(id);
+          if(cat) cat.style.display = 'none';
+      });
+
+      // 3. Reset Disclosure Results
+      const disclosureResults = document.getElementById('disclosure-results');
+      if(disclosureResults) {
+          disclosureResults.innerHTML = '';
+          disclosureResults.classList.add('hidden');
+      }
+
+      // 4. Reset Technical Details Content
+      Object.keys(initialDetailsContent).forEach(id => {
+          const el = document.getElementById(id);
+          if(el) {
+              const content = el.querySelector('.space-y-1');
+              if(content) content.innerHTML = initialDetailsContent[id];
+          }
+      });
+      
+      // 5. Close all Collapsibles & Reset Icons
+      if(typeof initializeCodeSnippets === 'function') initializeCodeSnippets();
+      
+      // Close manual groups
+      document.querySelectorAll('.collapsible-content').forEach(c => c.classList.remove('expanded'));
+      document.querySelectorAll('.group-toggle svg:last-child').forEach(arrow => arrow.style.transform = 'rotate(0deg)');
+  }
+
   async function startVerificationSession(btn) {
     const fields = Array.from(document.querySelectorAll('input[name="fields"]:checked')).map(cb => cb.value);
     
     // Save selection to LocalStorage
     localStorage.setItem('verifier_disclosure_fields', JSON.stringify(fields));
+
+    // Reset Right Panel immediately
+    resetRightPanel();
 
     // UI: Prepare for new session, clear old artifacts immediately
     const qrImg = document.getElementById('qr-code');
@@ -219,7 +277,7 @@
         document.getElementById('scanner-section').style.display = 'block';
 
         // Clear previous status
-        // TODO: Call a clear function if exists
+        // (Reset handled at start of session)
         
     } catch (e) {
         alert('Fehler beim Starten der Verifikation: ' + e.message);
@@ -261,7 +319,8 @@
     const urlContainer = document.getElementById('url-container');
     if(urlContainer) urlContainer.style.display = 'none';
 
-    // Ideally clear status here too
+    // Reset Right Panel (Progress, Feed, Details)
+    resetRightPanel();
   };
 </script>
 
