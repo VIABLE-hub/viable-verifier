@@ -321,10 +321,6 @@ def create_presentation_request():
         return jsonify({"error": "something went wrong when requesting params"}), 500
 
 
-def get_nonce_val():
-    return nonce_val
-
-
 def store_nonce(nonce):
     
     

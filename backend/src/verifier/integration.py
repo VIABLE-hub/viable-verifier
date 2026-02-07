@@ -196,7 +196,7 @@ def safe_verify_presentation(
                         "error_type": "sd_jwt_verification_failed",
                     }
             else:
-                bbs_valid, bbs_msg = verify_bbs_proof(decoded_vp)
+                bbs_valid, bbs_msg = verify_bbs_proof(decoded_vp, expected_nonce=expected_nonce)
                 if bbs_valid:
                     verification_steps["bbs_verification"] = {
                         "status": "success",
