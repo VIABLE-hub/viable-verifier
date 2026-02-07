@@ -74,9 +74,11 @@ def register_blueprints(app):
     # Core blueprints - Essential application functionality
     from .home import home
     from .verifier.main_routes import verifier_bp as verifier
+    from .system_routes import system_bp
     
     app.register_blueprint(home, url_prefix='/')
     app.register_blueprint(verifier, url_prefix='/verifier')
+    app.register_blueprint(system_bp, url_prefix='/api/system')
     
     # Feature blueprints - Additional functionality
     from .monitoring import monitoring
