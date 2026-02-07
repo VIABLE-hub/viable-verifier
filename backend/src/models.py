@@ -299,6 +299,19 @@ class AuditLog(db.Model):
             db.session.rollback()
 
 
+class VerificationSession(db.Model):
+    __tablename__ = "verification_sessions"
+
+    id = db.Column(db.String(36), primary_key=True)  # UUID
+    nonce = db.Column(db.String(255), nullable=False)
+    requested_fields = db.Column(JSON, nullable=False, default=list)
+    status = db.Column(db.String(50), default="created")  # created, scanned, verified, failed
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    
+    def __repr__(self):
+        return f"<VerificationSession {self.id}>"
+
+
 class VP_NONCE(db.Model):
     __tablename__ = "vp_nonce"
 

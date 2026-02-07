@@ -17,7 +17,7 @@ logger = getLogger("LOGGER")
 
 
 def safe_verify_presentation(
-    decoded_vp, presentation_definition, raw_token=None
+    decoded_vp, presentation_definition, raw_token=None, expected_nonce=None
 ):
     """
     Führt eine robuste Verifikation einer Präsentation durch,
@@ -27,6 +27,7 @@ def safe_verify_presentation(
         decoded_vp: Das dekodierte VP-Objekt
         presentation_definition: Die Präsentationsdefinition mit Pflichtfeldern
         raw_token: Das rohe Token (für SD-JWT erforderlich)
+        expected_nonce: Der erwartete Nonce-Wert (optional)
 
     Returns:
         (bool, dict): (Erfolgsstatus, Details der Verifikation)
@@ -116,9 +117,9 @@ def safe_verify_presentation(
             if is_sd_jwt:
                 from .sd_jwt_verification import verify_sd_jwt_presentation
 
-                # Adjusted to receive payload
-                sd_valid, sd_msg, sd_payload = verify_sd_jwt_presentation(
-                    raw_token
+                # Adjusted to receive payload and pass expected_nonce
+                sd_valid, sd_payload, sd_msg = verify_sd_jwt_presentation(
+                    raw_token, expected_nonce=expected_nonce
                 )
 
                 if sd_valid:

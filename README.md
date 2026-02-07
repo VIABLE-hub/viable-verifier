@@ -1,6 +1,6 @@
-# VERITAS - Enterprise-Ready Privacy-Preserving Digital Credentials Platform
+# VERITAS - Verifier Service
 
-**Multi-tenant platform for issuing privacy-preserving digital credentials using BBS+ selective-disclosure cryptography**
+**Service for verifying privacy-preserving digital credentials (BBS+ & SD-JWT)**
 
 **Supervisor:** Patrick Herbke (p.herbke@tu-berlin.de)
 
@@ -230,34 +230,23 @@ make dev-tub
 ### Core Backend Modules
 ```
 backend/src/
-├── issuer/              # Credential Issuance
-│   ├── BBS+ credential signing
-│   ├── OID4VC metadata and QR code generation
-│   └── Multi-tenant credential templates
-│
 ├── verifier/            # Credential Verification
 │   ├── BBS+ proof verification
 │   ├── Selective disclosure handling
 │   └── OID4VP presentation requests
 │
-├── auth/                # Authentication System
-│   ├── Traditional username/password
-│   └── VC-based authentication
-│
 ├── settings/            # System Configuration
 │   ├── Tenant configuration and branding
-│   ├── Key management (BBS+, JWT, X.509)
 │   ├── Selective disclosure settings
 │   └── Network API configuration
 │
 ├── tenants/             # Multi-Tenant Management
 │   ├── Tenant detection and routing
-│   ├── Isolated database per tenant
 │   └── Tenant-specific configuration
 │
-├── validate/            # Credential Validation
-│   ├── Credential status management
-│   └── Revocation and lifecycle tracking
+├── validators/          # Validation Logic
+│   ├── Input validation
+│   └── Data integrity checks
 │
 ├── plugin_system/       # Plugin Architecture
 │   ├── Plugin interface and loader

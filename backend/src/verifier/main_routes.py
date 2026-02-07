@@ -4,12 +4,15 @@ Main Verifier Routes - Combines all route modules.
 Primary entry point for the verifier with UI and core functionality.
 """
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from src.utils import get_current_server_url
 from logging import getLogger
 from datetime import datetime
+import uuid
+import json
 
-from .utils import generate_qr_code, get_demo_credential
+from ..models import VerificationSession, db
+from .utils import generate_qr_code, get_demo_credential, randomString
 from .settings_integration import (
     get_current_selective_disclosure_settings,
     update_selective_disclosure_settings,
@@ -27,6 +30,55 @@ verifier_bp = Blueprint("verifier", __name__)
 verifier_bp.register_blueprint(presentation_bp)
 verifier_bp.register_blueprint(verification_bp)
 verifier_bp.register_blueprint(debug_bp)
+
+
+@verifier_bp.route("/create-session", methods=["POST"])
+def create_session():
+    try:
+        data = request.get_json()
+        selected_fields = data.get("fields", [])
+        
+        # Generate session ID and nonce
+        session_id = str(uuid.uuid4())
+        nonce = randomString(10)
+        
+        # Create session
+        session = VerificationSession(
+            id=session_id,
+            nonce=nonce,
+            requested_fields=selected_fields,
+            status="created"
+        )
+        db.session.add(session)
+        db.session.commit()
+        
+        # Construct URLs
+        # 🚀 PRODUCTION-READY: Use configurable URLs
+        external_server_url = get_current_server_url()
+        
+        # This URL is what the wallet fetches to get the Presentation Definition
+        # We point it to existing request.uri route which we will modify to handle session IDs correctly
+        request_uri = f"{external_server_url}/verifier/request.uri/{session_id}"
+        
+        # This is the OpenID4VP URL encoded in the QR code
+        presentation_request_url = (
+            f"openid4vp://?request_uri={request_uri}"
+        )
+        
+        # Generate QR Code
+        img = generate_qr_code(presentation_request_url)
+        
+        return jsonify({
+            "session_id": session_id,
+            "qr_code_data": img,
+            "presentation_request_url": presentation_request_url,
+            "request_uri": request_uri
+        })
+        
+    except Exception as e:
+        logger.error(f"Error creating session: {e}", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
 
 
 @verifier_bp.before_request

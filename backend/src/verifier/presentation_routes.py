@@ -9,7 +9,7 @@ from src.utils import get_current_server_url
 from logging import getLogger
 from urllib.parse import quote
 import json
-from ..models import VP_NONCE, db
+from ..models import VP_NONCE, VerificationSession, db
 from .utils import randomString
 from .settings_integration import get_presentation_definition
 from .. import socketio
@@ -33,56 +33,82 @@ def request_uri_with_id(request_uri_id):
     Handle specific request URI calls with IDs - supports both GET and POST for iOS wallet compatibility
     """
     try:
-        # Get the current presentation definition
+        # Try to find a specific session
+        session = VerificationSession.query.get(request_uri_id)
+        
+        # Get global settings for defaults/fallback
         presentation_def = get_presentation_definition()
+        
+        mandatory_fields = []
+        response_uri = get_current_server_url() + "/verifier/direct_post"
+        nonce = randomString(10)
 
-        # DEBUG: Log what we got from get_presentation_definition
-        logger.info(
-            f"DEBUG: presentation_def technical_fields: {presentation_def.get('technical_fields', [])}"
-        )
-        logger.info(
-            f"DEBUG: presentation_def user_mandatory_fields: {presentation_def.get('user_mandatory_fields', [])}"
-        )
-        logger.info(
-            f"DEBUG: presentation_def mandatory_fields: {presentation_def.get('mandatory_fields', [])}"
-        )
+        if session:
+            # Session-based flow
+            if session.status == 'created':
+                session.status = 'scanned'
+                db.session.commit()
+            
+            # Start with session requested fields
+            mandatory_fields = list(session.requested_fields)
+            
+            # Add technical fields from global config
+            field_mapping = presentation_def.get("field_mappings", {})
+            for field in presentation_def.get("technical_fields", []):
+                ios_field = field_mapping.get(field, field)
+                if ios_field not in mandatory_fields:
+                    mandatory_fields.append(ios_field)
 
-        # Create minimal field list with proper iOS mapping
-        ios_compatible_fields = []
-        field_mapping = presentation_def.get("field_mappings", {})
+            # Update response URI to include session ID
+            response_uri = get_current_server_url() + f"/verifier/direct_post?session_id={session.id}"
+            nonce = session.nonce
+            
+        else:
+            # OLD/FALLBACK Logic
+            # Create minimal field list with proper iOS mapping
+            ios_compatible_fields = []
+            field_mapping = presentation_def.get("field_mappings", {})
 
-        # Add technical fields with iOS camelCase mapping
-        for field in presentation_def.get("technical_fields", []):
-            ios_field = field_mapping.get(field, field)
-            if ios_field not in ios_compatible_fields:
-                ios_compatible_fields.append(ios_field)
+            # Add technical fields with iOS camelCase mapping
+            for field in presentation_def.get("technical_fields", []):
+                ios_field = field_mapping.get(field, field)
+                if ios_field not in ios_compatible_fields:
+                    ios_compatible_fields.append(ios_field)
 
-        # Add user mandatory fields, skip complex fields
-        complex_fields = [
-            "image",
-            "theme",
-            "vc.credentialSubject.image",
-            "vc.credentialSubject.theme",
-        ]
-        for field in presentation_def.get("user_mandatory_fields", []):
-            if field not in complex_fields and field not in ios_compatible_fields:
-                ios_compatible_fields.append(field)
+            # Add user mandatory fields, skip complex fields
+            complex_fields = [
+                "image",
+                "theme",
+                "vc.credentialSubject.image",
+                "vc.credentialSubject.theme",
+            ]
+            for field in presentation_def.get("user_mandatory_fields", []):
+                if field not in complex_fields and field not in ios_compatible_fields:
+                    ios_compatible_fields.append(field)
+            
+            mandatory_fields = ios_compatible_fields
 
         # MINIMAL response parameters
         params = {
             "response_type": "vp_token",
-            "response_uri": get_current_server_url() + "/verifier/direct_post",
+            "response_uri": response_uri,
             "response_mode": "direct_post",
             "presentation_definition": json.dumps(
-                {"mandatory_fields": ios_compatible_fields}, separators=(",", ":")
+                {
+                    "mandatory_fields": mandatory_fields,
+                    "explanation": {}
+                }, 
+                separators=(",", ":")
             ),
+            "state": nonce,
+            "nonce": nonce
         }
 
         if request.method == "GET":
             return jsonify(params), 200
         else:  # POST
             # For iOS wallet compatibility - return 302 redirect with openid4vp scheme
-            openid_url = f"openid4vp://?response_uri={params['response_uri']}&presentation_definition={params['presentation_definition']}"
+            openid_url = f"openid4vp://?response_uri={params['response_uri']}&presentation_definition={params['presentation_definition']}&nonce={nonce}&state={nonce}"
             return redirect(openid_url, code=302)
 
     except Exception as e:

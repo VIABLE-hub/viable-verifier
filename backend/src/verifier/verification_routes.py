@@ -10,6 +10,7 @@ import jwt
 import traceback
 
 from .. import socketio
+from ..models import VerificationSession, db
 from .field_extractor import (
     decode_jwt_token,
     extract_presentation_from_vp,
@@ -31,6 +32,27 @@ def direct_post():
     """
     Handles direct POST from the wallet with the verifiable presentation
     """
+    # session check
+    session_id = request.args.get("session_id")
+    expected_nonce = None
+    
+    if session_id:
+        try:
+            session = VerificationSession.query.get(session_id)
+            if session:
+                if session.status == 'verified':
+                    logger.warning(f"Session {session_id} reuse attempt blocked")
+                    return jsonify({"error": "This QR code has already been used", "valid": 0}), 400
+                
+                # Retrieve nonce from session to verify it
+                expected_nonce = session.nonce
+                
+                # Mark as verified
+                session.status = 'verified'
+                db.session.commit()
+                logger.info(f"Session {session_id} marked as verified")
+        except Exception as e:
+            logger.error(f"Error checking session: {e}")
 
     try:
         # Check URL parameters first
@@ -145,7 +167,7 @@ def direct_post():
         if not demo_credential:
             # Step 3-5: Robuste Verifikation mit detaillierter Fehlerbehandlung
             valid, verification_details = safe_verify_presentation(
-                decoded_vp, presentation_def, raw_token=vp_token
+                decoded_vp, presentation_def, raw_token=vp_token, expected_nonce=expected_nonce
             )
             if not valid:
                 logger.error(

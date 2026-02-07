@@ -27,9 +27,59 @@
   <div class="max-w-6xl mx-auto px-4 py-6">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       
-      <!-- Left: QR Code Scanner and Process Description -->
-      <div>
-        {% include 'verifier/qr_scanner.html' %}
+      <!-- Left: Setup and Scanner -->
+      <div id="left-panel">
+        <!-- Setup Section -->
+        <div id="setup-section" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-cog berlin-blue mr-2"></i>
+                Anforderung konfigurieren
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">Wählen Sie die Daten, die verifiziert werden sollen:</p>
+            
+            <form id="verification-form">
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <label class="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer transition-colors hover:border-blue-300">
+                        <input type="checkbox" name="fields" value="firstName" checked class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                        <span class="text-sm font-medium text-gray-700">Vorname</span>
+                    </label>
+                    <label class="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer transition-colors hover:border-blue-300">
+                        <input type="checkbox" name="fields" value="lastName" checked class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                        <span class="text-sm font-medium text-gray-700">Nachname</span>
+                    </label>
+                    <label class="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer transition-colors hover:border-blue-300">
+                        <input type="checkbox" name="fields" value="studentId" checked class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                        <span class="text-sm font-medium text-gray-700">Matrikelnummer</span>
+                    </label>
+                    <label class="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer transition-colors hover:border-blue-300">
+                        <input type="checkbox" name="fields" value="dateOfBirth" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                        <span class="text-sm font-medium text-gray-700">Geburtsdatum</span>
+                    </label>
+                    <label class="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer transition-colors hover:border-blue-300">
+                         <input type="checkbox" name="fields" value="email" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                         <span class="text-sm font-medium text-gray-700">E-Mail</span>
+                    </label>
+                     <label class="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 cursor-pointer transition-colors hover:border-blue-300">
+                         <input type="checkbox" name="fields" value="studyProgram" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                         <span class="text-sm font-medium text-gray-700">Studiengang</span>
+                    </label>
+                </div>
+                
+                <button type="button" id="start-verification-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+                    <i class="fas fa-play mr-2"></i> Verifikation starten
+                </button>
+            </form>
+        </div>
+
+        <!-- Scanner Section (Hidden by default) -->
+        <div id="scanner-section" style="display: none;">
+            {% include 'verifier/qr_scanner.html' %}
+            
+            <button onclick="resetVerificationUI()" class="w-full mt-4 bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-lg border border-gray-300 transition-colors flex items-center justify-center shadow-sm">
+                <i class="fas fa-arrow-left mr-2"></i> Neue Verifikation
+            </button>
+        </div>
+
         {% include 'verifier/verification_process.html' %}
         {% include 'verifier/technical_details.html' %}
       </div>
@@ -91,6 +141,56 @@
 <script>
   // Export toggleCodeSnippet to global scope for HTML onclick handlers
   window.toggleCodeSnippet = toggleCodeSnippet;
+
+  // Setup Flow Logic
+  document.getElementById('start-verification-btn').addEventListener('click', async function() {
+    const fields = Array.from(document.querySelectorAll('input[name="fields"]:checked')).map(cb => cb.value);
+    
+    const btn = this;
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Wird generiert...';
+    btn.disabled = true;
+    
+    try {
+        const response = await fetch('/verifier/create-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fields: fields })
+        });
+        
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        
+        // Update QR Code
+        const qrImg = document.getElementById('qr-code');
+        if(qrImg) qrImg.src = "data:image/png;base64," + data.qr_code_data;
+        
+        // Update URL Display
+        const urlDisplay = document.getElementById('presentation-url-display');
+        if(urlDisplay) urlDisplay.innerText = data.presentation_request_url;
+        const urlContainer = document.getElementById('url-container');
+        if(urlContainer) urlContainer.style.display = 'block';
+        
+        // Show scanner, hide setup
+        document.getElementById('setup-section').style.display = 'none';
+        document.getElementById('scanner-section').style.display = 'block';
+
+        // Clear previous status
+        // TODO: Call a clear function if exists
+        
+    } catch (e) {
+        alert('Fehler beim Starten der Verifikation: ' + e.message);
+    } finally {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    }
+  });
+
+  window.resetVerificationUI = function() {
+    document.getElementById('setup-section').style.display = 'block';
+    document.getElementById('scanner-section').style.display = 'none';
+    // Ideally clear status here too
+  };
 </script>
 
 <!-- End of HERZCHIRURG Modular Template -->

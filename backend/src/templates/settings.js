@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // State management
   const state = {
     // Navigation
-    activeTab: 'dashboard',
+    activeTab: 'network',
     
     // Theme
     darkMode: localStorage.getItem('darkMode') === 'true' || false,

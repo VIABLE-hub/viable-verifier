@@ -201,7 +201,9 @@ def register_routes(blueprint=None):
     @blueprint.route("/settings/herzchirurg", methods=["GET"])
     def herzchirurg_dashboard():
         """Render the herzchirurg dashboard"""
-        return render_template("settings/system_dashboard.html")
+        # Return a simple JSON structure or an existing template as a fallback
+        # Since system_dashboard.html was deleted, we should redirect or render a working page.
+        return redirect(url_for('settings.settings_view'))
 
     @blueprint.route("/settings/test-modular")
     def settings_test_modular():

@@ -8,7 +8,7 @@ document.addEventListener('alpine:init', () => {
   
   Alpine.data('settings', () => ({
     // Global state
-    currentTab: 'dashboard',
+    currentTab: 'network',
     theme: 'light',
     isLoading: false,
     showToast: false,
