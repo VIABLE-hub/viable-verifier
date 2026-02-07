@@ -78,11 +78,6 @@ def register_blueprints(app):
     app.register_blueprint(home, url_prefix='/')
     app.register_blueprint(verifier, url_prefix='/verifier')
     
-    # Settings blueprints - Application configuration
-    from .settings import settings, api_settings
-    app.register_blueprint(settings, url_prefix='/')
-    app.register_blueprint(api_settings, url_prefix='/')
-    
     # Feature blueprints - Additional functionality
     from .monitoring import monitoring
     

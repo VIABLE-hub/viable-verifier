@@ -13,10 +13,6 @@ import json
 
 from ..models import VerificationSession, db
 from .utils import generate_qr_code, get_demo_credential, randomString
-from .settings_integration import (
-    get_current_selective_disclosure_settings,
-    update_selective_disclosure_settings,
-)
 from .presentation_routes import presentation_bp
 from .verification_routes import verification_bp
 from .debug_routes import debug_bp
@@ -103,7 +99,7 @@ def log_request_info():
     logger.info("--- END REQUEST ---")
 
 
-@verifier_bp.route("/", methods=["GET", "POST"])
+@verifier_bp.route("/", methods=["GET"])
 def index():
     # 🚀 PRODUCTION-READY: Use configurable URLs for QR code and Socket.IO
     external_server_url = get_current_server_url()  # External URL for QR code
@@ -119,56 +115,12 @@ def index():
     )
     img = generate_qr_code(presentation_request_url)
 
-    # TODO: why load mandatory fields, then save in database then load again
-    # Get current settings dynamically
-    current_mandatory_fields = get_current_selective_disclosure_settings()
-
-    if request.method == "GET":
-        return render_template(
-            "verifier.html",
-            img_data=img,
-            presentation_request_url=presentation_request_url,  # For display below QR
-            server_url=external_server_url,  # For QR code generation
-            socket_url=socket_server_url,  # For Socket.IO connection
-            mandatory_fields=current_mandatory_fields,
-            demo_credential=get_demo_credential(),
-            year=datetime.now().year,
-        )
-
-    # update the mandatory fields - filter out form control fields
-    from .constants import ALL_SELECTABLE_FIELDS
-
-    selected_fields = [
-        field for field in request.form.keys() if field in ALL_SELECTABLE_FIELDS
-    ]
-
-    logger.info(f"Form keys received: {list(request.form.keys())}")
-    logger.info(f"Filtered selectable fields: {selected_fields}")
-
-    # Update settings in database (even if empty - that means no user fields required)
-    update_selective_disclosure_settings(selected_fields)
-
-    # Get updated settings after the change
-    updated_mandatory_fields = get_current_selective_disclosure_settings()
-
     return render_template(
         "verifier.html",
         img_data=img,
         presentation_request_url=presentation_request_url,  # For display below QR
         server_url=external_server_url,  # For QR code generation
         socket_url=socket_server_url,  # For Socket.IO connection
-        mandatory_fields=updated_mandatory_fields,
-        demo_credential=get_demo_credential(),
-        year=datetime.now().year,
-    )
-
-
-@verifier_bp.route("/settings", methods=["GET", "POST"])
-def verifier_settings():
-    current_mandatory_fields = get_current_selective_disclosure_settings()
-    return render_template(
-        "verifier_settings.html",
-        mandatory_fields=current_mandatory_fields,
         demo_credential=get_demo_credential(),
         year=datetime.now().year,
     )

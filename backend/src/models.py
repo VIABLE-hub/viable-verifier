@@ -12,7 +12,6 @@ class SystemSettings(db.Model):
 
     # Settings categories stored as JSONB for flexibility
     disclosure_settings = db.Column(JSON, nullable=False, default=dict)
-    network_settings = db.Column(JSON, nullable=False, default=dict)
     key_settings = db.Column(JSON, nullable=False, default=dict)
     trust_settings = db.Column(JSON, nullable=False, default=dict)
     appearance_settings = db.Column(JSON, nullable=False, default=dict)
@@ -59,19 +58,6 @@ class SystemSettings(db.Model):
                 "validFrom": False,
                 "issuer": False,
                 "credentialSchema": False,
-            }
-
-            default_network = {
-                # Unified NGROK Configuration
-                "ngrok_domain": "",  # Single unified NGROK domain (e.g., "your-instance.ngrok.io")
-                "use_ngrok": False,  # Boolean flag to enable/disable NGROK
-                # Default Address Configuration (used when NGROK is disabled)
-                "default_ip": "192.168.178.122",  # Default IP for local access
-                "default_port": "8080",  # Default port for local access
-                # Legacy/Advanced Settings (maintained for compatibility)
-                "use_https": True,  # Always use HTTPS for both NGROK and local
-                "auto_discovery": False,  # Auto-discovery feature flag
-                "timeout": 30,  # Connection timeout in seconds
             }
 
             default_keys = {
@@ -121,7 +107,6 @@ class SystemSettings(db.Model):
 
             settings = cls(
                 disclosure_settings=default_disclosure,
-                network_settings=default_network,
                 key_settings=default_keys,
                 trust_settings=default_trust,
                 appearance_settings=default_appearance,
@@ -139,9 +124,6 @@ class SystemSettings(db.Model):
         if category == "disclosure":
             self.disclosure_settings.update(data)
             flag_modified(self, "disclosure_settings")
-        elif category == "network":
-            self.network_settings.update(data)
-            flag_modified(self, "network_settings")
         elif category == "keys":
             self.key_settings.update(data)
             flag_modified(self, "key_settings")
