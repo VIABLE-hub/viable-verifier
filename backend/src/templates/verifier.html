@@ -150,9 +150,27 @@
   
   const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
+  // Load saved selection from LocalStorage
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedFields = localStorage.getItem('verifier_disclosure_fields');
+    if (savedFields) {
+      try {
+        const selectedValues = JSON.parse(savedFields);
+        document.querySelectorAll('input[name="fields"]').forEach(cb => {
+          cb.checked = selectedValues.includes(cb.value);
+        });
+      } catch (e) {
+        console.error('Error restoring fields:', e);
+      }
+    }
+  });
+
   async function startVerificationSession(btn) {
     const fields = Array.from(document.querySelectorAll('input[name="fields"]:checked')).map(cb => cb.value);
     
+    // Save selection to LocalStorage
+    localStorage.setItem('verifier_disclosure_fields', JSON.stringify(fields));
+
     // UI: Prepare for new session, clear old artifacts immediately
     const qrImg = document.getElementById('qr-code');
     if(qrImg) {
