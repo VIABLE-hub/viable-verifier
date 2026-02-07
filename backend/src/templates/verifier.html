@@ -75,9 +75,14 @@
         <div id="scanner-section" style="display: none;">
             {% include 'verifier/qr_scanner.html' %}
             
-            <button onclick="resetVerificationUI()" class="w-full mt-4 bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-lg border border-gray-300 transition-colors flex items-center justify-center shadow-sm">
-                <i class="fas fa-arrow-left mr-2"></i> Neue Verifikation
-            </button>
+            <div class="flex gap-4 mt-4 mb-6">
+                <button onclick="resetVerificationUI()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+                    <i class="fas fa-arrow-left mr-2"></i> Zurück
+                </button>
+                <button id="restart-verification-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+                    <i class="fas fa-redo mr-2"></i> Nochmal
+                </button>
+            </div>
         </div>
 
         {% include 'verifier/verification_process.html' %}
@@ -145,8 +150,7 @@
   
   const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-  // Setup Flow Logic
-  document.getElementById('start-verification-btn').addEventListener('click', async function() {
+  async function startVerificationSession(btn) {
     const fields = Array.from(document.querySelectorAll('input[name="fields"]:checked')).map(cb => cb.value);
     
     // UI: Prepare for new session, clear old artifacts immediately
@@ -158,7 +162,6 @@
     const oldOverlay = document.getElementById('qr-overlay');
     if (oldOverlay) oldOverlay.remove();
     
-    const btn = this;
     const originalContent = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Wird generiert...';
     btn.disabled = true;
@@ -176,11 +179,11 @@
         // Store current session ID globaly
         window.currentVerificationSessionId = data.session_id;
         
-        // Update QR Code
-        const qrImg = document.getElementById('qr-code');
-        if(qrImg) {
-             qrImg.src = "data:image/png;base64," + data.qr_code_data;
-             qrImg.style.opacity = '1'; // Reset opacity
+        // Update QR Code (re-fetch if element changed)
+        const qrImgNow = document.getElementById('qr-code');
+        if(qrImgNow) {
+             qrImgNow.src = "data:image/png;base64," + data.qr_code_data;
+             qrImgNow.style.opacity = '1'; // Reset opacity
         }
         
         // Reset QR Overlay if it exists
@@ -206,7 +209,20 @@
         btn.innerHTML = originalContent;
         btn.disabled = false;
     }
+  }
+
+  // Setup Flow Logic
+  document.getElementById('start-verification-btn').addEventListener('click', function() {
+    startVerificationSession(this);
   });
+  
+  // Restart Logic
+  const restartBtn = document.getElementById('restart-verification-btn');
+  if (restartBtn) {
+      restartBtn.addEventListener('click', function() {
+        startVerificationSession(this);
+      });
+  }
 
   window.resetVerificationUI = function() {
     document.getElementById('setup-section').style.display = 'block';
