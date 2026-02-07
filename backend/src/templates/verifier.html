@@ -142,10 +142,21 @@
 <script>
   // Export toggleCodeSnippet to global scope for HTML onclick handlers
   window.toggleCodeSnippet = toggleCodeSnippet;
+  
+  const TRANSPARENT_PIXEL = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
   // Setup Flow Logic
   document.getElementById('start-verification-btn').addEventListener('click', async function() {
     const fields = Array.from(document.querySelectorAll('input[name="fields"]:checked')).map(cb => cb.value);
+    
+    // UI: Prepare for new session, clear old artifacts immediately
+    const qrImg = document.getElementById('qr-code');
+    if(qrImg) {
+         qrImg.src = TRANSPARENT_PIXEL;
+         qrImg.style.opacity = '1';
+    }
+    const oldOverlay = document.getElementById('qr-overlay');
+    if (oldOverlay) oldOverlay.remove();
     
     const btn = this;
     const originalContent = btn.innerHTML;
@@ -200,6 +211,22 @@
   window.resetVerificationUI = function() {
     document.getElementById('setup-section').style.display = 'block';
     document.getElementById('scanner-section').style.display = 'none';
+    
+    // Clear QR Code state immediately
+    const qrImg = document.getElementById('qr-code');
+    if(qrImg) {
+        qrImg.src = TRANSPARENT_PIXEL;
+        qrImg.style.opacity = '1';
+    }
+    const oldOverlay = document.getElementById('qr-overlay');
+    if (oldOverlay) oldOverlay.remove();
+    
+    // Clear URL display
+    const urlDisplay = document.getElementById('presentation-url-display');
+    if(urlDisplay) urlDisplay.innerText = '';
+    const urlContainer = document.getElementById('url-container');
+    if(urlContainer) urlContainer.style.display = 'none';
+
     // Ideally clear status here too
   };
 </script>
