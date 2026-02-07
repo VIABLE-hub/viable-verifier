@@ -39,6 +39,15 @@ endif
 dev-all: dev
 start-all: dev
 
+# Run production server
+serve:
+ifeq ($(OS),Windows_NT)
+	@echo "⚠️  Production Gunicorn deployment not supported natively on Windows."
+else
+	@echo "Starting Production Server (Gunicorn)..."
+	cd $(BACKEND_DIR) && ../$(VENV_DIR)/bin/gunicorn --worker-class eventlet -w 1 --bind $(HOST):$(PORT) wsgi:app
+endif
+
 # Stop server
 stop-all:
 	@echo "Stopping server on port 8888..."
