@@ -6,9 +6,7 @@ home = Blueprint('home', __name__)
 logger = getLogger("LOGGER")
 
 
-@home.route('/index', methods=['GET'])
-@home.route('/home', methods=['GET'])
-@home.route('/', methods=['GET'])
+@home.route('/how-it-works', methods=['GET'])
 def index():
     return render_template("home.html")
 

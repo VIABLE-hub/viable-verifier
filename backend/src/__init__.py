@@ -324,6 +324,6 @@ def create_app():
     # Main route
     @app.route('/')
     def index():
-        return redirect(url_for('home.index'))
+        return redirect(url_for('verifier.index'))
 
     return app
