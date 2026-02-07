@@ -1668,13 +1668,13 @@ document.addEventListener('alpine:init', () => {
       
       // If ngrok is enabled and we have a domain, use that
       if (useNgrok && ngrokUrl) {
-        return `${ngrokUrl}/verifier`;
+        return `${ngrokUrl}/`;
       }
       
       // Otherwise use the local IP and port
       const ip = this.networkData.network_info?.local_ip || this.networkData.local_ip || 'localhost';
       const port = this.networkData.network_config?.default_port || this.networkData.default_port || '8080';
-      return `${protocol}${ip}:${port}/verifier`;
+      return `${protocol}${ip}:${port}/`;
     },
 
     // Dynamic URL generation based on connection mode

@@ -22,7 +22,7 @@ aud_val = "did:key:tub-verifier-example"
 
 @presentation_bp.route("/request_uri", methods=["GET", "POST"])
 def request_uri():
-    server_url = get_current_server_url() + "/verifier/"
+    server_url = get_current_server_url() + "/"
     redirect_uri = f"openid4vp://?request_uri={server_url}presentation-request"
     return redirect(redirect_uri)
 
@@ -40,7 +40,7 @@ def request_uri_with_id(request_uri_id):
         presentation_def = get_presentation_definition()
         
         mandatory_fields = []
-        response_uri = get_current_server_url() + "/verifier/direct_post"
+        response_uri = get_current_server_url() + "/direct_post"
         nonce = randomString(10)
 
         if session:
@@ -65,7 +65,7 @@ def request_uri_with_id(request_uri_id):
                     mandatory_fields.append(ios_field)
 
             # Update response URI to include session ID
-            response_uri = get_current_server_url() + f"/verifier/direct_post?session_id={session.id}"
+            response_uri = get_current_server_url() + f"/direct_post?session_id={session.id}"
             nonce = session.nonce
             
         else:
@@ -131,7 +131,7 @@ def create_presentation_request():
     try:
         params = {}
         params["response_type"] = "vp_token"
-        params["response_uri"] = get_current_server_url() + "/verifier/direct_post"
+        params["response_uri"] = get_current_server_url() + "/direct_post"
         params["response_mode"] = "direct_post"
         params["state"] = randomString(10)
         global nonce_val
@@ -293,7 +293,7 @@ def create_presentation_request():
         params["presentation_definition"] = presentation_def_json
 
         # Construct the complete URL for the wallet
-        client_id = get_current_server_url() + "/verifier/authorize"
+        client_id = get_current_server_url() + "/authorize"
         openid_request = f"openid4vp://?client_id={client_id}"
         for key, value in params.items():
             encoded_value = quote(str(value), safe="")

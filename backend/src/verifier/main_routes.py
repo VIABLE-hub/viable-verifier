@@ -54,7 +54,7 @@ def create_session():
         
         # This URL is what the wallet fetches to get the Presentation Definition
         # We point it to existing request.uri route which we will modify to handle session IDs correctly
-        request_uri = f"{external_server_url}/verifier/request.uri/{session_id}"
+        request_uri = f"{external_server_url}/request.uri/{session_id}"
         
         # This is the OpenID4VP URL encoded in the QR code
         presentation_request_url = (
@@ -111,7 +111,7 @@ def index():
 
     # Construct OID4VP URL
     presentation_request_url = (
-        f"openid4vp://?request_uri={external_server_url}/verifier/presentation-request"
+        f"openid4vp://?request_uri={external_server_url}/presentation-request"
     )
     img = generate_qr_code(presentation_request_url)
 

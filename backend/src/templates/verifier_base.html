@@ -388,7 +388,7 @@ const result = bbs.verify(messages, presentation.signature, pk);</pre>
       e.preventDefault();
       // Wir bauen den Link jetzt dynamisch aus dem aktuellen Basis-URL
       const baseUrl = window.location.origin;
-      window.location.href = "openid4vp://?request_uri=" + baseUrl + "/verifier/presentation-request";
+      window.location.href = "openid4vp://?request_uri=" + baseUrl + "/presentation-request";
     });
 
     // Expand/Collapse All Button
