@@ -4,7 +4,7 @@ BACKEND_DIR = backend
 VENV_DIR = .venv
 PYTHON = python3
 PIP = pip3
-PORT = 8080
+PORT = 8888
 HOST = 0.0.0.0
 BASE_URL = https://localhost:$(PORT)
 
