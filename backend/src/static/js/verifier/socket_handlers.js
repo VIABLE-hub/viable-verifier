@@ -1,3 +1,6 @@
+// Dummy QR Code (SVG provided by user, preloaded as base64 if available)
+const DUMMY_QR = (typeof USED_QR_BASE64 !== 'undefined') ? USED_QR_BASE64 : "/static/img/already_used.svg";
+
 // Socket.IO Connection Handler and Event Handling
 document.addEventListener('DOMContentLoaded', function() {
   // Get the server URL from the window object (will be set in the template)
@@ -97,6 +100,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verification event handlers
     newSocket.on('presentation_requested', function(msg) {
       updateVerificationStep('presentation_requested', msg.status === 'success' ? 'success' : 'error');
+    });
+    
+    // Listen for session completion to update UI
+    newSocket.on('session_verified', function(msg) {
+        if (window.currentVerificationSessionId && msg.session_id === window.currentVerificationSessionId) {
+             const qrImg = document.getElementById('qr-code');
+             if (qrImg) {
+                 // Replace with dummy QR
+                 qrImg.src = DUMMY_QR;
+                 qrImg.style.opacity = '0.2'; // Faded out
+                 
+                 // Add overlay if not exists
+                 const container = qrImg.parentElement;
+                 if (container && !document.getElementById('qr-overlay')) {
+                     container.style.position = 'relative';
+                     const overlay = document.createElement('div');
+                     overlay.id = 'qr-overlay';
+                     overlay.className = 'absolute inset-0 flex items-center justify-center';
+                     overlay.innerHTML = '<span class="bg-gray-800 text-white px-3 py-1 rounded-full font-bold text-sm">USED</span>';
+                     container.appendChild(overlay);
+                 }
+             }
+        }
     });
 
     newSocket.on('presentation_received', function(msg) {

@@ -44,6 +44,11 @@ def request_uri_with_id(request_uri_id):
         nonce = randomString(10)
 
         if session:
+            # Check status before proceeding
+            if session.status == 'verified' or session.status == 'failed':
+                 logger.warning(f"Attempt to reuse session {session.id} with status {session.status}")
+                 return jsonify({"error": "This QR code has already been used or is invalid"}), 410  # 410 Gone
+
             # Session-based flow
             if session.status == 'created':
                 session.status = 'scanned'
@@ -105,7 +110,12 @@ def request_uri_with_id(request_uri_id):
         }
 
         if request.method == "GET":
-            return jsonify(params), 200
+            response = jsonify(params)
+            # Disable caching to ensure subsequent scans (re-use attempts) hit the server logic
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+            return response, 200
         else:  # POST
             # For iOS wallet compatibility - return 302 redirect with openid4vp scheme
             openid_url = f"openid4vp://?response_uri={params['response_uri']}&presentation_definition={params['presentation_definition']}&nonce={nonce}&state={nonce}"

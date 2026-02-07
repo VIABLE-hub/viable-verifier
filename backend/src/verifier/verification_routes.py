@@ -51,9 +51,16 @@ def direct_post():
                 session.status = 'verified'
                 db.session.commit()
                 logger.info(f"Session {session_id} marked as verified")
+                
+                # Emit event to inform frontend that this specific session was verified
+                # This helps the frontend check if the event matches the current session
+                socketio.emit(
+                    "session_verified", 
+                    {"session_id": session_id, "status": "verified"}
+                )
         except Exception as e:
             logger.error(f"Error checking session: {e}")
-
+            
     try:
         # Check URL parameters first
         vp_token = request.args.get("vp_token")

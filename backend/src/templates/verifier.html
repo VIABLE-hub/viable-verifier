@@ -135,6 +135,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 
 <!-- Modular JavaScript -->
+<script src="/static/js/verifier/used_qr_asset.js"></script>
 <script src="/static/js/verifier/verifier_core.js"></script>
 <script src="/static/js/verifier/socket_handlers.js"></script>
 <script src="/static/js/verifier/ui_handlers.js"></script>
@@ -161,9 +162,19 @@
         const data = await response.json();
         if (data.error) throw new Error(data.error);
         
+        // Store current session ID globaly
+        window.currentVerificationSessionId = data.session_id;
+        
         // Update QR Code
         const qrImg = document.getElementById('qr-code');
-        if(qrImg) qrImg.src = "data:image/png;base64," + data.qr_code_data;
+        if(qrImg) {
+             qrImg.src = "data:image/png;base64," + data.qr_code_data;
+             qrImg.style.opacity = '1'; // Reset opacity
+        }
+        
+        // Reset QR Overlay if it exists
+        const oldOverlay = document.getElementById('qr-overlay');
+        if (oldOverlay) oldOverlay.remove();
         
         // Update URL Display
         const urlDisplay = document.getElementById('presentation-url-display');
