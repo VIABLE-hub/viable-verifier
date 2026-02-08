@@ -5,6 +5,7 @@ Handles VP verification and processing.
 """
 
 from flask import Blueprint, request, jsonify
+from flask_socketio import join_room
 from logging import getLogger
 import jwt
 import traceback
@@ -27,6 +28,15 @@ logger = getLogger("LOGGER")
 verification_bp = Blueprint("verification", __name__)
 
 
+@socketio.on('join_session')
+def on_join(data):
+    session_id = data.get('session_id')
+    if session_id:
+        join_room(session_id)
+        logger.info(f"Client joined session room: {session_id}")
+
+
+
 @verification_bp.route("/direct_post", methods=["POST"])
 def direct_post():
     """
@@ -34,6 +44,14 @@ def direct_post():
     """
     # session check
     session_id = request.args.get("session_id")
+    
+    # Helper to emit events to specific session room if available
+    def emit_to_session(event, data):
+        if session_id:
+            socketio.emit(event, data, room=session_id)
+        else:
+            socketio.emit(event, data)
+            
     expected_nonce = None
     
     if session_id:
@@ -54,7 +72,7 @@ def direct_post():
                 
                 # Emit event to inform frontend that this specific session was verified
                 # This helps the frontend check if the event matches the current session
-                socketio.emit(
+                emit_to_session(
                     "session_verified", 
                     {"session_id": session_id, "status": "verified"}
                 )
@@ -105,7 +123,7 @@ def direct_post():
             return jsonify({"error": "Failed to decode VP token", "valid": 0}), 400
 
         # Step 1: Presentation request received
-        socketio.emit(
+        emit_to_session(
             "presentation_received",
             {"status": "success", "message": "Präsentation empfangen"},
         )
@@ -114,7 +132,7 @@ def direct_post():
         presentation = extract_presentation_from_vp(decoded_vp)
 
         # Step 2: Extract credential fields
-        socketio.emit(
+        emit_to_session(
             "key_extraction",
             {"status": "success", "message": "Credential-Felder extrahiert"},
         )
@@ -207,7 +225,7 @@ def direct_post():
                     error_type == "bbs_verification_failed"
                     or error_type == "bbs_verification_exception"
                 ):
-                    socketio.emit(
+                    emit_to_session(
                         "signature_verification",
                         {
                             "status": "error",
@@ -215,7 +233,7 @@ def direct_post():
                         },
                     )
                 elif error_type == "credential_validity_failed":
-                    socketio.emit(
+                    emit_to_session(
                         "credential_validity_status",
                         {
                             "status": "error",
@@ -223,7 +241,7 @@ def direct_post():
                         },
                     )
                 elif error_type == "presentation_integrity_error":
-                    socketio.emit(
+                    emit_to_session(
                         "mandatory_fields_verification",
                         {
                             "status": "error",
@@ -231,7 +249,7 @@ def direct_post():
                         },
                     )
                 else:
-                    socketio.emit(
+                    emit_to_session(
                         "verification_result",
                         {
                             "status": "error",
@@ -254,7 +272,7 @@ def direct_post():
             is_sd_jwt = verification_details.get("format") == "sd_jwt"
 
             # Wenn die Verifikation erfolgreich war, setzen wir alle Schritte auf Erfolg
-            socketio.emit(
+            emit_to_session(
                 "mandatory_fields_verification",
                 {
                     "status": "success",
@@ -270,7 +288,7 @@ def direct_post():
                     "iss", issuer_id
                 )
 
-            socketio.emit(
+            emit_to_session(
                 "issuer_pub_key_verification",
                 {
                     "status": "success",
@@ -289,7 +307,7 @@ def direct_post():
             )
 
             if is_sd_jwt:
-                socketio.emit(
+                emit_to_session(
                     "signature_verification",
                     {
                         "status": "success",
@@ -304,7 +322,7 @@ def direct_post():
                     },
                 )
             else:
-                socketio.emit(
+                emit_to_session(
                     "signature_verification",
                     {
                         "status": "success",
@@ -337,7 +355,7 @@ def direct_post():
             valid_status, status_msg = validate_credential_validity(vp_to_validate)
             if not valid_status:
                 logger.error(f"Credential validity check failed: {status_msg}")
-                socketio.emit(
+                emit_to_session(
                     "credential_validity_status",
                     {
                         "status": "error",
@@ -355,7 +373,7 @@ def direct_post():
                 ), 400
         else:
             # Demo Credential: Vereinfachte Validierung
-            socketio.emit(
+            emit_to_session(
                 "mandatory_fields_verification",
                 {
                     "status": "success",
@@ -363,17 +381,17 @@ def direct_post():
                 },
             )
 
-            socketio.emit(
+            emit_to_session(
                 "issuer_pub_key_verification",
                 {"status": "success", "message": "Aussteller validiert (Demo-Modus)"},
             )
 
-            socketio.emit(
+            emit_to_session(
                 "signature_verification",
                 {"status": "success", "message": "Demo-Credential erkannt"},
             )
 
-        socketio.emit(
+        emit_to_session(
             "credential_validity_status",
             {"status": "success", "message": "Gültigkeit bestätigt"},
         )
@@ -416,7 +434,7 @@ def direct_post():
             pass
 
         if is_sd_jwt_fmt:
-            socketio.emit(
+            emit_to_session(
                 "issuer_bbs_key_verification",
                 {
                     "status": "success",
@@ -432,7 +450,7 @@ def direct_post():
                 },
             )
         else:
-            socketio.emit(
+            emit_to_session(
                 "issuer_bbs_key_verification",
                 {
                     "status": "success",
@@ -691,7 +709,7 @@ def direct_post():
             # 🔧 DEBUG: Log system detection details
             logger.info(f"🔧 VERIFICATION DEBUG: Issuer info = '{display_issuer}'")
 
-            socketio.emit(
+            emit_to_session(
                 "verification_result",
                 {
                     "status": "success",
@@ -780,7 +798,7 @@ def direct_post():
             error_type = "field_extraction_failed"
 
         # Sende detaillierte Fehlermeldung mit Schrittzählung
-        socketio.emit(
+        emit_to_session(
             "verification_result",
             {
                 "status": "error",

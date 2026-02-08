@@ -123,6 +123,11 @@
 <script>
   // 🚀 SOCKET.IO FIX: Use separate URLs for QR code and Socket.IO
   let externalServerUrl = "{{ server_url }}";    // ngrok URL for QR code display
+  
+  {% if session_id %}
+  window.currentVerificationSessionId = "{{ session_id }}";
+  {% endif %}
+  
   // let socketServerUrl = "{{ socket_url }}";      // localhost for Socket.IO connection
   let socketServerUrl  = externalServerUrl;
   // Convert 127.0.0.1 to localhost for SSL certificate compatibility
@@ -258,6 +263,11 @@
         
         // Store current session ID globaly
         window.currentVerificationSessionId = data.session_id;
+        
+        // Join Socket.IO Room
+        if (window.joinVerificationSession) {
+            window.joinVerificationSession(data.session_id);
+        }
         
         // Update QR Code (re-fetch if element changed)
         const qrImgNow = document.getElementById('qr-code');

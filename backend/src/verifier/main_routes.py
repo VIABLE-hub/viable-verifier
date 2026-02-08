@@ -109,9 +109,24 @@ def index():
 
     socket_server_url = os.environ.get("SOCKET_IO_URL", external_server_url)
 
-    # Construct OID4VP URL
+    # NEW: Create a unique session for this visitor
+    session_id = str(uuid.uuid4())
+    nonce = randomString(10)
+    
+    # Store session
+    session = VerificationSession(
+        id=session_id,
+        nonce=nonce,
+        requested_fields=[], # Default fields will be handled by request handler
+        status="created"
+    )
+    db.session.add(session)
+    db.session.commit()
+
+    # Construct OID4VP URL with Session ID
+    request_uri = f"{external_server_url}/request.uri/{session_id}"
     presentation_request_url = (
-        f"openid4vp://?request_uri={external_server_url}/presentation-request"
+        f"openid4vp://?request_uri={request_uri}"
     )
     img = generate_qr_code(presentation_request_url)
 
@@ -119,6 +134,7 @@ def index():
         "verifier.html",
         img_data=img,
         presentation_request_url=presentation_request_url,  # For display below QR
+        session_id=session_id, # PASS SESSION ID TO TEMPLATE
         server_url=external_server_url,  # For QR code generation
         socket_url=socket_server_url,  # For Socket.IO connection
         demo_credential=get_demo_credential(),

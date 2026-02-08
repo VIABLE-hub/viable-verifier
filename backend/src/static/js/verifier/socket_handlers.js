@@ -55,7 +55,23 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // VISUAL FEEDBACK FIX: Add connection success indicator
       addStatusFeedEntry('Socket.IO connection established', 'success');
+      
+      // SESSION FIX: Join the session room if ID is available
+      if (window.currentVerificationSessionId) {
+          console.log('[Socket.IO] Automatically joining session:', window.currentVerificationSessionId);
+          socket.emit('join_session', { session_id: window.currentVerificationSessionId });
+      }
     });
+
+    // Make join available globally
+    window.joinVerificationSession = function(sessionId) {
+        if (socket && socket.connected) {
+             console.log('[Socket.IO] Joining session room (manual):', sessionId);
+             socket.emit('join_session', { session_id: sessionId });
+        } else {
+             console.log('[Socket.IO] Cannot join session, socket not connected. Will join on connect.');
+        }
+    };
     
     // Connection errors
     newSocket.on('connect_error', function(error) {
