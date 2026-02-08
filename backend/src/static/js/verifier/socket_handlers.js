@@ -670,15 +670,30 @@ function createFieldValueElement(field, value, category) {
   // Get friendly field name
   const displayName = getFieldDisplayName(field);
   
-  // Format the value
-  const formattedValue = formatFieldValueForDisplay(value, field);
+  // Check if this is an image field
+  const isImageField = field.toLowerCase().includes('image') && 
+                       typeof value === 'string' && 
+                       (value.startsWith('/9j/') || value.startsWith('data:image'));
+
+  // Format the value (use image rendering for image fields)
+  const formattedValue = isImageField 
+    ? renderFieldValueWithImage(value, field)
+    : formatFieldValueForDisplay(value, field);
   
   // Get value type
-  const valueType = getValueType(value);
+  const valueType = isImageField ? 'image (base64)' : getValueType(value);
   
   // Generate unique ID for this field
   const fieldId = `field-${Math.random().toString(36).substr(2, 9)}`;
   
+  // Don't add copy button for images
+  const copyButton = isImageField ? '' : `
+    <button class="copy-button" onclick="copyFieldValue(event, '${fieldId}')" title="Kopieren">
+      <i class="fas fa-copy"></i>
+    </button>
+    <div class="copy-feedback">Kopiert!</div>
+  `;
+
   fieldDiv.innerHTML = `
     <div class="field-value-header">
       <div class="field-value-label">
@@ -686,12 +701,9 @@ function createFieldValueElement(field, value, category) {
         ${displayName}
       </div>
     </div>
-    <div class="field-value-content" id="${fieldId}" data-raw-value="${escapeHtml(value.toString())}" onclick="selectFieldContent('${fieldId}')" title="Klicken um zu markieren, Strg+C zum Kopieren">
+    <div class="field-value-content ${isImageField ? 'image-content' : ''}" id="${fieldId}" data-raw-value="${isImageField ? '[image data]' : escapeHtml(value.toString())}" ${isImageField ? '' : `onclick="selectFieldContent('${fieldId}')" title="Klicken um zu markieren"`}>
       ${formattedValue}
-      <button class="copy-button" onclick="copyFieldValue(event, '${fieldId}')" title="Kopieren">
-        <i class="fas fa-copy"></i>
-      </button>
-      <div class="copy-feedback">Kopiert!</div>
+      ${copyButton}
     </div>
     <div class="field-value-type">${valueType}</div>
   `;
@@ -935,4 +947,30 @@ function displayDisclosureErrors(validationData) {
     console.error('Error displaying disclosure errors:', error);
     addStatusFeedEntry('⚠️ Error processing disclosure validation', 'warning');
   }
-} 
+}
+
+/**
+ * Helper function to render field value for images
+ */
+function renderFieldValueWithImage(value, fieldName) {
+    if (typeof value === 'string' &&
+        (value.startsWith('data:image') || value.startsWith('/9j/') || value.length > 500)) {
+
+        // It's likely a Base64 image
+        const imgSrc = value.startsWith('data:image') ? value : `data:image/jpeg;base64,${value}`;
+        return `
+      <div class="field-value-image-container">
+        <img src="${imgSrc}" alt="Profile Image" class="field-value-image" 
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <span class="field-value-image-placeholder" style="display:none;">
+          <i class="fas fa-image"></i>
+        </span>
+      </div>
+      <span class="text-xs text-gray-500">Profilbild (${Math.round(value.length / 1024)} KB)</span>
+    `;
+    }
+
+    // Regular field value - truncate if too long
+    const strValue = String(value);
+    return strValue.substring(0, 200) + (strValue.length > 200 ? '...' : '');
+}

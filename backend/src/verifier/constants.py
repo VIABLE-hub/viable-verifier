@@ -64,7 +64,7 @@ SELECTABLE_USER_FIELDS = [
 
 # Visual Elements Fields (selectable for disclosure) 
 SELECTABLE_VISUAL_FIELDS = [
-    # "image",  # Disabled: Base64 image data too large for BBS+ verification
+    "image",  # Disabled: Base64 image data too large for BBS+ verification
     # "theme"   # Disabled: Theme data can be complex and cause verification issues
 ]
 

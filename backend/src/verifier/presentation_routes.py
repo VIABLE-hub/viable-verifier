@@ -63,6 +63,11 @@ def request_uri_with_id(request_uri_id):
                 ios_field = field_mapping.get(field, field)
                 if ios_field not in mandatory_fields:
                     mandatory_fields.append(ios_field)
+            
+            # CRITICAL FIX: Ensure 'image' is in mandatory_fields if requested in session
+            # (sometimes clean logic might skip it if not mapped properly)
+            if "image" in session.requested_fields and "image" not in mandatory_fields:
+               mandatory_fields.append("image")
 
             # Update response URI to include session ID
             response_uri = get_current_server_url() + f"/direct_post?session_id={session.id}"
@@ -82,9 +87,9 @@ def request_uri_with_id(request_uri_id):
 
             # Add user mandatory fields, skip complex fields
             complex_fields = [
-                "image",
+               # "image", # REMOVED - now supported
                 "theme",
-                "vc.credentialSubject.image",
+               # "vc.credentialSubject.image", # REMOVED
                 "vc.credentialSubject.theme",
             ]
             for field in presentation_def.get("user_mandatory_fields", []):
@@ -174,9 +179,9 @@ def create_presentation_request():
 
         # ✅ Add user mandatory fields, but skip complex fields and map nested fields to iOS format
         complex_fields = [
-            "image",
+            # "image", # REMOVED - now supported with compressed images
             "theme",
-            "vc.credentialSubject.image",
+            # "vc.credentialSubject.image", # REMOVED
             "vc.credentialSubject.theme",
         ]
         logger.info(
@@ -242,6 +247,7 @@ def create_presentation_request():
             "lastName": "Last name of the cardholder",
             "studentID": "Unique student identification number",  # iOS uses uppercase ID
             "studentIDPrefix": "Prefix of the student ID for organization identification",  # iOS uses uppercase ID
+            "image": "Profile picture of the student (Base64 encoded)",
         }
 
         # ✅ FINAL VERIFICATION: Log the complete field list before sending to wallet

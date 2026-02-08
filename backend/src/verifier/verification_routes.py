@@ -496,10 +496,12 @@ def direct_post():
             "studentIdPrefix",
             "studentID",
             "studentIDPrefix",  # iOS uppercase variants
+            "image", # Profile image field
             "vc.credentialSubject.firstName",
             "vc.credentialSubject.lastName",
             "vc.credentialSubject.studentId",
             "vc.credentialSubject.studentIdPrefix",
+            "vc.credentialSubject.image", # Profile image nested path
         }
 
         # CRITICAL FIX: Handle credentialSubject nested fields
@@ -520,10 +522,11 @@ def direct_post():
                     "email",
                     "dateOfBirth",
                     "studyProgram",
+                    "image",
                 ]:
                     disclosed_info["mandatory"].append(f"credentialSubject.{cs_field}")
                     logger.debug(
-                        f"✅ User field (from credentialSubject): 'credentialSubject.{cs_field}' = {cs_value}"
+                        f"✅ User field (from credentialSubject): 'credentialSubject.{cs_field}' = {str(cs_value)[:50] if cs_value else ''}"
                     )
 
         # CRITICAL FIX 2: Handle credentialSubject nested inside "vc" field
@@ -550,12 +553,13 @@ def direct_post():
                         "email",
                         "dateOfBirth",
                         "studyProgram",
+                        "image",
                     ]:
                         disclosed_info["mandatory"].append(
                             f"vc.credentialSubject.{cs_field}"
                         )
                         logger.debug(
-                            f"✅ User field (from vc.credentialSubject): 'vc.credentialSubject.{cs_field}' = {cs_value}"
+                            f"✅ User field (from vc.credentialSubject): 'vc.credentialSubject.{cs_field}'"
                         )
 
         for field in safe_values.keys():
