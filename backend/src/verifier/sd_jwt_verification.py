@@ -1,6 +1,7 @@
 import logging
 import os
 import base58
+import requests
 from sd_jwt.verifier import SDJWTVerifier
 from jwcrypto.jwk import JWK
 from cryptography.hazmat.primitives.asymmetric import ec
@@ -84,6 +85,51 @@ def pem_to_jwk(pem_key):
         logger.error(f"Error converting PEM to JWK: {e}")
         return None
 
+
+def resolve_did_web(did):
+    """
+    Resolve did:web to JWK
+    """
+    try:
+        if not did.startswith("did:web:"):
+            return None
+        
+        # Parse domain
+        # Format: did:web:example.com or did:web:example.com:path
+        parts = did.split(":")
+        if len(parts) < 3:
+            return None
+        
+        domain = parts[2].replace("%3A", ":")
+        path_parts = parts[3:]
+        
+        if path_parts:
+            # Join with slashes
+            path = "/".join(path_parts)
+            url = f"https://{domain}/{path}/did.json"
+        else:
+            url = f"https://{domain}/.well-known/did.json"
+            
+        logger.info(f"Fetching DID Doc from: {url}")
+        # Use verify=False if potentially testing with self-signed certs (dev env), otherwise verify=True
+        response = requests.get(url, timeout=10) # Removed verify=False for security, but might be needed in dev
+        
+        if response.status_code != 200:
+            logger.error(f"Failed to fetch DID Doc: {response.status_code}")
+            return None
+            
+        did_doc = response.json()
+        
+        # We return the whole list of keys or filter by Key ID? 
+        # The callback needs one key. We should return all keys map or handle resolution logic.
+        # But for 'kb_get_issuer_key', we expect a single JWK.
+        
+        return did_doc
+            
+    except Exception as e:
+        logger.error(f"Error resolving did:web: {e}")
+        return None
+
 def verify_sd_jwt_presentation(raw_token, expected_nonce=None):
     # Ensure keys are initialized
     
@@ -111,28 +157,50 @@ def verify_sd_jwt_presentation(raw_token, expected_nonce=None):
         
     try:
 
-        def cb_get_issuer_key(issuer_id, key_id):
-            logger.info(f"Resolving key for issuer: {issuer_id}")
+        def cb_get_issuer_key(issuer_id, header_params):
+            # The second argument is the full header dict, extract KID from it
+            key_id = header_params.get("kid") if isinstance(header_params, dict) else header_params
             
-            # 1. Try to resolve from DID (True Verifier approach)
-            if issuer_id and issuer_id.startswith("did:key:"):
-                resolved_jwk = resolve_did_key(issuer_id)
-                if resolved_jwk:
-                    logger.info("Successfully resolved issuer key from did:key")
-                    # Add Kid if present
-                    if key_id:
-                        resolved_jwk["kid"] = key_id
-                    return JWK(**resolved_jwk)
+            logger.info(f"Resolving key for issuer: {issuer_id} (kid: {key_id})")
             
-            # 2. Fallback to local trusted key (Monolith/Testing approach)
-            logger.info("Using local trusted public key for verification")
-            jwk_dict = local_issuer_jwk
-            # Add Kid if present
-            if key_id:
-                jwk_dict["kid"] = key_id
+            # Enforce did:web for issuer
+            if not issuer_id or not issuer_id.startswith("did:web:"):
+                error_msg = f"Issuer DID must be did:web. Found: {issuer_id}"
+                logger.error(error_msg)
+                raise Exception(error_msg)
+
+            # Try to resolve from DID (did:web)
+            did_doc = resolve_did_web(issuer_id)
+            if did_doc:
+                logger.info("Successfully fetched DID Document for did:web")
+                # Find matching verification method
+                for vm in did_doc.get("verificationMethod", []):
+                    # Match KID if provided
+                    # Standard KID in headers might be "did:web:example.com#key-1" or just "key-1"
+                    # The VM ID is usually fully qualified "did:web:example.com#key-1"
+                    
+                    is_match = False
+                    vm_id = vm.get("id", "")
+                    
+                    if not key_id:
+                        # If no KID requested (unlikely), take the first one
+                        is_match = True
+                    elif vm_id == key_id:
+                        is_match = True
+                    elif vm_id.endswith(f"#{key_id}"):
+                        is_match = True
+                    elif key_id.startswith("#") and vm_id.endswith(key_id):
+                        is_match = True
+                        
+                    if is_match:
+                        if "publicKeyJwk" in vm:
+                            logger.info(f"Using key from DID Doc: {vm_id}")
+                            return JWK(**vm["publicKeyJwk"])
+                            
+                logger.warning(f"No matching key found in DID Doc for kid: {key_id}")
             
-            # The SD-JWT library expects a JWK object
-            return JWK(**jwk_dict)
+            raise Exception("Could not resolve DID or find matching key in DID Document")
+
 
         # Setup verifier
         verifier = SDJWTVerifier(

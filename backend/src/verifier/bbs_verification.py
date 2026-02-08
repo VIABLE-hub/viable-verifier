@@ -9,8 +9,10 @@ import base64
 import os
 import importlib.util
 from logging import getLogger
+import base58
 from flatten_json import flatten
 from ..models import VP_NONCE, db
+from .sd_jwt_verification import resolve_did_web
 
 logger = getLogger("LOGGER")
 
@@ -163,8 +165,48 @@ def verify_bbs_proof(decoded_vp, mandatory_fields=None, expected_nonce=None):
         logger.info(f"🔹 BBS+ DPK found: {bbs_dpk[:30]}...")
         logger.info(f"🔹 Total messages: {total_messages}")
 
+        # --- DID:WEB ENFORCEMENT START ---
+        # 1. Require 'iss' in disclosed values
+        issuer_did = values.get("iss")
+        if not issuer_did:
+            logger.error("❌ Security Error: 'iss' field not found in disclosed values")
+            return False, "Issuer Identity ('iss') missing from presentation"
+
+        # 2. Enforce did:web format
+        if not str(issuer_did).startswith("did:web:"):
+            logger.error(f"❌ Security Error: Invalid Issuer DID format: {issuer_did}")
+            return False, f"Issuer Identity must be did:web. Found: {issuer_did}"
+
+        # 3. Resolve DID Document
+        logger.info(f"🔹 Resolving Issuer Identity: {issuer_did}")
+        did_doc = resolve_did_web(issuer_did)
+        if not did_doc:
+            logger.error(f"❌ Security Error: Could not resolve DID Document for {issuer_did}")
+            return False, f"Could not resolve DID Document for {issuer_did}"
+
+        # 4. Extract Trusted BBS+ Key from DID Document
+        trusted_bbs_key_bytes = None
+        verification_methods = did_doc.get("verificationMethod", [])
+        
+        for vm in verification_methods:
+            if vm.get("type") == "Bls12381G2Key2020":
+                pk_base58 = vm.get("publicKeyBase58")
+                if pk_base58:
+                    try:
+                        trusted_bbs_key_bytes = base58.b58decode(pk_base58)
+                        logger.info(f"🔹 Found trusted BBS+ key in DID Doc: {vm.get('id')}")
+                        break
+                    except Exception as e:
+                        logger.warning(f"Failed to decode base58 key from DID Doc: {e}")
+
+        if not trusted_bbs_key_bytes:
+            logger.error(f"❌ Security Error: No BBS+ key (Bls12381G2Key2020) found in DID Document")
+            return False, f"Issuer {issuer_did} does not publish a BBS+ key"
+        # --- DID:WEB ENFORCEMENT END ---
+
         # Extract the proof from the VC
         proof = vc.get("proof", "")
+
         if not proof:
             logger.error("No proof found in the verifiable credential")
             return False, "No proof found in the verifiable credential"
@@ -262,6 +304,17 @@ def verify_bbs_proof(decoded_vp, mandatory_fields=None, expected_nonce=None):
         except Exception as e:
             logger.error(f"Failed to decode Base64 values: {e}")
             return False, f"Failed to decode Base64 values: {e}"
+
+        # --- KEY INTEGRITY CHECK START ---
+        # 5. Verify that the DPK in the credential matches the trusted key from DID Doc
+        # This prevents an attacker from signing a VC with their own key and presenting it
+        if dpk_bytes != trusted_bbs_key_bytes:
+            logger.error("❌ CRTICAL SECURITY ALERT: BBS+ Public Key Mismatch!")
+            logger.error("   The key used in the credential does not match the key published by the issuer.")
+            return False, "Credential Public Key does not match Issuer's published key (Spoofing attempt?)"
+        
+        logger.info("✅ Issuer Key Integrity Verified: Credential DPK matches DID Document")
+        # --- KEY INTEGRITY CHECK END ---
 
         try:
             # The BBS+ library handles the selective disclosure mapping internally

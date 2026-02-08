@@ -655,28 +655,53 @@ def direct_post():
         # Get issuer info from config
         from flask import current_app
 
-        issuer_info = current_app.config.get(
-            "UNIVERSITY_NAME", "Technische Universität Berlin"
-        )
+        if (
+            'summary' not in locals()
+        ):  # Only send if we haven't already sent a summary (which we haven't here)
+            # Try to extract issuer from verified payload (most reliable)
+            display_issuer = current_app.config.get(
+                "UNIVERSITY_NAME", "Technische Universität Berlin"
+            )
 
-        # 🔧 DEBUG: Log system detection details
-        logger.info(f"🔧 VERIFICATION DEBUG: Issuer info = '{issuer_info}'")
+            try:
+                # Check safe_values first (processed payload)
+                if "iss" in safe_values:
+                    iss = safe_values["iss"]
+                    if iss.startswith("did:web:"):
+                        display_issuer = iss[8:].replace("%3A", ":")
+                    else:
+                        display_issuer = iss
+                # Check verification details as fallback
+                elif "verification_details" in locals() and verification_details.get(
+                    "verified_payload"
+                ):
+                    iss = verification_details.get("verified_payload").get("iss")
+                    if iss:
+                        if iss.startswith("did:web:"):
+                            display_issuer = iss[8:].replace("%3A", ":")
+                        else:
+                            display_issuer = iss
+            except Exception as e:
+                logger.warning(f"Could not extract issuer for display: {e}")
 
-        socketio.emit(
-            "verification_result",
-            {
-                "status": "success",
-                "message": f"🎉 Verifikation erfolgreich abgeschlossen!<br/>✅ Gültiger Studierendenausweis ausgestellt von <strong>{issuer_info}</strong>",
-                "issuer": issuer_info,
-                "transmitted_fields": {
-                    "technical": disclosed_info["technical"],
-                    "personal": disclosed_info["mandatory"]
-                    + disclosed_info["optional"],
-                    "additional": disclosed_info["undeclared"],
-                    "values": safe_values,  # Include actual field values
+            # 🔧 DEBUG: Log system detection details
+            logger.info(f"🔧 VERIFICATION DEBUG: Issuer info = '{display_issuer}'")
+
+            socketio.emit(
+                "verification_result",
+                {
+                    "status": "success",
+                    "message": f"🎉 Verifikation erfolgreich abgeschlossen!<br/>✅ Gültiger Studierendenausweis ausgestellt von <strong>{display_issuer}</strong>",
+                    "issuer": display_issuer,
+                    "transmitted_fields": {
+                        "technical": disclosed_info["technical"],
+                        "personal": disclosed_info["mandatory"]
+                        + disclosed_info["optional"],
+                        "additional": disclosed_info["undeclared"],
+                        "values": safe_values,  # Include actual field values
+                    },
                 },
-            },
-        )
+            )
 
         # VC Login logic removed (Verifier is stateless)
 
