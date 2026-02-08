@@ -50,7 +50,10 @@ def direct_post():
         if session_id:
             socketio.emit(event, data, room=session_id)
         else:
-            socketio.emit(event, data)
+            # SECURITY FIX: Do not broadcast globally if no session ID is present.
+            # This prevents PII leakage to unrelated clients.
+            logger.warning(f"SECURITY: Attempted to emit '{event}' without session_id. Event suppressed.")
+            # socketio.emit(event, data)
             
     expected_nonce = None
     
