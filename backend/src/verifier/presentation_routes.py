@@ -10,7 +10,7 @@ from logging import getLogger
 from urllib.parse import quote
 import json
 from ..models import VP_NONCE, VerificationSession, db
-from .utils import randomString
+from .utils import randomString, generate_nonce
 from .settings_integration import get_presentation_definition
 from .. import socketio
 
@@ -35,44 +35,50 @@ def request_uri_with_id(request_uri_id):
     try:
         # Try to find a specific session
         session = VerificationSession.query.get(request_uri_id)
-        
+
         # Get global settings for defaults/fallback
         presentation_def = get_presentation_definition()
-        
+
         mandatory_fields = []
         response_uri = get_current_server_url() + "/direct_post"
-        nonce = randomString(10)
+        global nonce
+        nonce = generate_nonce(16)
 
         if session:
             # Check status before proceeding
-            if session.status == 'verified' or session.status == 'failed':
-                 logger.warning(f"Attempt to reuse session {session.id} with status {session.status}")
-                 return jsonify({"error": "This QR code has already been used or is invalid"}), 410  # 410 Gone
+            if session.status == "verified" or session.status == "failed":
+                logger.warning(
+                    f"Attempt to reuse session {session.id} with status {session.status}"
+                )
+                return jsonify(
+                    {"error": "This QR code has already been used or is invalid"}
+                ), 410  # 410 Gone
 
             # Session-based flow
-            if session.status == 'created':
-                session.status = 'scanned'
+            if session.status == "created":
+                session.status = "scanned"
                 db.session.commit()
-            
+
             # Start with session requested fields
             mandatory_fields = list(session.requested_fields)
-            
+
             # Add technical fields from global config
             field_mapping = presentation_def.get("field_mappings", {})
             for field in presentation_def.get("technical_fields", []):
                 ios_field = field_mapping.get(field, field)
                 if ios_field not in mandatory_fields:
                     mandatory_fields.append(ios_field)
-            
+
             # CRITICAL FIX: Ensure 'image' is in mandatory_fields if requested in session
             # (sometimes clean logic might skip it if not mapped properly)
             if "image" in session.requested_fields and "image" not in mandatory_fields:
-               mandatory_fields.append("image")
+                mandatory_fields.append("image")
 
             # Update response URI to include session ID
-            response_uri = get_current_server_url() + f"/direct_post?session_id={session.id}"
-            nonce = session.nonce
-            
+            response_uri = (
+                get_current_server_url() + f"/direct_post?session_id={session.id}"
+            )
+
         else:
             # OLD/FALLBACK Logic
             # Create minimal field list with proper iOS mapping
@@ -87,15 +93,15 @@ def request_uri_with_id(request_uri_id):
 
             # Add user mandatory fields, skip complex fields
             complex_fields = [
-               # "image", # REMOVED - now supported
+                # "image", # REMOVED - now supported
                 "theme",
-               # "vc.credentialSubject.image", # REMOVED
+                # "vc.credentialSubject.image", # REMOVED
                 "vc.credentialSubject.theme",
             ]
             for field in presentation_def.get("user_mandatory_fields", []):
                 if field not in complex_fields and field not in ios_compatible_fields:
                     ios_compatible_fields.append(field)
-            
+
             mandatory_fields = ios_compatible_fields
 
         # MINIMAL response parameters
@@ -104,14 +110,12 @@ def request_uri_with_id(request_uri_id):
             "response_uri": response_uri,
             "response_mode": "direct_post",
             "presentation_definition": json.dumps(
-                {
-                    "mandatory_fields": mandatory_fields,
-                    "explanation": {}
-                }, 
-                separators=(",", ":")
+                {"mandatory_fields": mandatory_fields, "explanation": {}},
+                separators=(",", ":"),
             ),
             "state": nonce,
-            "nonce": nonce
+            "aud": aud_val,
+            "nonce": nonce,
         }
 
         if request.method == "GET":
@@ -123,7 +127,7 @@ def request_uri_with_id(request_uri_id):
             return response, 200
         else:  # POST
             # For iOS wallet compatibility - return 302 redirect with openid4vp scheme
-            openid_url = f"openid4vp://?response_uri={params['response_uri']}&presentation_definition={params['presentation_definition']}&nonce={nonce}&state={nonce}"
+            openid_url = f"openid4vp://?response_uri={params['response_uri']}&presentation_definition={params['presentation_definition']}&nonce={nonce}&state={nonce}&aud={aud_val}"
             return redirect(openid_url, code=302)
 
     except Exception as e:
@@ -139,13 +143,9 @@ def create_presentation_request():
         params["response_uri"] = get_current_server_url() + "/direct_post"
         params["response_mode"] = "direct_post"
         params["state"] = randomString(10)
-        global nonce_val
-        nonce_val = randomString(10)
-        params["nonce"] = nonce_val
 
         params["aud"] = aud_val
         # Get structured presentation definition with field categories
-        store_nonce(nonce_val)
 
         presentation_def = get_presentation_definition()
 
@@ -328,8 +328,6 @@ def create_presentation_request():
 
 
 def store_nonce(nonce):
-    
-    
     vp_nonce = VP_NONCE()
     vp_nonce.nonce = nonce
 
@@ -337,5 +335,12 @@ def store_nonce(nonce):
     db.session.commit()
 
 
+def get_nonce_val():
+    
+    import pdb; pdb.set_trace()
+    return nonce
+
+
 def get_aud_val():
+
     return aud_val

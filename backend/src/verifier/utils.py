@@ -6,6 +6,7 @@ import base64
 import hashlib
 from urllib.parse import unquote_plus
 from logging import getLogger
+from secrets import token_urlsafe
 
 logger = getLogger("LOGGER")
 
@@ -212,3 +213,6 @@ def get_demo_credential():
         "vc.credentialSubject.theme.icon": "universityIconBase64",
         "vc.credentialSubject.theme.name": "Technische Universität Berlin",
     }
+def generate_nonce(nbytes):
+    return token_urlsafe(nbytes)
+
