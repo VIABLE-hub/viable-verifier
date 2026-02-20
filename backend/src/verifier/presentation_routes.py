@@ -42,9 +42,11 @@ def request_uri_with_id(request_uri_id):
         mandatory_fields = []
         response_uri = get_current_server_url() + "/direct_post"
         global nonce
-        nonce = generate_nonce(16)
-
+        
         if session:
+            # Use the nonce from the session to ensure consistency
+            nonce = session.nonce
+            
             # Check status before proceeding
             if session.status == "verified" or session.status == "failed":
                 logger.warning(
@@ -80,6 +82,9 @@ def request_uri_with_id(request_uri_id):
             )
 
         else:
+            # Fallback for non-session flows (e.g. testing)
+            nonce = generate_nonce(16)
+            
             # OLD/FALLBACK Logic
             # Create minimal field list with proper iOS mapping
             ios_compatible_fields = []
