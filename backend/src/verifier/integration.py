@@ -15,6 +15,9 @@ from .constants import FIELD_MAPPINGS
 
 logger = getLogger("LOGGER")
 
+from .metrics import verification_duration_seconds, verification_attempts_total
+import time
+
 
 def safe_verify_presentation(
     decoded_vp, presentation_definition, raw_token=None, expected_nonce=None
@@ -114,6 +117,7 @@ def safe_verify_presentation(
 
         # SCHRITT 3: Führe die kryptographische Verifikation durch
         try:
+            start_time = time.time()
             if is_sd_jwt:
                 from .sd_jwt_verification import verify_sd_jwt_presentation
 
@@ -121,6 +125,11 @@ def safe_verify_presentation(
                 sd_valid, sd_payload, sd_msg = verify_sd_jwt_presentation(
                     raw_token, expected_nonce=expected_nonce
                 )
+
+                duration = time.time() - start_time
+                status = "success" if sd_valid else "failure"
+                verification_duration_seconds.labels(method="sd_jwt", status=status).observe(duration)
+                verification_attempts_total.labels(method="sd_jwt", status=status).inc()
 
                 if sd_valid:
                     verification_steps["bbs_verification"] = {

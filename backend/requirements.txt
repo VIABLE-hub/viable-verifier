@@ -24,4 +24,4 @@ marshmallow==3.20.1
 flask-limiter==3.5.0
 sd-jwt
 jwcrypto
-eventlet
+eventletprometheus-client==0.17.1
