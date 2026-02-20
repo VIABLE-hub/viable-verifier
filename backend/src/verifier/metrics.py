@@ -20,6 +20,13 @@ verification_attempts_total = Counter(
     ['method', 'status']
 )
 
+# Initialize metrics with default labels to ensure they appear in Prometheus immediately
+for method in ['bbs', 'sd_jwt']:
+    for status in ['success', 'failure']:
+        verification_attempts_total.labels(method=method, status=status).inc(0)
+        verification_duration_seconds.labels(method=method, status=status)
+
 @metrics_bp.route('/metrics')
 def metrics():
-    return Response(generate_latest(REGISTRY), mimetype='text/plain')
+    # Force collection of all metrics
+    return Response(generate_latest(), mimetype='text/plain')
