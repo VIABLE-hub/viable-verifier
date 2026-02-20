@@ -206,6 +206,12 @@ def safe_verify_presentation(
                     }
             else:
                 bbs_valid, bbs_msg = verify_bbs_proof(decoded_vp, expected_nonce=expected_nonce)
+                
+                duration = time.time() - start_time
+                status = "success" if bbs_valid else "failure"
+                verification_duration_seconds.labels(method="bbs", status=status).observe(duration)
+                verification_attempts_total.labels(method="bbs", status=status).inc()
+
                 if bbs_valid:
                     verification_steps["bbs_verification"] = {
                         "status": "success",
