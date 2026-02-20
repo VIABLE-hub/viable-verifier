@@ -336,8 +336,6 @@ def store_nonce(nonce):
 
 
 def get_nonce_val():
-    
-    import pdb; pdb.set_trace()
     return nonce
 
 

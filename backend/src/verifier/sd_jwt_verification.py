@@ -216,7 +216,7 @@ def verify_sd_jwt_presentation(raw_token, expected_nonce=None):
                 "Could not resolve DID or find matching key in DID Document"
             )
 
-        nonce = get_nonce_val()
+        nonce = expected_nonce if expected_nonce else get_nonce_val()
         aud = get_aud_val()
         
         # Setup verifier
