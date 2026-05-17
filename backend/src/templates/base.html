@@ -104,6 +104,13 @@
         document.documentElement.classList.remove('dark')
       }
     </script>
+    {% if request.args.get('embed') %}
+    <style>
+      nav.sticky { display: none !important; }
+      footer { display: none !important; }
+      body { padding-top: 0 !important; }
+    </style>
+    {% endif %}
   </head>
   <body class="h-full flex flex-col bg-white dark:bg-gray-900 transition-colors duration-200">
     <!-- Modern Navigation Bar -->
