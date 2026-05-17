@@ -272,7 +272,31 @@ def create_app():
 
     # Register all blueprints using centralized function
     register_blueprints(app)
-    
+
+    # Iframe / CSP headers so the marketing site can embed the verifier
+    # demo without browser warnings. Mirrors the nginx-level allowlist.
+    frame_ancestors_default = (
+        "'self' "
+        "https://viable-id.com "
+        "https://www.viable-id.com "
+        "http://194.164.200.69 "
+        "https://194.164.200.69"
+    )
+    frame_ancestors = os.environ.get(
+        "CSP_FRAME_ANCESTORS", frame_ancestors_default
+    )
+
+    @app.after_request
+    def _apply_iframe_headers(response):
+        response.headers.setdefault(
+            "Content-Security-Policy",
+            f"frame-ancestors {frame_ancestors}",
+        )
+        response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        return response
+
     # from .models import User
 
     with app.app_context():
