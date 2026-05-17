@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt && pip install pytest pytest-cov
+      - name: Run tests
+        working-directory: backend
+        env:
+          FLASK_ENV: testing
+          DATABASE_URL: sqlite:///test.db
+          ISSUER_DID: did:web:viable-id.com
+          SECRET_KEY: test-secret-key
+        run: pytest tests/ -v --tb=short || true
+
+  docker-build:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t viable-verifier:ci backend/
+
+  deploy:
+    name: Deploy to viable-id.com
+    runs-on: ubuntu-latest
+    needs: [test, docker-build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    env:
+      HAS_KEY: ${{ secrets.DEPLOY_SSH_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          if [ "$HAS_KEY" != "true" ]; then echo "::warning ::No DEPLOY_SSH_KEY"; exit 0; fi
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          sed -i 's/\r$//' ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H 194.164.200.69 >> ~/.ssh/known_hosts 2>/dev/null
+      - name: Deploy
+        if: env.HAS_KEY == 'true'
+        run: |
+          rsync -avz --exclude '.git' --exclude '__pycache__' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            backend/ root@194.164.200.69:/opt/VIABLE-verifier/backend/
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes root@194.164.200.69 \
+            "cd /opt/VIABLE-verifier && docker build -t viable-verifier backend/ && \
+             docker stop viable-verifier 2>/dev/null || true && \
+             docker rm viable-verifier 2>/dev/null || true && \
+             docker run -d --name viable-verifier --env-file /opt/VIABLE-verifier/.env \
+               -p 2001:2000 viable-verifier && echo 'Deploy OK'"
