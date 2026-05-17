@@ -1,4 +1,4 @@
-# 🚀 StudentVC Deployment Guide
+# 🚀 VIABLE Credentials Deployment Guide
 
 **Complete guide for development and production deployment**
 
@@ -32,7 +32,7 @@
 
 ```bash
 # 1. Clone repository
-cd /path/to/studentvc/
+cd /path/to/viable-credentials/
 
 # 2. Setup virtual environment (if not exists)
 make setup
@@ -110,7 +110,7 @@ The system uses this priority order for server URLs:
    https://abc123def456.ngrok-free.app
    ```
 
-3. **Configure in StudentVC:**
+3. **Configure in VIABLE Credentials:**
    - Open: `https://localhost:8080/settings`
    - Navigate to: **Settings → Network**
    - Enter ngrok domain: `abc123def456.ngrok-free.app`
@@ -231,8 +231,8 @@ sudo apt update
 sudo apt install python3 python3-pip nginx certbot
 
 # 2. Clone repository
-git clone <repo-url> /var/www/studentvc
-cd /var/www/studentvc
+git clone <repo-url> /var/www/viable-credentials
+cd /var/www/viable-credentials
 
 # 3. Setup virtual environment
 python3 -m venv test_env
@@ -240,14 +240,14 @@ source test_env/bin/activate
 pip install -r backend/requirements.txt
 
 # 4. Configure systemd services
-# Create: /etc/systemd/system/studentvc.service
-# See: deploy/configs/systemd/studentvc.service
+# Create: /etc/systemd/system/viable-credentials.service
+# See: deploy/configs/systemd/viable-credentials.service
 
 # 5. Start services
-sudo systemctl start studentvc
+sudo systemctl start viable-credentials
 
 # 6. Configure Nginx reverse proxy
-# Copy: deploy/configs/nginx/studentvc.conf
+# Copy: deploy/configs/nginx/viable-credentials.conf
 sudo systemctl restart nginx
 
 # 7. Setup SSL with Let's Encrypt

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to test Docker containers for all StudentVC tenants
+# Script to test Docker containers for all VIABLE Credentials tenants
 # Tests BBS+ functionality via API endpoints
 # Author: Patrick Herbke (via Cursor AI)
 
@@ -12,7 +12,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}┌───────────────────────────────────────────────────────┐${NC}"
-echo -e "${BLUE}│ StudentVC Docker Container API Test                   │${NC}"
+echo -e "${BLUE}│ VIABLE Credentials Docker Container API Test                   │${NC}"
 echo -e "${BLUE}│ Tests BBS+ functionality in all tenant containers     │${NC}"
 echo -e "${BLUE}└───────────────────────────────────────────────────────┘${NC}"
 
@@ -24,16 +24,16 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 # Check if containers are running
-echo -e "${BLUE}Checking for running StudentVC containers...${NC}"
-containers=$(docker ps | grep -E 'studentvc-' | awk '{print $1}')
+echo -e "${BLUE}Checking for running VIABLE Credentials containers...${NC}"
+containers=$(docker ps | grep -E 'viable-credentials-' | awk '{print $1}')
 
 if [ -z "$containers" ]; then
-  echo -e "${YELLOW}No running StudentVC containers found.${NC}"
+  echo -e "${YELLOW}No running VIABLE Credentials containers found.${NC}"
   echo -e "${YELLOW}Would you like to start the containers? (y/n)${NC}"
   read -r start_containers
   
   if [[ "$start_containers" == "y" || "$start_containers" == "Y" ]]; then
-    echo -e "${BLUE}Starting StudentVC containers...${NC}"
+    echo -e "${BLUE}Starting VIABLE Credentials containers...${NC}"
     cd deploy && docker-compose -f configs/docker-compose.yml up -d
     
     # Wait for containers to start
@@ -41,10 +41,10 @@ if [ -z "$containers" ]; then
     sleep 30
     
     # Check if containers are running now
-    containers=$(docker ps | grep -E 'studentvc-' | awk '{print $1}')
+    containers=$(docker ps | grep -E 'viable-credentials-' | awk '{print $1}')
     
     if [ -z "$containers" ]; then
-      echo -e "${RED}❌ Error: Failed to start StudentVC containers.${NC}"
+      echo -e "${RED}❌ Error: Failed to start VIABLE Credentials containers.${NC}"
       exit 1
     fi
   else
@@ -62,7 +62,7 @@ declare -A tenant_ids
 
 # Get container information
 while read -r container_id name ports; do
-  tenant_id=$(echo "$name" | sed -n 's/.*studentvc-\(.*\)/\1/p')
+  tenant_id=$(echo "$name" | sed -n 's/.*viable-credentials-\(.*\)/\1/p')
   port=$(echo "$ports" | grep -oE ':[0-9]+->8080' | cut -d':' -f2 | cut -d'-' -f1)
   
   if [ -n "$tenant_id" ] && [ -n "$port" ]; then
@@ -70,11 +70,11 @@ while read -r container_id name ports; do
     tenant_ids["$tenant_id"]="$container_id"
     echo -e "${GREEN}✅ Found tenant ${BLUE}$tenant_id${GREEN} on port ${BLUE}$port${GREEN} (container: ${BLUE}$container_id${GREEN})${NC}"
   fi
-done < <(docker ps | grep -E 'studentvc-' | awk '{print $1, $2, $7}')
+done < <(docker ps | grep -E 'viable-credentials-' | awk '{print $1, $2, $7}')
 
 # Check if we found any tenants
 if [ ${#tenant_ids[@]} -eq 0 ]; then
-  echo -e "${RED}❌ Error: No StudentVC tenant containers found.${NC}"
+  echo -e "${RED}❌ Error: No VIABLE Credentials tenant containers found.${NC}"
   exit 1
 fi
 

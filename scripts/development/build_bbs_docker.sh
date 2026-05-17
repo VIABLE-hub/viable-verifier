@@ -12,7 +12,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}┌───────────────────────────────────────────────────────┐${NC}"
-echo -e "${BLUE}│ StudentVC BBS+ Core Docker Builder                    │${NC}"
+echo -e "${BLUE}│ VIABLE Credentials BBS+ Core Docker Builder                    │${NC}"
 echo -e "${BLUE}│ Ensures UniFFI contract compatibility on Linux        │${NC}"
 echo -e "${BLUE}└───────────────────────────────────────────────────────┘${NC}"
 
@@ -33,7 +33,7 @@ echo -e "${YELLOW}🔍 Project root: $(pwd)${NC}"
 
 # Step 1: Build BBS test image
 echo -e "\n${BLUE}Step 1: Building BBS+ test container...${NC}"
-docker build --no-cache -t studentvc-bbs-test -f backend/Dockerfile --target bbs-test backend/
+docker build --no-cache -t viable-credentials-bbs-test -f backend/Dockerfile --target bbs-test backend/
 if [ $? -ne 0 ]; then
   echo -e "${RED}❌ Error: Failed to build BBS+ test image.${NC}"
   exit 1
@@ -42,12 +42,12 @@ echo -e "${GREEN}✅ BBS+ test image built successfully.${NC}"
 
 # Step 2: Run BBS test
 echo -e "\n${BLUE}Step 2: Running BBS+ contract test...${NC}"
-docker run --rm studentvc-bbs-test
+docker run --rm viable-credentials-bbs-test
 
 # Step 3: Extract and save wheel file
 echo -e "\n${BLUE}Step 3: Extracting BBS+ wheel from container...${NC}"
 mkdir -p ./backend/wheels/
-docker create --name temp-bbs-container studentvc-bbs-test
+docker create --name temp-bbs-container viable-credentials-bbs-test
 docker cp temp-bbs-container:/app/bbs_output/bbs_core-*.whl ./backend/wheels/
 docker rm temp-bbs-container
 

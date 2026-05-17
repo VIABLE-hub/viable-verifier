@@ -1,4 +1,4 @@
-# Production Network Setup for StudentVC
+# Production Network Setup for VIABLE Credentials
 **Mobile Wallet Access Without Ngrok**
 
 ## Quick Setup for Server Deployment
@@ -16,15 +16,15 @@
 
 **Option A: Public IP (Easiest)**
 1. Find your server's public IP: `curl ifconfig.me`
-2. In StudentVC Settings → Network → Select "Public IP"
+2. In VIABLE Credentials Settings → Network → Select "Public IP"
 3. Enter your public IP: `203.0.113.45` (example)
 4. Save settings
 
 **Option B: Domain Name (Recommended)**
-1. Get domain: `studentvc.yourdomain.com`
+1. Get domain: `viable-credentials.yourdomain.com`
 2. Point DNS A record to server IP
-3. In StudentVC Settings → Network → Select "Domain"
-4. Enter domain: `studentvc.yourdomain.com`
+3. In VIABLE Credentials Settings → Network → Select "Domain"
+4. Enter domain: `viable-credentials.yourdomain.com`
 5. Save settings
 
 ### Step 3: SSL Certificate Setup
@@ -33,15 +33,15 @@
 ```bash
 # Self-signed certificate (development/testing)
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /etc/ssl/private/studentvc.key \
-  -out /etc/ssl/certs/studentvc.crt
+  -keyout /etc/ssl/private/viable-credentials.key \
+  -out /etc/ssl/certs/viable-credentials.crt
 ```
 
 **For Domain (Recommended):**
 ```bash
 # Let's Encrypt (free, trusted certificates)
 sudo apt install certbot
-sudo certbot certonly --standalone -d studentvc.yourdomain.com
+sudo certbot certonly --standalone -d viable-credentials.yourdomain.com
 ```
 
 ### Step 4: Update Environment Configuration
@@ -62,7 +62,7 @@ ACCESS_PASSWORD=YourSecurePassword
 SERVER_HOST=0.0.0.0
 SERVER_PORT=443
 USE_HTTPS=true
-DOMAIN_NAME=studentvc.yourdomain.com
+DOMAIN_NAME=viable-credentials.yourdomain.com
 ```
 
 ### Step 5: Firewall Configuration
@@ -83,12 +83,12 @@ sudo ufw allow 8082/tcp  # ROOT tenant
 |------|-------------|---------------|--------------|----------|
 | **Local + Ngrok** | `https://abc123.ngrok.io` | ✅ Global | ✅ Automatic | Development |
 | **Public IP** | `https://203.0.113.45:8080` | ✅ Global | ⚠️ Self-signed | Testing |
-| **Domain** | `https://studentvc.edu` | ✅ Global | ✅ Let's Encrypt | Production |
+| **Domain** | `https://viable-credentials.edu` | ✅ Global | ✅ Let's Encrypt | Production |
 | **Cloud LB** | `https://app.university.edu` | ✅ Global | ✅ Managed | Enterprise |
 
 ## Automatic Configuration
 
-StudentVC will automatically detect your network setup:
+VIABLE Credentials will automatically detect your network setup:
 
 1. **Start server** on your deployed machine
 2. **Go to Settings → Network** in web interface  
@@ -98,7 +98,7 @@ StudentVC will automatically detect your network setup:
 
 ## Testing Mobile Access
 
-1. **Generate QR code** in StudentVC Issuer
+1. **Generate QR code** in VIABLE Credentials Issuer
 2. **Check QR content** - should show your public IP/domain
 3. **Scan with mobile wallet** - should connect directly
 4. **No ngrok tunneling** involved!
@@ -109,11 +109,11 @@ StudentVC will automatically detect your network setup:
 - Check firewall allows port 8080/443
 - Verify public IP is accessible: `telnet YOUR_IP 8080`
 - Check SSL certificate is valid
-- Ensure StudentVC is running on 0.0.0.0 (not localhost)
+- Ensure VIABLE Credentials is running on 0.0.0.0 (not localhost)
 
 **QR codes still show localhost:**
-- Update network settings in StudentVC interface
-- Restart StudentVC service
+- Update network settings in VIABLE Credentials interface
+- Restart VIABLE Credentials service
 - Clear browser cache and regenerate QR
 
 **SSL certificate errors:**
@@ -124,7 +124,7 @@ StudentVC will automatically detect your network setup:
 
 ```bash
 # 1. Server setup
-ssh user@studentvc.university.edu
+ssh user@viable-credentials.university.edu
 git clone https://github.com/pherbke/stvc.git
 cd stvc
 
@@ -133,17 +133,17 @@ cp env.example .env
 # Edit .env with your domain and credentials
 
 # 3. SSL certificate
-sudo certbot certonly --standalone -d studentvc.university.edu
+sudo certbot certonly --standalone -d viable-credentials.university.edu
 
 # 4. Deploy
 ./deploy.sh docker
 
 # 5. Configure network in web interface
-# Visit: https://studentvc.university.edu
+# Visit: https://viable-credentials.university.edu
 # Settings → Network → Domain Mode → Save
 
 # 6. Test with mobile wallet
 # Generate QR → Should show university domain
 ```
 
-**Result:** Mobile wallets connect directly to `https://studentvc.university.edu` - no ngrok needed! 
+**Result:** Mobile wallets connect directly to `https://viable-credentials.university.edu` - no ngrok needed! 

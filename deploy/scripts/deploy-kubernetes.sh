@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Kubernetes deployment script for StudentVC multi-tenant system
+# Kubernetes deployment script for VIABLE Credentials multi-tenant system
 
 set -e
 
 echo "======================================"
-echo "  StudentVC Kubernetes Deployment     "
+echo "  VIABLE Credentials Kubernetes Deployment     "
 echo "======================================"
 echo ""
 
 # Configuration
-NAMESPACE="studentvc"
+NAMESPACE="viable-credentials"
 DOCKER_REGISTRY=""  # Set if using private registry
 IMAGE_TAG="latest"
 
@@ -122,7 +122,7 @@ kubectl create configmap root-config \
 # Update image in deployments
 echo ""
 echo "Updating deployment images..."
-sed -i.bak "s|image: studentvc:latest|image: ${DOCKER_REGISTRY}studentvc:${IMAGE_TAG}|g" \
+sed -i.bak "s|image: viable-credentials:latest|image: ${DOCKER_REGISTRY}viable-credentials:${IMAGE_TAG}|g" \
     ../configs/kubernetes/deployments.yaml
 
 # Deploy applications
@@ -138,16 +138,16 @@ kubectl apply -f ../configs/kubernetes/services.yaml
 # Deploy ingress
 echo ""
 echo "Creating ingress..."
-read -p "Enter your domain name (e.g., studentvc.yourdomain.com): " DOMAIN
-sed -i.bak "s|studentvc.yourdomain.com|$DOMAIN|g" ../configs/kubernetes/ingress.yaml
+read -p "Enter your domain name (e.g., viable-credentials.yourdomain.com): " DOMAIN
+sed -i.bak "s|viable-credentials.yourdomain.com|$DOMAIN|g" ../configs/kubernetes/ingress.yaml
 kubectl apply -f ../configs/kubernetes/ingress.yaml
 
 # Wait for deployments
 echo ""
 echo "Waiting for deployments to be ready..."
-kubectl rollout status deployment/studentvc-tub -n $NAMESPACE
-kubectl rollout status deployment/studentvc-fub -n $NAMESPACE
-kubectl rollout status deployment/studentvc-root -n $NAMESPACE
+kubectl rollout status deployment/viable-credentials-tub -n $NAMESPACE
+kubectl rollout status deployment/viable-credentials-fub -n $NAMESPACE
+kubectl rollout status deployment/viable-credentials-root -n $NAMESPACE
 
 # Show status
 echo ""

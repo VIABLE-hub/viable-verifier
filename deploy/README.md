@@ -1,6 +1,6 @@
-# StudentVC Deployment
+# VIABLE Credentials Deployment
 
-This directory contains all deployment-related files and scripts for the StudentVC multi-tenant verifiable credential platform.
+This directory contains all deployment-related files and scripts for the VIABLE Credentials multi-tenant verifiable credential platform.
 
 ## Directory Structure
 
@@ -98,7 +98,7 @@ Key settings:
 docker compose -f configs/docker-compose.yml logs -f
 
 # View specific tenant
-docker logs studentvc-tub -f
+docker logs viable-credentials-tub -f
 
 # Check status
 docker ps

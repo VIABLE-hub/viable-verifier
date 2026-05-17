@@ -20,7 +20,7 @@ def get_project_root() -> Path:
     The project root is identified by the presence of one of these files:
     - README.md
     - Makefile
-    - studentVC.jsonl
+    - viable-credentials.jsonl
     
     Returns:
         Path: Absolute path to the project root directory
@@ -38,7 +38,7 @@ def get_project_root() -> Path:
     current_path = Path(__file__).resolve()
     
     # Marker files that indicate the project root (must be at root, not in backend/)
-    markers = ['README.md', 'Makefile', 'studentVC.jsonl']
+    markers = ['README.md', 'Makefile', 'viable-credentials.jsonl']
     
     # Walk up the directory tree
     for parent in list(current_path.parents):

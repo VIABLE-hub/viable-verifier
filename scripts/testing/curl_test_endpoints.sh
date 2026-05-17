@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# StudentVC Endpoint Testing Script
+# VIABLE Credentials Endpoint Testing Script
 # Tests all important endpoints with curl and saves the responses
 # Author: Patrick Herbke (via Cursor AI)
 
@@ -148,7 +148,7 @@ main() {
   mkdir -p "$LOG_DIR"
   
   # Create summary file
-  echo "# StudentVC Endpoint Test Summary" > "$SUMMARY_FILE"
+  echo "# VIABLE Credentials Endpoint Test Summary" > "$SUMMARY_FILE"
   echo "Date: $(date)" >> "$SUMMARY_FILE"
   echo "" >> "$SUMMARY_FILE"
   echo "| Tenant | Method | Endpoint | Status | Duration |" >> "$SUMMARY_FILE"

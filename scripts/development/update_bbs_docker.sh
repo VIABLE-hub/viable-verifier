@@ -11,7 +11,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}┌───────────────────────────────────────────────────────┐${NC}"
-echo -e "${BLUE}│ StudentVC BBS+ Docker Container Updater               │${NC}"
+echo -e "${BLUE}│ VIABLE Credentials BBS+ Docker Container Updater               │${NC}"
 echo -e "${BLUE}│ Updates existing containers with Linux BBS+ bindings  │${NC}"
 echo -e "${BLUE}└───────────────────────────────────────────────────────┘${NC}"
 
@@ -22,20 +22,20 @@ if [ ! -d "backend/bbs-core/linux-build" ]; then
   exit 1
 fi
 
-echo -e "${BLUE}Finding running StudentVC containers...${NC}"
-containers=$(docker ps | grep -E 'studentvc-|bbs-test' | awk '{print $1}')
+echo -e "${BLUE}Finding running VIABLE Credentials containers...${NC}"
+containers=$(docker ps | grep -E 'viable-credentials-|bbs-test' | awk '{print $1}')
 
 if [ -z "$containers" ]; then
-  echo -e "${YELLOW}No running StudentVC containers found.${NC}"
+  echo -e "${YELLOW}No running VIABLE Credentials containers found.${NC}"
   echo -e "${YELLOW}Would you like to update the Docker images instead? (y/n)${NC}"
   read -r update_images
   
   if [[ "$update_images" == "y" || "$update_images" == "Y" ]]; then
-    echo -e "${BLUE}Finding StudentVC Docker images...${NC}"
-    images=$(docker images | grep -E 'studentvc-|bbs-test' | awk '{print $1}')
+    echo -e "${BLUE}Finding VIABLE Credentials Docker images...${NC}"
+    images=$(docker images | grep -E 'viable-credentials-|bbs-test' | awk '{print $1}')
     
     if [ -z "$images" ]; then
-      echo -e "${RED}No StudentVC Docker images found.${NC}"
+      echo -e "${RED}No VIABLE Credentials Docker images found.${NC}"
       exit 1
     fi
     
@@ -61,7 +61,7 @@ if [ -z "$containers" ]; then
 fi
 
 echo -e "${BLUE}Found the following containers:${NC}"
-docker ps | grep -E 'studentvc-|bbs-test'
+docker ps | grep -E 'viable-credentials-|bbs-test'
 
 echo -e "${YELLOW}This will copy the Linux-compatible BBS+ files to the containers.${NC}"
 echo -e "${YELLOW}Continue? (y/n)${NC}"

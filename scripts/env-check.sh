@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Environment Configuration Check Script for StudentVC
+# Environment Configuration Check Script for VIABLE Credentials
 # This script validates the .env file against env.example template
 
 set -e
@@ -20,7 +20,7 @@ ENV_FILE="$PROJECT_ROOT/.env"
 ENV_EXAMPLE="$PROJECT_ROOT/env.example"
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}StudentVC Environment Configuration Check${NC}"
+echo -e "${BLUE}VIABLE Credentials Environment Configuration Check${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 

@@ -235,7 +235,7 @@ def create_app():
     # Explizite Route für favicon.ico, um 405-Fehler zu vermeiden
     @app.route('/favicon.ico')
     def favicon():
-        return app.send_static_file('studentVC-logo-sora-cropped.png')
+        return app.send_static_file('viable-credentials-logo-sora-cropped.png')
     
     db.init_app(app)
     migrate.init_app(app, db)

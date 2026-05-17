@@ -14,7 +14,7 @@ MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}┌───────────────────────────────────────────────────────┐${NC}"
-echo -e "${BLUE}│ StudentVC BBS+ Docker Runtime Debugger                │${NC}"
+echo -e "${BLUE}│ VIABLE Credentials BBS+ Docker Runtime Debugger                │${NC}"
 echo -e "${BLUE}│ Diagnoses BBS+ issues in running containers           │${NC}"
 echo -e "${BLUE}└───────────────────────────────────────────────────────┘${NC}"
 
@@ -26,11 +26,11 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 # Check if containers are running
-echo -e "${BLUE}Checking for running StudentVC containers...${NC}"
-containers=$(docker ps | grep -E 'studentvc-' | awk '{print $1}')
+echo -e "${BLUE}Checking for running VIABLE Credentials containers...${NC}"
+containers=$(docker ps | grep -E 'viable-credentials-' | awk '{print $1}')
 
 if [ -z "$containers" ]; then
-  echo -e "${RED}❌ Error: No running StudentVC containers found.${NC}"
+  echo -e "${RED}❌ Error: No running VIABLE Credentials containers found.${NC}"
   echo -e "${YELLOW}Please start the containers with 'make docker-run' first.${NC}"
   exit 1
 fi
@@ -41,18 +41,18 @@ declare -A tenant_names
 
 # Get container information
 while read -r container_id name ports; do
-  tenant_id=$(echo "$name" | sed -n 's/.*studentvc-\(.*\)/\1/p')
+  tenant_id=$(echo "$name" | sed -n 's/.*viable-credentials-\(.*\)/\1/p')
   
   if [ -n "$tenant_id" ]; then
     tenant_ids["$tenant_id"]="$container_id"
     tenant_names["$container_id"]="$tenant_id"
     echo -e "${GREEN}✅ Found tenant ${BLUE}$tenant_id${GREEN} (container: ${BLUE}$container_id${GREEN})${NC}"
   fi
-done < <(docker ps | grep -E 'studentvc-' | awk '{print $1, $2, $7}')
+done < <(docker ps | grep -E 'viable-credentials-' | awk '{print $1, $2, $7}')
 
 # Check if we found any tenants
 if [ ${#tenant_ids[@]} -eq 0 ]; then
-  echo -e "${RED}❌ Error: No StudentVC tenant containers found.${NC}"
+  echo -e "${RED}❌ Error: No VIABLE Credentials tenant containers found.${NC}"
   exit 1
 fi
 

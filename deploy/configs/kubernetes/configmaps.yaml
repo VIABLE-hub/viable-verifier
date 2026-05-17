@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tub-config
-  namespace: studentvc
+  namespace: viable-credentials
 data:
   config.json: |
     {
@@ -27,7 +27,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fub-config
-  namespace: studentvc
+  namespace: viable-credentials
 data:
   config.json: |
     {
@@ -50,19 +50,19 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: root-config
-  namespace: studentvc
+  namespace: viable-credentials
 data:
   config.json: |
     {
       "tenant_id": "root",
-      "display_name": "StudentVC",
+      "display_name": "VIABLE Credentials",
       "branding": {
         "primary_color": "#003f7f",
-        "logo_path": "/static/studentvc_logo.png",
-        "vc_logo_path": "/static/studentvc_logo.png"
+        "logo_path": "/static/viable-credentials_logo.png",
+        "vc_logo_path": "/static/viable-credentials_logo.png"
       },
       "issuer": {
-        "name": "StudentVC Default",
-        "url": "https://studentvc.org"
+        "name": "VIABLE Credentials Default",
+        "url": "https://viable-credentials.org"
       }
     } 

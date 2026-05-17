@@ -213,7 +213,7 @@ function setupUniversityLogoUpload() {
   // Reset-Button Funktionalität
   if (resetThemeIconBtn) {
     resetThemeIconBtn.addEventListener('click', function() {
-      themeIconPreview.src = '/static/studentVC-logo-sora-cropped-darkmode.png';
+      themeIconPreview.src = '/static/viable-credentials-logo-sora-cropped-darkmode.png';
       if (themeIconInput) {
         themeIconInput.value = '';
       }
@@ -260,7 +260,7 @@ function printCredential() {
     <html lang="de">
     <head>
       <meta charset="UTF-8">
-      <title>StudentVC für ${escape(firstName)} ${escape(lastName)}</title>
+      <title>VIABLE Credentials für ${escape(firstName)} ${escape(lastName)}</title>
       <style>
         body {
           font-family: Arial, sans-serif;
@@ -377,7 +377,7 @@ function printCredential() {
         <div class="instructions">
           <h3>Anleitung zum Import in Ihre Wallet-App</h3>
           <ol>
-            <li>Öffnen Sie Ihre StudentVC Wallet App</li>
+            <li>Öffnen Sie Ihre VIABLE Credentials Wallet App</li>
             <li>Scannen Sie den QR-Code mit der "Credential hinzufügen" Funktion</li>
             <li>Bestätigen Sie den Import in Ihre Wallet</li>
             <li>Ihr digitaler Studierendenausweis ist nun einsatzbereit!</li>
@@ -386,7 +386,7 @@ function printCredential() {
         
         <div class="footer">
           <p>Dieses Credential wurde mit BBS+ Signaturen erstellt und ist kryptographisch überprüfbar.</p>
-          <p>© ${new Date().getFullYear()} StudentVC</p>
+          <p>© ${new Date().getFullYear()} VIABLE Credentials</p>
         </div>
       </div>
       

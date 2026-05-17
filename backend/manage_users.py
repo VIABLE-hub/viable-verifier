@@ -5,7 +5,7 @@ import sys
 import os
 
 # Path to database
-DB_PATH = os.path.join(os.path.dirname(__file__), 'instance', 'studentvc.sqlite')
+DB_PATH = os.path.join(os.path.dirname(__file__), 'instance', 'viable-credentials.sqlite')
 
 def list_users():
     if not os.path.exists(DB_PATH):

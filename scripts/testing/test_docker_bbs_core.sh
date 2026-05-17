@@ -60,7 +60,7 @@ run_with_logging() {
 # Function to test BBS+ in a specific container
 test_bbs_in_container() {
   local tenant=$1
-  local container_name="studentvc-$tenant"
+  local container_name="viable-credentials-$tenant"
   
   log "INFO" "🧪 Testing BBS+ in container: $container_name"
   
@@ -183,7 +183,7 @@ generate_summary() {
   
   for tenant in "${TENANTS[@]}"; do
     total_tests=$((total_tests + 1))
-    if grep -q "All BBS+ tests PASSED for container: studentvc-$tenant" "$LOG_DIR/test.log"; then
+    if grep -q "All BBS+ tests PASSED for container: viable-credentials-$tenant" "$LOG_DIR/test.log"; then
       passed_tests=$((passed_tests + 1))
       echo "- ✅ **$tenant**: BBS+ core functionality working" >> "$SUMMARY_FILE"
     else

@@ -84,8 +84,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <title>{% block title %}StudentVC{% endblock %}</title>
-    <link rel="icon" href="{{ url_for('static',filename='studentVC-logo-sora-cropped.png') }}" />
+    <title>{% block title %}VIABLE Credentials{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static',filename='viable-logo-navy.png') }}" />
     
     <!-- Cache busting for SVG fixes -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -124,14 +124,14 @@
                 </div>
               {% endif %}
               
-              <!-- StudentVC Logo -->
+              <!-- VIABLE Credentials Logo -->
               <div class="p-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-200">
-                <img src="{{ url_for('static',filename=main_logo) }}" alt="StudentVC Logo" class="h-8 w-auto object-contain" />
+                <img src="{{ url_for('static',filename=main_logo) }}" alt="VIABLE Credentials Logo" class="h-8 w-auto object-contain" />
               </div>
               
               <!-- Branding Text -->
               <div class="flex flex-col">
-                <span class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">StudentVC</span>
+                <span class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">VIABLE Credentials</span>
                 {% if university_name %}
                   <span class="text-xs text-gray-600 dark:text-gray-400 -mt-1" style="color: {{ '#' + primary_color if primary_color else '#003f7f' }};">{{ university_name }}</span>
                 {% endif %}
@@ -233,9 +233,9 @@
           <div class="col-span-1">
             <div class="flex items-center space-x-2 mb-4">
               <div class="p-0.5 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                <img src="{{ url_for('static',filename='studentVC-logo-sora-cropped.png') }}" alt="StudentVC Logo" class="h-8 w-auto object-contain" />
+                <img src="{{ url_for('static',filename='viable-logo-navy.png') }}" alt="VIABLE Credentials Logo" class="h-8 w-auto object-contain" />
               </div>
-              <span class="text-lg font-semibold text-gray-900 dark:text-white">StudentVC</span>
+              <span class="text-lg font-semibold text-gray-900 dark:text-white">VIABLE Credentials</span>
             </div>
             <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
               Digitale Nachweise für die Bildungswelt – sicher, standardbasiert und datensouverän.
@@ -273,7 +273,7 @@
 
         <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
           <p class="text-center text-gray-500 dark:text-gray-400 text-sm">
-            © 2025 StudentVC. Alle Rechte vorbehalten.
+            © 2025 VIABLE Credentials. Alle Rechte vorbehalten.
           </p>
         </div>
       </div>

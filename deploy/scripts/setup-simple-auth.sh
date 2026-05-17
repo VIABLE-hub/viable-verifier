@@ -1,11 +1,11 @@
 #!/bin/bash
-# Simple Authentication Setup for StudentVC
+# Simple Authentication Setup for VIABLE Credentials
 # This script helps you quickly enable password protection
 
 set -e
 
 echo "==========================================="
-echo "  StudentVC Simple Authentication Setup   "
+echo "  VIABLE Credentials Simple Authentication Setup   "
 echo "==========================================="
 echo
 
@@ -43,13 +43,13 @@ case $choice in
         
         # Update .env file
         sed -i.bak "s/ENABLE_AUTH=false/ENABLE_AUTH=true/" ../../.env
-        sed -i.bak "s/ACCESS_PASSWORD=studentvc2024/ACCESS_PASSWORD=$password/" ../../.env
+        sed -i.bak "s/ACCESS_PASSWORD=viable-credentials2024/ACCESS_PASSWORD=$password/" ../../.env
         sed -i.bak "s/REQUIRE_EMAIL_2FA=false/REQUIRE_EMAIL_2FA=false/" ../../.env
         
         echo
         echo "✓ Password authentication enabled!"
         echo "✓ Password: $password"
-        echo "✓ Your colleagues will need this password to access StudentVC"
+        echo "✓ Your colleagues will need this password to access VIABLE Credentials"
         ;;
         
     2)
@@ -70,7 +70,7 @@ case $choice in
         
         # Update .env file
         sed -i.bak "s/ENABLE_AUTH=false/ENABLE_AUTH=true/" ../../.env
-        sed -i.bak "s/ACCESS_PASSWORD=studentvc2024/ACCESS_PASSWORD=$password/" ../../.env
+        sed -i.bak "s/ACCESS_PASSWORD=viable-credentials2024/ACCESS_PASSWORD=$password/" ../../.env
         sed -i.bak "s/REQUIRE_EMAIL_2FA=false/REQUIRE_EMAIL_2FA=true/" ../../.env
         sed -i.bak "s/ADMIN_EMAIL=your-email@example.com/ADMIN_EMAIL=$admin_email/" ../../.env
         sed -i.bak "s/SMTP_EMAIL=your-smtp-email@gmail.com/SMTP_EMAIL=$smtp_email/" ../../.env

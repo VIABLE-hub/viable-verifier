@@ -1,8 +1,8 @@
 #!/bin/bash
-# Check deployment configuration for StudentVC
+# Check deployment configuration for VIABLE Credentials
 
 echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║     StudentVC Deployment Configuration Check                   ║"
+echo "║     VIABLE Credentials Deployment Configuration Check                   ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 

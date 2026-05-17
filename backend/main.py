@@ -87,7 +87,7 @@ def main():
     # Get server configuration
     server_config = get_server_configuration()
 
-    logger.info("Starting StudentVC server...")
+    logger.info("Starting VIABLE Credentials server...")
     logger.info("")
     logger.info("MOBILE WALLET ACCESS:")
     logger.info(f"   - Local network: https://{server_config['local_ip']}:{server_config['port']}")

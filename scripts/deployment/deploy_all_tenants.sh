@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Deploy All StudentVC Tenants - Complete Solution
+# Deploy All VIABLE Credentials Tenants - Complete Solution
 # This script provides multiple options for running all tenants
 
 set -e
 
 echo "🚀 ========================================="
-echo "🚀   StudentVC All Tenants Deployment    "
+echo "🚀   VIABLE Credentials All Tenants Deployment    "
 echo "🚀 ========================================="
 echo ""
 
@@ -68,7 +68,7 @@ test_tenant() {
 show_menu() {
     echo "Select deployment option:"
     echo ""
-    echo -e "${BLUE}1)${NC} 🔷 ROOT Tenant Only (Default StudentVC - Berlin Blue)"
+    echo -e "${BLUE}1)${NC} 🔷 ROOT Tenant Only (Default VIABLE Credentials - Berlin Blue)"
     echo -e "${RED}2)${NC} 🔴 TUB Tenant Only (TU Berlin - Red Branding)"  
     echo -e "${GREEN}3)${NC} 🟢 FUB Tenant Only (FU Berlin - Green Branding)"
     echo -e "${YELLOW}4)${NC} 🔄 Sequential All Tenants (Run each for 30 seconds)"

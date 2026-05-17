@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# StudentVC Production Deployment Script
+# VIABLE Credentials Production Deployment Script
 # =====================================
-# This script automates the deployment of StudentVC application
+# This script automates the deployment of VIABLE Credentials application
 #
 # WHAT THIS SCRIPT DOES:
 # ----------------------
@@ -178,14 +178,14 @@ deploy_kubernetes() {
     
     # Wait for deployments to be ready
     log_info "Waiting for deployments to be ready..."
-    kubectl wait --for=condition=available --timeout=300s deployment/studentvc-tub deployment/studentvc-fub deployment/studentvc-root -n studentvc
+    kubectl wait --for=condition=available --timeout=300s deployment/viable-credentials-tub deployment/viable-credentials-fub deployment/viable-credentials-root -n viable-credentials
     
     # Show access information
     log_success "Kubernetes deployment completed!"
     log_info "Access via:"
-    log_info "  kubectl port-forward -n studentvc svc/studentvc-tub 8080:80"
-    log_info "  kubectl port-forward -n studentvc svc/studentvc-fub 8081:80" 
-    log_info "  kubectl port-forward -n studentvc svc/studentvc-root 8082:80"
+    log_info "  kubectl port-forward -n viable-credentials svc/viable-credentials-tub 8080:80"
+    log_info "  kubectl port-forward -n viable-credentials svc/viable-credentials-fub 8081:80" 
+    log_info "  kubectl port-forward -n viable-credentials svc/viable-credentials-root 8082:80"
     
     cd ../../scripts
 }
@@ -290,7 +290,7 @@ display_access_info() {
 # Main execution
 main() {
     echo "======================================"
-    echo "   StudentVC Deployment Script        "
+    echo "   VIABLE Credentials Deployment Script        "
     echo "======================================"
     echo ""
     

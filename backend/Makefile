@@ -1,4 +1,4 @@
-# HERZCHIRURG: Simplified Makefile for StudentVC development
+# HERZCHIRURG: Simplified Makefile for VIABLE Credentials development
 
 # Default target
 .PHONY: all
@@ -7,7 +7,7 @@ all: dev
 # Start the development server with the venv
 .PHONY: dev
 dev:
-	@echo "🩺 Starting StudentVC development server using venv..."
+	@echo "🩺 Starting VIABLE Credentials development server using venv..."
 	@cd .. && . .venv/bin/activate && cd backend && python main.py
 
 
@@ -31,7 +31,7 @@ clean:
 # Help target
 .PHONY: help
 help:
-	@echo "🩺 StudentVC Development Commands"
+	@echo "🩺 VIABLE Credentials Development Commands"
 	@echo "--------------------------------"
 	@echo "make dev      - Start the development server"
 	@echo "make backup   - Create a database backup"

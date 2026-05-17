@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# StudentVC Pre-Deployment Testing Script
-# Verifies the entire StudentVC Docker stack before deployment
+# VIABLE Credentials Pre-Deployment Testing Script
+# Verifies the entire VIABLE Credentials Docker stack before deployment
 # Author: Patrick Herbke (via Cursor AI)
 
 # Terminal colors
@@ -99,7 +99,7 @@ generate_summary() {
   log "INFO" "Generating summary report..."
   
   cat > "$SUMMARY_FILE" << EOF
-# StudentVC Pre-Deployment Test Summary
+# VIABLE Credentials Pre-Deployment Test Summary
 
 **Date:** $(date)
 **Duration:** $(($(date +%s) - start_time)) seconds
@@ -153,7 +153,7 @@ main() {
   local start_time=$(date +%s)
   
   echo -e "${BLUE}┌─────────────────────────────────────────────────────────┐${NC}"
-  echo -e "${BLUE}│ StudentVC Pre-Deployment Testing Suite                 │${NC}"
+  echo -e "${BLUE}│ VIABLE Credentials Pre-Deployment Testing Suite                 │${NC}"
   echo -e "${BLUE}│ Comprehensive verification before deployment           │${NC}"
   echo -e "${BLUE}└─────────────────────────────────────────────────────────┘${NC}"
   
@@ -205,7 +205,7 @@ main() {
   
   for i in "${!TENANTS[@]}"; do
     local tenant="${TENANTS[$i]}"
-    local container_name="studentvc-${tenant}"
+    local container_name="viable-credentials-${tenant}"
     
     if ! check_container "$container_name"; then
       container_failures=$((container_failures + 1))
@@ -268,7 +268,7 @@ main() {
   
   if [[ $container_failures -eq 0 && $endpoint_failures -eq 0 ]]; then
     echo -e "${GREEN}✅ ALL TESTS PASSED!${NC}"
-    echo -e "${GREEN}✅ StudentVC is ready for deployment${NC}"
+    echo -e "${GREEN}✅ VIABLE Credentials is ready for deployment${NC}"
     echo -e "${GREEN}✅ Total duration: ${total_duration}s${NC}"
     log "INFO" "✅ All tests passed - system ready for deployment"
     exit 0

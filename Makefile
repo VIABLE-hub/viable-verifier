@@ -1,4 +1,4 @@
-# Makefile for StudentVC Backend Application
+# Makefile for VIABLE Credentials Backend Application
 
 BACKEND_DIR = backend
 VENV_DIR = .venv
@@ -28,10 +28,10 @@ info:
 # Start the application (Single Tenant)
 dev:
 ifeq ($(OS),Windows_NT)
-	@echo "Starting StudentVC (Single Tenant) on port 8888"
+	@echo "Starting VIABLE Credentials (Single Tenant) on port 8888"
 	cd $(BACKEND_DIR) && set SERVER_PORT=8888&& ..\\$(VENV_DIR)\\Scripts\\python.exe main.py
 else
-	@echo "Starting StudentVC (Single Tenant) on port 8888"
+	@echo "Starting VIABLE Credentials (Single Tenant) on port 8888"
 	cd $(BACKEND_DIR) && SERVER_PORT=8888 ../$(VENV_DIR)/bin/python main.py
 endif
 

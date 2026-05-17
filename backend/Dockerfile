@@ -1,4 +1,4 @@
-# StudentVC Docker with REAL BBS+ Core Compilation
+# VIABLE Credentials Docker with REAL BBS+ Core Compilation
 FROM python:3.11-slim AS base
 
 # Install system dependencies for Rust, BBS+ core compilation, and application

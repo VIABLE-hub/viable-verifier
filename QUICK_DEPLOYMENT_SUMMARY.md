@@ -1,4 +1,4 @@
-# 🚀 StudentVC Deployment Summary
+# 🚀 VIABLE Credentials Deployment Summary
 
 ## ⚡️ Quick Commands
 

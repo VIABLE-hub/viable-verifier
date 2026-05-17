@@ -19,7 +19,7 @@ LOG_FILE="bbs_monitor_$(date +%Y%m%d_%H%M%S).log"
 ALERT_THRESHOLD=3  # number of consecutive failures before alerting
 
 echo -e "${BLUE}┌───────────────────────────────────────────────────────┐${NC}"
-echo -e "${BLUE}│ StudentVC BBS+ Docker Monitor                         │${NC}"
+echo -e "${BLUE}│ VIABLE Credentials BBS+ Docker Monitor                         │${NC}"
 echo -e "${BLUE}│ Continuously monitors BBS+ health in Docker containers │${NC}"
 echo -e "${BLUE}└───────────────────────────────────────────────────────┘${NC}"
 
@@ -104,13 +104,13 @@ get_containers() {
   
   # Get container information
   while read -r container_id name ports; do
-    tenant_id=$(echo "$name" | sed -n 's/.*studentvc-\(.*\)/\1/p')
+    tenant_id=$(echo "$name" | sed -n 's/.*viable-credentials-\(.*\)/\1/p')
     
     if [ -n "$tenant_id" ]; then
       tenant_ids["$tenant_id"]="$container_id"
       tenant_names["$container_id"]="$tenant_id"
     fi
-  done < <(docker ps | grep -E 'studentvc-' | awk '{print $1, $2, $7}')
+  done < <(docker ps | grep -E 'viable-credentials-' | awk '{print $1, $2, $7}')
   
   # Return the arrays as a string
   for tenant_id in "${!tenant_ids[@]}"; do
@@ -171,7 +171,7 @@ while true; do
   containers=$(get_containers)
   
   if [ -z "$containers" ]; then
-    log "WARN" "No StudentVC containers found"
+    log "WARN" "No VIABLE Credentials containers found"
     sleep $CHECK_INTERVAL
     continue
   fi

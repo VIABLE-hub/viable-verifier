@@ -3,28 +3,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: studentvc-tub
-  namespace: studentvc
+  name: viable-credentials-tub
+  namespace: viable-credentials
   labels:
-    app: studentvc-tub
+    app: viable-credentials-tub
     tenant: tub
     university: tu-berlin
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: studentvc-tub
+      app: viable-credentials-tub
       tenant: tub
   template:
     metadata:
       labels:
-        app: studentvc-tub
+        app: viable-credentials-tub
         tenant: tub
         university: tu-berlin
     spec:
       containers:
-      - name: studentvc
-        image: studentvc:latest
+      - name: viable-credentials
+        image: viable-credentials:latest
         ports:
         - containerPort: 8080
           name: http
@@ -91,28 +91,28 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: studentvc-fub
-  namespace: studentvc
+  name: viable-credentials-fub
+  namespace: viable-credentials
   labels:
-    app: studentvc-fub
+    app: viable-credentials-fub
     tenant: fub
     university: fu-berlin
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: studentvc-fub
+      app: viable-credentials-fub
       tenant: fub
   template:
     metadata:
       labels:
-        app: studentvc-fub
+        app: viable-credentials-fub
         tenant: fub
         university: fu-berlin
     spec:
       containers:
-      - name: studentvc
-        image: studentvc:latest
+      - name: viable-credentials
+        image: viable-credentials:latest
         ports:
         - containerPort: 8080
           name: http
@@ -179,28 +179,28 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: studentvc-root
-  namespace: studentvc
+  name: viable-credentials-root
+  namespace: viable-credentials
   labels:
-    app: studentvc-root
+    app: viable-credentials-root
     tenant: root
     university: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: studentvc-root
+      app: viable-credentials-root
       tenant: root
   template:
     metadata:
       labels:
-        app: studentvc-root
+        app: viable-credentials-root
         tenant: root
         university: default
     spec:
       containers:
-      - name: studentvc
-        image: studentvc:latest
+      - name: viable-credentials
+        image: viable-credentials:latest
         ports:
         - containerPort: 8080
           name: http

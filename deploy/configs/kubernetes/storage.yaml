@@ -4,7 +4,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: tub-data-pvc
-  namespace: studentvc
+  namespace: viable-credentials
 spec:
   accessModes:
   - ReadWriteOnce
@@ -19,7 +19,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: tub-static-pvc
-  namespace: studentvc
+  namespace: viable-credentials
 spec:
   accessModes:
   - ReadWriteOnce
@@ -34,7 +34,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: fub-data-pvc
-  namespace: studentvc
+  namespace: viable-credentials
 spec:
   accessModes:
   - ReadWriteOnce
@@ -49,7 +49,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: fub-static-pvc
-  namespace: studentvc
+  namespace: viable-credentials
 spec:
   accessModes:
   - ReadWriteOnce
@@ -64,7 +64,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: root-data-pvc
-  namespace: studentvc
+  namespace: viable-credentials
 spec:
   accessModes:
   - ReadWriteOnce
@@ -79,7 +79,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: root-static-pvc
-  namespace: studentvc
+  namespace: viable-credentials
 spec:
   accessModes:
   - ReadWriteOnce

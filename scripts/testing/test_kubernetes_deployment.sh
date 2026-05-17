@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Kubernetes Deployment Test Script for StudentVC
+# Kubernetes Deployment Test Script for VIABLE Credentials
 # Tests manifests, provides setup instructions, and validates deployment
 
 set -e
@@ -84,11 +84,11 @@ echo ""
 
 # Test 3: Check Docker Image
 log_info "3. Checking Docker image..."
-if docker images | grep -q "studentvc.*latest"; then
-    log_success "StudentVC Docker image exists"
+if docker images | grep -q "viable-credentials.*latest"; then
+    log_success "VIABLE Credentials Docker image exists"
 else
-    log_warning "StudentVC Docker image not built"
-    echo "Build with: docker build -t studentvc:latest ./backend"
+    log_warning "VIABLE Credentials Docker image not built"
+    echo "Build with: docker build -t viable-credentials:latest ./backend"
 fi
 
 echo ""
@@ -141,7 +141,7 @@ if [ "$CLUSTER_AVAILABLE" = true ]; then
     log_info "6. Testing Live Deployment..."
     
     # Check if Docker image exists
-    if docker images | grep -q "studentvc.*latest"; then
+    if docker images | grep -q "viable-credentials.*latest"; then
         echo "Would you like to test actual deployment? (y/N)"
         read -r response
         if [[ "$response" =~ ^[Yy]$ ]]; then
@@ -151,7 +151,7 @@ if [ "$CLUSTER_AVAILABLE" = true ]; then
             log_info "Skipping live deployment test"
         fi
     else
-        log_warning "Build Docker image first: docker build -t studentvc:latest ./backend"
+        log_warning "Build Docker image first: docker build -t viable-credentials:latest ./backend"
     fi
 fi
 
@@ -174,7 +174,7 @@ log_success "Deploy script is functional"
 echo ""
 echo "Quick Commands:"
 echo "   ./deploy.sh kubernetes                    # Deploy to K8s"
-echo "   kubectl port-forward -n studentvc svc/studentvc-tub 8080:80"
-echo "   kubectl get pods -n studentvc             # Check status"
-echo "   kubectl logs -n studentvc -l app=studentvc-tub"
+echo "   kubectl port-forward -n viable-credentials svc/viable-credentials-tub 8080:80"
+echo "   kubectl get pods -n viable-credentials             # Check status"
+echo "   kubectl logs -n viable-credentials -l app=viable-credentials-tub"
 echo "" 

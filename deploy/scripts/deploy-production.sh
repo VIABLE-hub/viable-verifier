@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🚀 StudentVC Production Docker Deployment Script
+# 🚀 VIABLE Credentials Production Docker Deployment Script
 # Handles external server URL configuration for mobile wallet connectivity
 
 set -e  # Exit on any error
@@ -17,7 +17,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEPLOY_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$DEPLOY_DIR")"
 
-echo -e "${BLUE}🚀 StudentVC Production Docker Deployment${NC}"
+echo -e "${BLUE}🚀 VIABLE Credentials Production Docker Deployment${NC}"
 echo "=================================================="
 
 # Function to print colored output
@@ -92,7 +92,7 @@ if [[ "$USE_EXISTING" != "true" ]]; then
     
     echo "Enter your production server details:"
     echo "Examples:"
-    echo "  - Domain: studentvc.university.edu"
+    echo "  - Domain: viable-credentials.university.edu"
     echo "  - IP Address: 203.45.67.89"
     echo "  - Local testing: localhost"
     echo ""
@@ -121,7 +121,7 @@ if [[ "$USE_EXISTING" != "true" ]]; then
     echo -e "\n${BLUE}📝 Generating docker.env configuration${NC}"
     
     cat > docker.env << EOF
-# 🚀 StudentVC Production Environment Configuration
+# 🚀 VIABLE Credentials Production Environment Configuration
 # Generated on $(date)
 
 # =============================================================================
@@ -189,7 +189,7 @@ fi
 echo -e "\n${BLUE}🐳 Docker Deployment${NC}"
 echo "=================================================="
 
-read -p "Deploy StudentVC containers now? (Y/n): " deploy_now
+read -p "Deploy VIABLE Credentials containers now? (Y/n): " deploy_now
 if [[ ! "$deploy_now" =~ ^[Nn]$ ]]; then
     
     echo "Stopping any existing containers..."
@@ -219,7 +219,7 @@ if [[ ! "$deploy_now" =~ ^[Nn]$ ]]; then
         
         echo -e "\n${GREEN}🎉 Deployment Complete!${NC}"
         echo "=================================================="
-        echo "Your StudentVC system is now running with external URLs."
+        echo "Your VIABLE Credentials system is now running with external URLs."
         echo "QR codes will use the configured external addresses instead of Docker internal IPs."
         echo ""
         echo "Next steps:"

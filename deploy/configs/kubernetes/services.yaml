@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: studentvc-tub
-  namespace: studentvc
+  name: viable-credentials-tub
+  namespace: viable-credentials
   labels:
-    app: studentvc-tub
+    app: viable-credentials-tub
     tenant: tub
 spec:
   type: ClusterIP
@@ -16,7 +16,7 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: studentvc-tub
+    app: viable-credentials-tub
     tenant: tub
 
 ---
@@ -24,10 +24,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: studentvc-fub
-  namespace: studentvc
+  name: viable-credentials-fub
+  namespace: viable-credentials
   labels:
-    app: studentvc-fub
+    app: viable-credentials-fub
     tenant: fub
 spec:
   type: ClusterIP
@@ -37,7 +37,7 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: studentvc-fub
+    app: viable-credentials-fub
     tenant: fub
 
 ---
@@ -45,10 +45,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: studentvc-root
-  namespace: studentvc
+  name: viable-credentials-root
+  namespace: viable-credentials
   labels:
-    app: studentvc-root
+    app: viable-credentials-root
     tenant: root
 spec:
   type: ClusterIP
@@ -58,5 +58,5 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: studentvc-root
+    app: viable-credentials-root
     tenant: root 

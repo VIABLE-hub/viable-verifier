@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  studentvc:
+  viable-credentials:
     build:
       context: ../../backend
       dockerfile: Dockerfile
       target: app
-    container_name: studentvc
+    container_name: viable-credentials
     ports:
       - "8080:8080"
     environment:
@@ -24,7 +24,7 @@ services:
       - SOCKET_IO_URL=${SOCKET_IO_URL:-https://localhost:8080}
       - CORS_ORIGINS=*
     volumes:
-      - studentvc_data:/app/instance
+      - viable-credentials_data:/app/instance
     restart: unless-stopped
     healthcheck:
       # 🚀 HEALTH CHECK FIX: Use HTTP for internal health checks, HTTPS is handled at container level
@@ -33,11 +33,11 @@ services:
       timeout: 10s
       retries: 3
     networks:
-      - studentvc-network
+      - viable-credentials-network
 
 networks:
-  studentvc-network:
+  viable-credentials-network:
     driver: bridge
 
 volumes:
-  studentvc_data:
+  viable-credentials_data:

@@ -21,7 +21,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
     networks:
-      - studentvc-network
+      - viable-credentials-network
     labels:
       # Redirect HTTP to HTTPS
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
@@ -30,8 +30,8 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
   # TUB Tenant with authentication
-  studentvc-tub:
-    image: studentvc:latest
+  viable-credentials-tub:
+    image: viable-credentials:latest
     environment:
       - TENANT_ID=tub
       - DATABASE_URL=sqlite:////app/backend/src/tenants/instances/tub/database.db
@@ -39,10 +39,10 @@ services:
     volumes:
       - tub-data:/app/backend/src/tenants/instances/tub
     networks:
-      - studentvc-network
+      - viable-credentials-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tub.rule=Host(`studentvc.yourdomain.com`) && PathPrefix(`/tub`)"
+      - "traefik.http.routers.tub.rule=Host(`viable-credentials.yourdomain.com`) && PathPrefix(`/tub`)"
       - "traefik.http.routers.tub.entrypoints=websecure"
       - "traefik.http.routers.tub.tls.certresolver=letsencrypt"
       - "traefik.http.routers.tub.middlewares=tub-auth,tub-stripprefix"
@@ -52,8 +52,8 @@ services:
       - "traefik.http.services.tub.loadbalancer.server.port=8080"
 
   # FUB Tenant with authentication
-  studentvc-fub:
-    image: studentvc:latest
+  viable-credentials-fub:
+    image: viable-credentials:latest
     environment:
       - TENANT_ID=fub
       - DATABASE_URL=sqlite:////app/backend/src/tenants/instances/fub/database.db
@@ -61,10 +61,10 @@ services:
     volumes:
       - fub-data:/app/backend/src/tenants/instances/fub
     networks:
-      - studentvc-network
+      - viable-credentials-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fub.rule=Host(`studentvc.yourdomain.com`) && PathPrefix(`/fub`)"
+      - "traefik.http.routers.fub.rule=Host(`viable-credentials.yourdomain.com`) && PathPrefix(`/fub`)"
       - "traefik.http.routers.fub.entrypoints=websecure"
       - "traefik.http.routers.fub.tls.certresolver=letsencrypt"
       - "traefik.http.routers.fub.middlewares=fub-auth,fub-stripprefix"
@@ -74,8 +74,8 @@ services:
       - "traefik.http.services.fub.loadbalancer.server.port=8080"
 
   # ROOT Tenant with authentication
-  studentvc-root:
-    image: studentvc:latest
+  viable-credentials-root:
+    image: viable-credentials:latest
     environment:
       - TENANT_ID=root
       - DATABASE_URL=sqlite:////app/backend/src/tenants/instances/root/database.db
@@ -83,10 +83,10 @@ services:
     volumes:
       - root-data:/app/backend/src/tenants/instances/root
     networks:
-      - studentvc-network
+      - viable-credentials-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.root.rule=Host(`studentvc.yourdomain.com`)"
+      - "traefik.http.routers.root.rule=Host(`viable-credentials.yourdomain.com`)"
       - "traefik.http.routers.root.entrypoints=websecure"
       - "traefik.http.routers.root.tls.certresolver=letsencrypt"
       - "traefik.http.routers.root.middlewares=root-auth"
@@ -100,5 +100,5 @@ volumes:
   root-data:
 
 networks:
-  studentvc-network:
+  viable-credentials-network:
     driver: bridge 

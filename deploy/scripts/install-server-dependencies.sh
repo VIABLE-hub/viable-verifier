@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# StudentVC Server Dependencies Installation Script
+# VIABLE Credentials Server Dependencies Installation Script
 # Run this on the production server before deployment
 
 set -e
 
-echo "🚀 Installing StudentVC Server Dependencies..."
+echo "🚀 Installing VIABLE Credentials Server Dependencies..."
 
 # Update system packages
 echo "📦 Updating system packages..."
@@ -51,9 +51,9 @@ apt-get install -y certbot python3-certbot-nginx
 
 # Create application directories
 echo "📁 Creating application directories..."
-mkdir -p /var/log/studentvc
-mkdir -p /var/backups/studentvc
-mkdir -p /etc/studentvc
+mkdir -p /var/log/viable-credentials
+mkdir -p /var/backups/viable-credentials
+mkdir -p /etc/viable-credentials
 
 # Set up firewall rules
 echo "🔥 Setting up firewall..."
@@ -69,7 +69,7 @@ echo "✅ Server dependencies installation completed!"
 echo ""
 echo "Next steps:"
 echo "1. Run 'source ~/.cargo/env' to load Rust environment"
-echo "2. Clone the StudentVC repository"
+echo "2. Clone the VIABLE Credentials repository"
 echo "3. Run the deployment script"
 echo ""
-echo "🎯 Server is ready for StudentVC deployment!" 
+echo "🎯 Server is ready for VIABLE Credentials deployment!" 

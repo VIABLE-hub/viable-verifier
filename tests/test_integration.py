@@ -308,7 +308,7 @@ class TestTenantSystemEndToEnd:
                 with patch.object(config_manager, 'load_static_config') as mock_static:
                     mock_static.return_value = {
                         'id': 'root',
-                        'name': 'StudentVC Platform',
+                        'name': 'VIABLE Credentials Platform',
                         'color': '#0066cc'
                     }
                     
@@ -327,7 +327,7 @@ class TestTenantSystemEndToEnd:
                         
                         # Verify Root-specific configuration
                         assert config['id'] == 'root'
-                        assert config['name'] == 'StudentVC Platform'
+                        assert config['name'] == 'VIABLE Credentials Platform'
                         assert config['color'] == '#0066cc'
                         assert config['network_config']['use_ngrok'] == False
                 

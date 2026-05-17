@@ -14,7 +14,7 @@ MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}┌───────────────────────────────────────────────────────┐${NC}"
-echo -e "${BLUE}│ StudentVC BBS+ Docker Hot-Patching Tool               │${NC}"
+echo -e "${BLUE}│ VIABLE Credentials BBS+ Docker Hot-Patching Tool               │${NC}"
 echo -e "${BLUE}│ Automatically fixes BBS+ issues in running containers │${NC}"
 echo -e "${BLUE}└───────────────────────────────────────────────────────┘${NC}"
 
@@ -46,11 +46,11 @@ if [ ! -d "backend/bbs-core/linux-build" ]; then
 fi
 
 # Check if containers are running
-echo -e "${BLUE}Checking for running StudentVC containers...${NC}"
-containers=$(docker ps | grep -E 'studentvc-' | awk '{print $1}')
+echo -e "${BLUE}Checking for running VIABLE Credentials containers...${NC}"
+containers=$(docker ps | grep -E 'viable-credentials-' | awk '{print $1}')
 
 if [ -z "$containers" ]; then
-  echo -e "${RED}❌ Error: No running StudentVC containers found.${NC}"
+  echo -e "${RED}❌ Error: No running VIABLE Credentials containers found.${NC}"
   echo -e "${YELLOW}Please start the containers with 'make docker-run' first.${NC}"
   exit 1
 fi
@@ -61,7 +61,7 @@ declare -A tenant_names
 container_count=0
 
 while read -r container_id name ports; do
-  tenant_id=$(echo "$name" | sed -n 's/.*studentvc-\(.*\)/\1/p')
+  tenant_id=$(echo "$name" | sed -n 's/.*viable-credentials-\(.*\)/\1/p')
   
   if [ -n "$tenant_id" ]; then
     tenant_ids["$tenant_id"]="$container_id"
@@ -69,9 +69,9 @@ while read -r container_id name ports; do
     echo -e "${GREEN}✅ Found tenant ${BLUE}$tenant_id${GREEN} (container: ${BLUE}$container_id${GREEN})${NC}"
     ((container_count++))
   fi
-done < <(docker ps | grep -E 'studentvc-' | awk '{print $1, $2, $7}')
+done < <(docker ps | grep -E 'viable-credentials-' | awk '{print $1, $2, $7}')
 
-echo -e "${GREEN}✅ Found ${container_count} StudentVC containers${NC}"
+echo -e "${GREEN}✅ Found ${container_count} VIABLE Credentials containers${NC}"
 
 # Function to patch a container
 patch_container() {

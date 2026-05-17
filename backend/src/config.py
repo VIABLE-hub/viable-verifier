@@ -11,7 +11,7 @@ class Config:
     # Logos (now in static/img/)
     LOGO_FILENAME = "tub_logo.png"
     HOCHSCHUL_BRANDING_LOGO = "tub_logo_white_red.png"
-    MAIN_LOGO_FILENAME = "studentVC-logo-sora-cropped.png"
+    MAIN_LOGO_FILENAME = "viable-credentials-logo-sora-cropped.png"
 
     # Theme Colors
     THEME_COLORS = {
@@ -43,5 +43,5 @@ class Config:
 
     # Database
     INSTANCE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance')
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(INSTANCE_PATH, 'studentvc.sqlite')}"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(INSTANCE_PATH, 'viable-credentials.sqlite')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: studentvc
+  name: viable-credentials
   labels:
-    name: studentvc
-    app: studentvc-multi-tenant
+    name: viable-credentials
+    app: viable-credentials-multi-tenant
     version: v2.0.0
 ---
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: studentvc-quota
-  namespace: studentvc
+  name: viable-credentials-quota
+  namespace: viable-credentials
 spec:
   hard:
     requests.cpu: "2"
@@ -24,8 +24,8 @@ spec:
 apiVersion: v1
 kind: LimitRange
 metadata:
-  name: studentvc-limits
-  namespace: studentvc
+  name: viable-credentials-limits
+  namespace: viable-credentials
 spec:
   limits:
   - default:

@@ -33,7 +33,7 @@ COLLEAGUES=(
 )
 
 # Create htpasswd file
-HTPASSWD_FILE="/etc/nginx/.htpasswd_studentvc"
+HTPASSWD_FILE="/etc/nginx/.htpasswd_viable-credentials"
 
 # Add each colleague
 for i in "${!COLLEAGUES[@]}"; do
@@ -52,18 +52,18 @@ for i in "${!COLLEAGUES[@]}"; do
 done
 
 # Create NGINX configuration
-cat > /etc/nginx/sites-available/studentvc-restricted << 'EOF'
+cat > /etc/nginx/sites-available/viable-credentials-restricted << 'EOF'
 server {
     listen 443 ssl;
-    server_name studentvc.yourdomain.com;
+    server_name viable-credentials.yourdomain.com;
     
     # SSL configuration (update paths)
-    ssl_certificate /etc/letsencrypt/live/studentvc.yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/studentvc.yourdomain.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/viable-credentials.yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/viable-credentials.yourdomain.com/privkey.pem;
     
     # Basic authentication for colleagues only
-    auth_basic "StudentVC - Restricted Access";
-    auth_basic_user_file /etc/nginx/.htpasswd_studentvc;
+    auth_basic "VIABLE Credentials - Restricted Access";
+    auth_basic_user_file /etc/nginx/.htpasswd_viable-credentials;
     
     # Optional: Allow specific paths without auth
     location /health {
@@ -108,7 +108,7 @@ server {
 # Redirect HTTP to HTTPS
 server {
     listen 80;
-    server_name studentvc.yourdomain.com;
+    server_name viable-credentials.yourdomain.com;
     return 301 https://$server_name$request_uri;
 }
 EOF
@@ -118,10 +118,10 @@ echo "        SETUP COMPLETE                "
 echo "======================================"
 echo ""
 echo "Next steps:"
-echo "1. Update domain name in: /etc/nginx/sites-available/studentvc-restricted"
+echo "1. Update domain name in: /etc/nginx/sites-available/viable-credentials-restricted"
 echo "2. Update SSL certificate paths in the config"
 echo "3. Enable the site:"
-echo "   ln -s /etc/nginx/sites-available/studentvc-restricted /etc/nginx/sites-enabled/"
+echo "   ln -s /etc/nginx/sites-available/viable-credentials-restricted /etc/nginx/sites-enabled/"
 echo "4. Test configuration: nginx -t"
 echo "5. Reload NGINX: systemctl reload nginx"
 echo ""

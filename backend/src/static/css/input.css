@@ -4,9 +4,13 @@
 
 /* Custom Berlin Blue theme variables */
 :root {
-  --berlin-blue: #003f7f;
-  --berlin-light: #0066cc;
-  --berlin-dark: #002a56;
+  --viable-navy: #003154;
+  --viable-mid: #1a4a6e;
+  --viable-dark: #001a30;
+  --viable-accent: #7cc9b5;
+  --berlin-blue: #003154;
+  --berlin-light: #7cc9b5;
+  --berlin-dark: #001a30;
 }
 
 /* Custom Berlin Blue utility classes */
@@ -85,7 +89,7 @@
   background-color: var(--berlin-blue); 
 }
 
-/* Additional utility classes for StudentVC */
+/* Additional utility classes for VIABLE Credentials */
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
