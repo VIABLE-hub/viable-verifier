@@ -33,13 +33,14 @@ make dev
 
 `make dev` selects port 8888 in the current Makefile. `make start-all` is an alias for this single development instance; it does not launch four tenants. Historical `make dev-tub`, `make dev-fub` and `make dev-root` instructions do not match the current targets.
 
-**Dependency limitation:** `.gitmodules` refers to historical sibling repositories such as `bbs-core`, `android` and `ios`. These are not present under those names in the reviewed VIABLE-hub repository list. A recursive clone is therefore not a reproducible setup guarantee. Ask Adam to identify the intended native-library commit/artifact and record it before building. Do not silently substitute a crypto fallback or test key for a production implementation.
+**Native dependency:** this checkout includes `backend/bbs-core/python/build.sh` and has no tracked submodule gitlinks. The `.gitmodules` file still lists historical sibling URLs; those entries are stale metadata, not proof of missing checked-in verifier source. Build the bundled bindings and record their source commit. Do not silently substitute a crypto fallback or test key for a production implementation.
 
 ## Validation
 
 From the repository root, after configuring an isolated test environment and dependencies:
 
 ```sh
+.venv/bin/python -m pip install pytest
 .venv/bin/python -m pytest tests/
 ```
 
